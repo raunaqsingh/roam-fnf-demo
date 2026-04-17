@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1440" />
+<title>Commercial Prelim · Live · Roam for FNF</title>
+<style>
+  :root {
+    --navy: #002D5C; --navy-2: #001B3A; --navy-3: #1a3d6b; --navy-4: #00458C;
+    --fnf-red: #DA291C; --fnf-red-dark: #B3231A; --fnf-red-soft: #FBE3E0;
+    --cream: #F5F5F7; --cream-2: #EAEAF0; --paper: #FFFFFF;
+    --ink: #001B3A; --ink-2: #2A3A55;
+    --muted: #6B7280; --muted-2: #9CA3AF;
+    --gold: #C9A961; --gold-2: #A8892E; --gold-soft: #E6CD8B;
+    --green: #0A7D3B; --green-soft: #5EB37E;
+    --amber: #D97706;
+    --rule: #E5E7EB; --rule-dark: #1a2d4a;
+    --shadow-sm: 0 1px 2px rgba(0,27,58,0.06);
+    --shadow-md: 0 4px 12px rgba(0,27,58,0.08);
+    --shadow-lg: 0 12px 32px rgba(0,27,58,0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    background: var(--paper); color: var(--ink);
+    font-size: 13px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+    min-width: 1320px;
+  }
+
+  /* Brand bar */
+  .brand-bar { background: var(--navy-2); color: #fff; padding: 12px 24px;
+    display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-md); }
+  .fnf-lockup { display: flex; align-items: center; gap: 12px; }
+  .fnf-mark { box-shadow: 0 1px 4px rgba(218,41,28,0.35); border-radius: 4px; }
+  .fnf-text .fnf-primary { font-family: Georgia, serif; font-size: 16px; font-weight: 600;
+    color: #fff; letter-spacing: 0.01em; line-height: 1.15; }
+  .fnf-text .fnf-sec { font-size: 10.5px; color: #9DB3CC; letter-spacing: 0.04em; margin-top: 2px; }
+  .divider { width: 1px; height: 34px; background: rgba(255,255,255,0.14); margin: 0 4px; }
+  .roam-credit { display: flex; flex-direction: column; gap: 1px; }
+  .roam-credit .roam-mark { font-family: Georgia, serif; font-size: 13px; font-weight: 600;
+    color: var(--gold); letter-spacing: 0.02em; line-height: 1; }
+  .roam-credit .roam-mark::before { content: ""; display: inline-block; width: 14px; height: 2px;
+    background: var(--gold); margin-right: 6px; vertical-align: 3px; }
+  .roam-credit .roam-sub { font-size: 9.5px; color: #7A8FA9; letter-spacing: 0.04em;
+    text-transform: uppercase; margin-left: 20px; }
+  .brand-bar .spacer { flex: 1; }
+  .brand-bar .pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    color: #D6DEE9; padding: 5px 11px; border-radius: 999px; font-size: 10.5px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px; }
+  .brand-bar .pill .dim { color: #7A8FA9; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.1em; font-weight: 600; }
+  .brand-bar .back-link {
+    color: #9DB3CC; font-size: 11px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px; border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .brand-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+  .brand-bar .live { background: rgba(218,41,28,0.14); border-color: rgba(218,41,28,0.45);
+    color: #FEC9C2; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 10px; }
+  .brand-bar .live::before { content: ""; display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; background: var(--fnf-red); margin-right: 2px;
+    animation: pulse 1.2s ease-in-out infinite; box-shadow: 0 0 8px var(--fnf-red); }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* File strip */
+  .file-strip { background: var(--cream); border-bottom: 1px solid var(--rule);
+    padding: 14px 24px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+  .file-strip .file-info { display: grid; grid-template-columns: auto 1fr auto auto auto; gap: 28px; align-items: center; }
+  .property-thumb { width: 78px; height: 56px;
+    background: linear-gradient(180deg, #7b8fab 0%, #4b5d7a 100%);
+    border: 1px solid #334b6a; border-radius: 3px; position: relative; overflow: hidden; }
+  /* Skyscraper silhouette */
+  .property-thumb::before { content: ""; position: absolute; bottom: 0;
+    left: 25%; width: 50%; height: 90%;
+    background: repeating-linear-gradient(180deg,
+      #1a2d4a 0, #1a2d4a 4px,
+      transparent 4px, transparent 8px);
+    clip-path: polygon(0 100%, 0 5%, 100% 5%, 100% 100%); }
+  .property-thumb::after { content: ""; position: absolute; bottom: 0;
+    left: 45%; width: 10%; height: 100%; background: #0a1a30; }
+  .file-strip h1 { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: 19px;
+    font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .file-strip .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .kv { display: flex; flex-direction: column; gap: 2px; }
+  .kv .k { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .kv .v { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .file-strip .cta-wrap { display: flex; gap: 8px; align-items: center; }
+  .speed-ctrl { display: flex; background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 4px; overflow: hidden; }
+  .speed-ctrl button { background: transparent; border: none; padding: 8px 10px; font: inherit;
+    font-size: 11px; color: var(--muted); cursor: pointer; border-right: 1px solid var(--rule); }
+  .speed-ctrl button:last-child { border-right: none; }
+  .speed-ctrl button.active { background: var(--navy); color: #fff; }
+  .run-btn { background: var(--fnf-red); color: #fff; border: none; padding: 11px 22px;
+    font: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; cursor: pointer;
+    border-radius: 3px; box-shadow: 0 2px 8px rgba(218,41,28,0.28);
+    transition: transform 0.08s ease, box-shadow 0.12s ease; }
+  .run-btn:hover { background: var(--fnf-red-dark); transform: translateY(-1px); }
+  .run-btn .arrow { margin-left: 8px; color: #fff; }
+  .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* The pain callout — "she's been waiting 3 weeks" */
+  .pain-callout {
+    background: linear-gradient(90deg, #FFF9F0 0%, #FDF0E2 100%);
+    border-bottom: 1px solid #F0DEB5;
+    border-top: 3px solid var(--amber);
+    padding: 14px 28px;
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .pain-callout .icon {
+    width: 40px; height: 40px;
+    background: var(--amber); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 0 5px rgba(217,119,6,0.18);
+  }
+  .pain-callout .pc-body { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+  .pain-callout .pc-body b { color: var(--amber); font-weight: 700; }
+  .pain-callout .pc-stat {
+    text-align: right;
+    font-family: "Fraunces", Georgia, serif;
+    border-left: 1px solid #F0DEB5;
+    padding-left: 20px;
+  }
+  .pain-callout .pc-stat .n {
+    font-size: 28px; font-weight: 600; color: var(--amber);
+    line-height: 1; letter-spacing: -0.02em;
+  }
+  .pain-callout .pc-stat .l {
+    font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 600; margin-top: 4px;
+  }
+
+  /* Labor hero */
+  .labor-hero { background: linear-gradient(180deg, #002D5C 0%, #001B3A 100%); color: #fff;
+    position: relative; padding: 22px 28px; display: grid;
+    grid-template-columns: 2.5fr 1px 1.2fr 1px 1.2fr 1px 1.7fr; gap: 28px; align-items: center; }
+  .labor-hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 38%, var(--gold) 100%); }
+  .labor-hero::after { content: "LIVE · TAMPA COMMERCIAL · FILE 2026-FNF-C-00988";
+    position: absolute; top: 8px; right: 28px; font-size: 8.5px;
+    letter-spacing: 0.2em; color: #6B8199; font-weight: 600; }
+  .labor-hero .sep-v { background: rgba(255,255,255,0.08); width: 1px; height: 72px; }
+  .labor-hero .block { display: flex; flex-direction: column; gap: 5px; }
+  .labor-hero .lbl { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #FEC9C2; font-weight: 700; }
+  .labor-hero .big { font-family: "Fraunces", Georgia, serif; font-size: 36px; font-weight: 500;
+    color: #fff; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .labor-hero .big.primary { font-size: 50px; font-weight: 600; letter-spacing: -0.025em; }
+  .labor-hero .big.accent { color: var(--fnf-red); font-weight: 600; }
+  .labor-hero .sub { font-size: 11px; color: #9DB3CC; line-height: 1.5; }
+  .labor-hero .unit { font-size: 22px; color: var(--fnf-red); font-weight: 500; margin-left: 2px; }
+  .labor-hero .caret { color: var(--green-soft); font-size: 14px; vertical-align: 3px; margin-right: 4px; }
+  .labor-hero .flash { animation: flash 0.6s ease-out; }
+  @keyframes flash { 0% { color: var(--green-soft); transform: scale(1.04); }
+    100% { color: #fff; transform: scale(1); } }
+
+  /* Narrator strip */
+  .narr-strip { background: #fff; border-bottom: 1px solid var(--rule);
+    padding: 14px 28px; display: grid; grid-template-columns: 170px 1fr auto; gap: 24px;
+    align-items: center; box-shadow: var(--shadow-sm); position: relative; }
+  .narr-strip::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; background: var(--fnf-red); }
+  .narr-strip .step-eyebrow { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fnf-red); font-weight: 700; }
+  .narr-strip .step-name { font-family: "Fraunces", Georgia, serif; font-size: 16px;
+    font-weight: 600; color: var(--ink); letter-spacing: -0.01em; line-height: 1.15; }
+  .narr-strip .progress-ticks { display: flex; gap: 3px; margin-top: 4px; }
+  .narr-strip .progress-ticks .t { height: 3px; width: 18px; background: var(--rule);
+    border-radius: 2px; }
+  .narr-strip .progress-ticks .t.done { background: var(--fnf-red); }
+  .narr-strip .progress-ticks .t.active { background: var(--fnf-red); animation: tPulse 1.2s ease-in-out infinite; }
+  @keyframes tPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .narr-strip .narr-body { font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .narr-strip .narr-body b { color: var(--navy); font-weight: 600; }
+  .narr-strip .narr-chips { margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .narr-strip .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px;
+    font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+  .narr-strip .chip .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .narr-strip .chip.auto { background: #E8F5EE; color: var(--green); } .narr-strip .chip.auto .dot { background: var(--green); }
+  .narr-strip .chip.uw { background: #FDF0E2; color: var(--amber); } .narr-strip .chip.uw .dot { background: var(--amber); }
+  .narr-strip .chip.human { background: #FBE3E0; color: var(--fnf-red); } .narr-strip .chip.human .dot { background: var(--fnf-red); }
+  .narr-strip .chip.safe { background: #F0F4F9; color: var(--navy); font-weight: 500; }
+  .narr-strip .chip.safe::before { content: "✓"; color: var(--green); margin-right: 2px; font-weight: 700; }
+  .narr-strip .safe-pill { display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+    padding-left: 20px; border-left: 1px solid var(--rule); min-width: 200px; }
+  .narr-strip .safe-pill .safe-lbl { font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .narr-strip .safe-pill .safe-v { font-family: "Fraunces", Georgia, serif; font-size: 22px;
+    color: var(--green); font-weight: 600; line-height: 1; }
+  .narr-strip .safe-pill .safe-sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+  /* Three column layout */
+  main { display: grid; grid-template-columns: 380px 1fr 520px;
+    height: calc(100vh - 440px); min-height: 680px; overflow: hidden; }
+
+  /* Left file-structure panel */
+  .file-panel { background: var(--paper); border-right: 1px solid var(--rule); overflow-y: auto; }
+  .fp-head { padding: 16px 20px 12px; border-bottom: 1px solid var(--rule); background: var(--cream); }
+  .fp-head .t { font-family: "Fraunces", Georgia, serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 0.02em; }
+  .fp-head .s { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: 0.03em; }
+  .fp-section-head { padding: 14px 20px 6px; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-2);
+    display: flex; justify-content: space-between; align-items: baseline; }
+  .fp-section-head .cnt { font-size: 10px; color: var(--muted); font-weight: 500;
+    letter-spacing: 0.02em; text-transform: none; }
+  .fp-list { padding: 0 12px 12px; }
+  .fp-item { display: grid; grid-template-columns: 20px 1fr 14px; gap: 10px;
+    padding: 10px; border-bottom: 1px solid var(--rule); align-items: start; }
+  .fp-item:last-child { border-bottom: none; }
+  .fp-item .nm { font-family: "Fraunces", Georgia, serif; font-size: 12px; color: var(--gold-2);
+    font-weight: 500; margin-top: 1px; }
+  .fp-item .body .lb { font-weight: 500; font-size: 12px; line-height: 1.35; }
+  .fp-item .body .dt { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+  .fp-item .body .sig { font-size: 10px; color: var(--green); margin-top: 4px;
+    font-weight: 600; letter-spacing: 0.02em; display: none; }
+  .fp-item.done .body .sig { display: block; }
+  .fp-item .dot { width: 10px; height: 10px; border-radius: 50%; background: #c9c2b0;
+    margin-top: 4px; border: 1px solid rgba(0,0,0,0.06); flex-shrink: 0; }
+  .fp-item .dot.running { background: var(--gold); animation: blink 1s infinite; }
+  .fp-item .dot.cleared { background: var(--green); }
+  .fp-item .dot.escalated { background: var(--amber); }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* Center activity */
+  .activity { background: var(--navy); color: var(--cream); overflow-y: auto; position: relative; }
+  .activity-head { position: sticky; top: 0; background: var(--navy); padding: 14px 24px 10px;
+    border-bottom: 1px solid var(--rule-dark); z-index: 10;
+    display: flex; align-items: baseline; justify-content: space-between; }
+  .activity-head .t { font-family: "Fraunces", Georgia, serif; font-size: 14px; font-weight: 600; color: var(--cream); }
+  .activity-head .sub { font-size: 11px; color: #7e8da4; letter-spacing: 0.03em; }
+  .feed { padding: 12px 0 30px; }
+  .feed .row { display: grid; grid-template-columns: 68px 24px 1fr; gap: 12px;
+    padding: 6px 24px; font-size: 12px; line-height: 1.5; color: #cfd6e3;
+    opacity: 0; transform: translateY(4px); animation: rowIn 0.22s ease-out forwards; }
+  @keyframes rowIn { to { opacity: 1; transform: translateY(0); } }
+  .feed .row .ts { color: #6578a0; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px; padding-top: 1px; }
+  .feed .row .ic { text-align: center; padding-top: 1px; font-size: 13px; }
+  .feed .row .msg { color: #d4dbea; }
+  .feed .row .msg .tag { display: inline-block; padding: 1px 6px; border-radius: 3px;
+    font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+    margin-right: 6px; vertical-align: 1px; }
+  .tag.parse { background: #203458; color: #9dbcff; }
+  .tag.plan { background: #2a2645; color: #c9a8ff; }
+  .tag.api { background: #1e3a3a; color: #7bd3d3; }
+  .tag.ofr { background: #3d2438; color: #e58cc8; }
+  .tag.doc { background: #293144; color: #aec2e8; }
+  .tag.legal { background: #2a3a24; color: #b4d691; }
+  .tag.entity { background: #1e3058; color: #9bbfff; }
+  .tag.plant { background: #383324; color: #e6c170; }
+  .tag.escalate { background: #402818; color: #e8a070; }
+  .tag.complete { background: #1e3a28; color: #7fd69b; }
+  .tag.emit { background: #2a2d36; color: #b8c0d0; }
+  .feed .row .msg .hl { color: var(--cream); font-weight: 500; }
+  .feed .row .msg .gold { color: var(--gold); font-weight: 500; }
+  .feed .row .msg .amt { color: #f1dfae; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; }
+  .feed .row .msg .saved { display: inline-block; background: rgba(63,138,88,0.15);
+    color: var(--green-soft); padding: 1px 8px; border-radius: 3px; font-size: 10.5px;
+    font-weight: 600; margin-left: 6px; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    border: 1px solid rgba(127,214,155,0.25); }
+  .feed .phase { padding: 14px 24px 6px; font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold); font-weight: 600;
+    border-top: 1px solid var(--rule-dark); margin-top: 10px; }
+  .feed .phase:first-child { border-top: none; margin-top: 0; padding-top: 6px; }
+
+  /* Right evidence panel */
+  .evidence { background: var(--paper); border-left: 1px solid var(--rule); overflow-y: auto; }
+  .ev-head { padding: 14px 20px 10px; border-bottom: 1px solid var(--rule); background: var(--cream);
+    display: flex; align-items: baseline; justify-content: space-between; }
+  .ev-head .t { font-family: "Fraunces", Georgia, serif; font-size: 14px; font-weight: 600; }
+  .ev-head .s { font-size: 11px; color: var(--muted); }
+  .ev-card { background: #fff; border: 1px solid var(--rule); margin: 14px; border-radius: 3px;
+    overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    opacity: 0; transform: translateY(6px); animation: evIn 0.28s ease-out forwards; }
+  @keyframes evIn { to { opacity: 1; transform: translateY(0); } }
+  .ev-card.hero { border-color: var(--gold); box-shadow: 0 2px 8px rgba(201,169,97,0.2); }
+  .ev-card-head { padding: 10px 14px; border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; gap: 8px; background: var(--cream); }
+  .ev-card.hero .ev-card-head { background: linear-gradient(180deg, #fef3d6 0%, #f5e6c2 100%); }
+  .ev-card-head .tag-sm { font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold-2); padding: 2px 6px;
+    border: 1px solid var(--gold); border-radius: 2px; background: rgba(201,169,97,0.08); }
+  .ev-card-head .label { font-weight: 600; font-size: 12px; }
+  .ev-card-head .status { margin-left: auto; font-size: 10px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+  .ev-card-head .status.ok { color: var(--green); }
+  .ev-card-head .status.active { color: var(--gold-2); }
+  .ev-card-head .status.active::before { content: "●"; margin-right: 3px; animation: blink 1s infinite; }
+  .ev-card-body { padding: 12px 14px; font-size: 12px; }
+
+  /* === PARALLEL PLANT SEARCH HEATMAP (the hero commercial visual) === */
+  .plant-heat { background: #0e1a2e; color: #fff; border-radius: 3px; padding: 14px; }
+  .plant-heat .hh {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .plant-heat .hh .ht {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  }
+  .plant-heat .hh .hs {
+    font-size: 10px; color: #9DB3CC;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .plant-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(6, 1fr);
+    gap: 3px;
+    font-size: 9px;
+  }
+  .plant-grid .col-head {
+    color: #9DB3CC;
+    text-align: center;
+    padding: 3px 0;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .plant-grid .row-head {
+    color: #9DB3CC;
+    padding: 5px 4px;
+    font-weight: 600;
+    font-size: 10px;
+  }
+  .plant-cell {
+    aspect-ratio: 1.8;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    transition: all 0.25s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+  }
+  .plant-cell.running {
+    background: rgba(201,169,97,0.25);
+    border-color: var(--gold);
+    color: var(--gold);
+    animation: cellPulse 1s ease-in-out infinite;
+  }
+  @keyframes cellPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+  .plant-cell.done {
+    background: rgba(10,125,59,0.35);
+    border-color: var(--green-soft);
+    color: var(--green-soft);
+  }
+  .plant-cell.done::before { content: "✓"; font-weight: 700; }
+  .plant-cell.flag {
+    background: rgba(217,119,6,0.35);
+    border-color: var(--amber);
+    color: #FCD19A;
+  }
+  .plant-cell.flag::before { content: "!"; font-weight: 700; }
+  .plant-heat .progress {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 10.5px;
+    color: #9DB3CC;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .plant-heat .progress .p-v {
+    color: var(--green-soft);
+    font-weight: 700;
+  }
+
+  /* Entity chain card */
+  .entity-chain { font-size: 11.5px; line-height: 1.55; }
+  .entity-chain .link { display: grid; grid-template-columns: 20px 1fr auto;
+    gap: 10px; padding: 6px 0; border-bottom: 1px dashed var(--rule); align-items: center; }
+  .entity-chain .link:last-child { border-bottom: none; }
+  .entity-chain .link .lv {
+    font-family: "Fraunces", Georgia, serif; color: var(--gold-2); font-size: 13px;
+    font-weight: 600;
+  }
+  .entity-chain .link .nm { font-weight: 600; color: var(--ink); }
+  .entity-chain .link .det { font-size: 10.5px; color: var(--muted); }
+  .entity-chain .link .ok { color: var(--green); font-weight: 700; font-size: 10px;
+    letter-spacing: 0.04em; }
+  .entity-chain .link .ok::before { content: "✓ "; }
+
+  .api-panel { background: #0e1a2e; color: #c8d2e4; padding: 12px 14px; border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 10.5px;
+    line-height: 1.55; overflow-x: auto; margin: 0; white-space: pre; }
+  .api-panel .k { color: #7bb4e8; }
+  .api-panel .s { color: #f1c787; }
+  .api-panel .n { color: #a5d68f; }
+  .api-panel .b { color: #e89668; }
+
+  .ev-footer { padding: 8px 14px; border-top: 1px solid var(--rule); font-size: 10.5px;
+    color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    background: #fbf7ea; display: flex; gap: 14px; flex-wrap: wrap; }
+  .ev-footer .k { font-weight: 600; color: var(--ink-2); }
+
+  /* Metrics bar */
+  .metrics { background: var(--navy); color: var(--cream); padding: 12px 24px;
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr auto; gap: 20px; align-items: center; }
+  .metrics .stat .k { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #7e8da4; margin-bottom: 3px; font-weight: 600; }
+  .metrics .stat .v { font-family: "Fraunces", Georgia, serif; font-size: 20px; font-weight: 500;
+    color: var(--cream); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .metrics .stat .v.gold { color: var(--gold); }
+  .metrics .stat .v.green { color: var(--green-soft); }
+  .metrics .stat .sub { font-size: 10px; color: #7e8da4; margin-top: 2px; }
+  .metrics .sep { width: 1px; background: var(--rule-dark); height: 40px; }
+  .metrics .done-cta { background: var(--fnf-red); color: #fff; padding: 10px 20px;
+    border-radius: 3px; font-weight: 600; font-size: 12px; letter-spacing: 0.02em;
+    border: none; cursor: pointer; opacity: 0.3; pointer-events: none;
+    transition: all 0.3s; box-shadow: 0 2px 8px rgba(218,41,28,0.3); }
+  .metrics .done-cta.ready { opacity: 1; pointer-events: auto; animation: pulseRed 2s ease-in-out infinite; }
+  @keyframes pulseRed { 0%,100% { box-shadow: 0 2px 8px rgba(218,41,28,0.3); }
+    50% { box-shadow: 0 4px 18px rgba(218,41,28,0.55); } }
+  .metrics .done-cta:hover { background: var(--fnf-red-dark); }
+
+  /* Idle banner */
+  .idle-banner { padding: 30px 24px; text-align: center; color: #6b7a90;
+    font-size: 12px; line-height: 1.7; }
+  .idle-banner .big { font-family: "Fraunces", Georgia, serif; font-size: 17px;
+    color: var(--cream); margin-bottom: 8px; font-weight: 500; }
+
+  /* Modal */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(10,22,40,0.75);
+    z-index: 100; align-items: flex-start; justify-content: center;
+    padding: 40px 20px; overflow-y: auto; }
+  .modal-bg.open { display: flex; }
+  .modal { background: var(--paper); max-width: 1100px; width: 100%; border-radius: 4px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4); overflow: hidden; }
+  .modal-head { background: var(--navy-2); color: #fff; padding: 22px 30px;
+    display: flex; justify-content: space-between; align-items: center; position: relative; }
+  .modal-head::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 38%, var(--gold) 100%); }
+  .modal-head h2 { margin: 0; font-family: "Fraunces", Georgia, serif; font-size: 21px;
+    font-weight: 600; letter-spacing: -0.01em; }
+  .modal-head .sub { font-size: 11.5px; color: #9DB3CC; margin-top: 4px; letter-spacing: 0.02em; }
+  .modal-head .close { background: transparent; border: 1px solid #3a4a66; color: #fff;
+    padding: 6px 12px; border-radius: 3px; cursor: pointer; font: inherit; font-size: 12px; }
+  .modal-body { padding: 24px 28px; }
+
+  .biz-hero {
+    background: linear-gradient(135deg, #001B3A 0%, #00458C 100%);
+    color: #fff; padding: 32px 36px; border-radius: 4px; margin: -24px -28px 24px;
+    position: relative; overflow: hidden;
+  }
+  .biz-hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--fnf-red), var(--gold)); }
+  .biz-hero .eb { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #FEC9C2; font-weight: 700; margin-bottom: 10px; }
+  .biz-hero h2 { font-family: "Fraunces", Georgia, serif; font-size: 26px; font-weight: 600;
+    margin: 0 0 20px; line-height: 1.3; letter-spacing: -0.01em; color: #fff; }
+  .biz-hero h2 em { color: var(--fnf-red); font-style: normal; font-weight: 700; }
+  .horizons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .horizon-b { padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.12); }
+  .horizon-b:first-child { padding-left: 0; }
+  .horizon-b:last-child { border-right: none; padding-right: 0; }
+  .horizon-b .k { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #9DB3CC; font-weight: 700; margin-bottom: 6px; }
+  .horizon-b .v { font-family: "Fraunces", Georgia, serif; font-size: 34px; font-weight: 600;
+    color: #fff; line-height: 1; font-variant-numeric: tabular-nums; }
+  .horizon-b .v .d { color: var(--fnf-red); font-size: 0.7em; vertical-align: 8px; }
+  .horizon-b .v .s { color: var(--fnf-red); font-size: 0.6em; }
+  .horizon-b.hero .v { color: var(--fnf-red); font-size: 42px; }
+  .horizon-b .sub { font-size: 10.5px; color: #9DB3CC; margin-top: 6px; line-height: 1.45; }
+
+  .section-head { display: flex; justify-content: space-between; align-items: baseline; margin: 26px 0 14px; }
+  .section-head .t { font-family: "Fraunces", Georgia, serif; font-size: 18px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.01em; }
+  .section-head .eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fnf-red); font-weight: 700; }
+
+  table.prelim { width: 100%; border-collapse: collapse; font-size: 12px;
+    background: #fff; border: 1px solid var(--rule); }
+  table.prelim th { background: var(--cream); text-align: left; padding: 8px 10px;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-2);
+    border-bottom: 1px solid var(--rule); font-weight: 700; }
+  table.prelim td { padding: 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.prelim td.n { font-family: "Fraunces", Georgia, serif; color: var(--gold-2);
+    font-weight: 600; width: 32px; }
+  table.prelim td.st { width: 120px; }
+  table.prelim .ok { color: var(--green); font-weight: 600; }
+  table.prelim .warn { color: var(--amber); font-weight: 600; }
+
+  .cta-row {
+    display: flex; gap: 10px; margin-top: 24px;
+  }
+  .cta-row a, .cta-row button {
+    background: var(--fnf-red); color: #fff; border: none; padding: 12px 20px;
+    font: inherit; font-size: 13px; font-weight: 600; border-radius: 3px;
+    cursor: pointer; text-decoration: none; display: inline-block;
+    box-shadow: 0 2px 10px rgba(218,41,28,0.28);
+    transition: all 0.15s;
+  }
+  .cta-row a:hover, .cta-row button:hover { background: var(--fnf-red-dark); transform: translateY(-1px); }
+  .cta-row .secondary { background: transparent; color: var(--ink); border: 1px solid var(--rule); box-shadow: none; }
+  .cta-row .secondary:hover { border-color: var(--navy); background: var(--cream); }
+
+  .fine-print { font-size: 10.5px; color: var(--muted); font-style: italic;
+    margin-top: 20px; line-height: 1.55; }
+</style>
+</head>
+<body>
+
+<header class="brand-bar">
+  <div class="fnf-lockup">
+    <svg class="fnf-mark" width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="36" height="36" rx="4" fill="#DA291C"/>
+      <text x="18" y="24" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="15" fill="#FFFFFF" letter-spacing="-0.5">FNF</text>
+    </svg>
+    <div class="fnf-text">
+      <div class="fnf-primary">Fidelity National Title · Commercial</div>
+      <div class="fnf-sec">National Commercial Services · Tampa BU</div>
+    </div>
+  </div>
+  <span class="divider"></span>
+  <div class="roam-credit">
+    <span class="roam-mark">Roam</span>
+    <span class="roam-sub">commercial agent workforce v2.4.11</span>
+  </div>
+  <span class="spacer"></span>
+  <a href="index.html" class="back-link">← Residential curative demo</a>
+  <span class="pill"><span class="dim">File type</span>Commercial purchase · $185M</span>
+  <span class="pill"><span class="dim">Complexity</span>8 parcels · 4-deep entity · $125M loan + 2 mezz</span>
+  <span class="pill live" id="live-pill" style="display:none">Live run</span>
+</header>
+
+<section class="pain-callout">
+  <div class="icon">!</div>
+  <div class="pc-body">
+    <b>"We've been waiting 3 weeks on a prelim."</b> — Ellen, buyer's counsel · Tampa Bay Commerce Tower acquisition.<br/>
+    The file has been sitting in the title plant search queue. 8 parcels to search. 60-year chain. Multi-state entities. 42 tenant leases. A human examiner would still be re-keying grantor indices next Tuesday. Watch the agent do it all in <b>under 2 minutes.</b>
+  </div>
+  <div class="pc-stat">
+    <div class="n">21</div>
+    <div class="l">Days in queue before today</div>
+  </div>
+</section>
+
+<section class="file-strip">
+  <div class="file-info">
+    <div class="property-thumb"></div>
+    <div>
+      <h1>Tampa Bay Commerce Tower · 401 E Jackson St, Tampa FL 33602</h1>
+      <div class="sub">Class A office · 35 stories · 8-parcel assemblage · $185M purchase · $125M senior + $38M mezz</div>
+    </div>
+    <div class="kv">
+      <div class="k">Order</div>
+      <div class="v">2026-FNF-C-00988</div>
+    </div>
+    <div class="kv">
+      <div class="k">Examiner</div>
+      <div class="v">D. Nakamura, CCA</div>
+    </div>
+    <div class="kv">
+      <div class="k">Counsel waiting</div>
+      <div class="v">Ellen R. · Morgan Lewis</div>
+    </div>
+  </div>
+  <div class="cta-wrap">
+    <div class="speed-ctrl" id="speed">
+      <button data-spd="1" class="active">1×</button>
+      <button data-spd="2">2×</button>
+      <button data-spd="4">4×</button>
+    </div>
+    <button class="run-btn" id="run">Start prelim run<span class="arrow">→</span></button>
+  </div>
+</section>
+
+<section class="narr-strip">
+  <div>
+    <div class="step-eyebrow" id="step-eyebrow">Ready</div>
+    <div class="step-name" id="phase-name">Commercial prelim · 7 phases</div>
+    <div class="progress-ticks" id="progress-ticks">
+      <div class="t"></div><div class="t"></div><div class="t"></div><div class="t"></div>
+      <div class="t"></div><div class="t"></div><div class="t"></div>
+    </div>
+  </div>
+  <div>
+    <div class="narr-body" id="phase-what">The agent will trace the 4-deep entity chain, run <b>48 parallel title plant searches</b>, build a 60-year chain of title, aggregate encumbrances, analyze 42 leases, and draft the prelim. Expected: 90 seconds. Current human queue: 3 weeks.</div>
+    <div class="narr-chips">
+      <span class="chip auto"><span class="dot"></span><span id="t-auto">0</span> auto-verified</span>
+      <span class="chip uw"><span class="dot"></span><span id="t-uw">0</span> UW reviews</span>
+      <span class="chip human"><span class="dot"></span><span id="t-human">0</span> human decides</span>
+      <span class="chip safe">FNTIC commercial</span>
+      <span class="chip safe">ALTA 2021 commercial form</span>
+    </div>
+  </div>
+  <div class="safe-pill">
+    <div class="safe-lbl">Errors · Reversals</div>
+    <div class="safe-v">0 · 0</div>
+    <div class="safe-sub"><span id="m-audit">0</span> audit events · SIEM</div>
+  </div>
+</section>
+
+<section class="labor-hero">
+  <div class="block">
+    <div class="lbl">Prelim turnaround</div>
+    <div class="big primary"><span id="hero-tat">—</span></div>
+    <div class="sub">Current human baseline: <b>21 business days</b> queued · typical commercial prelim at FNF: 14–28 days depending on parcel count</div>
+  </div>
+  <div class="sep-v"></div>
+  <div class="block">
+    <div class="lbl">Examiner labor saved · this file</div>
+    <div class="big accent"><span id="hero-hours">0 hours</span></div>
+    <div class="sub">45h baseline (D. Nakamura, commercial CCA · n=7)</div>
+  </div>
+  <div class="sep-v"></div>
+  <div class="block">
+    <div class="lbl">File-level $ saved</div>
+    <div class="big"><span class="caret">▲</span>$<span id="hero-dollars">0</span></div>
+    <div class="sub">$52/hr loaded commercial examiner rate</div>
+  </div>
+  <div class="sep-v"></div>
+  <div class="block">
+    <div class="lbl">Annualized · FNF commercial</div>
+    <div class="big accent"><span class="caret">▲</span>$<span id="hero-annual">0</span><span class="unit">M</span></div>
+    <div class="sub">85,000 commercial prelims/yr · scales deal pipeline without new hiring</div>
+  </div>
+</section>
+
+<main>
+  <aside class="file-panel">
+    <div class="fp-head">
+      <div class="t">Transaction packet</div>
+      <div class="s">File 2026-FNF-C-00988 · purchase + loan simultaneous</div>
+    </div>
+
+    <div class="fp-section-head">
+      <span>Parcels (assemblage)</span>
+      <span class="cnt">8 parcels</span>
+    </div>
+    <div class="fp-list" id="parcel-list"></div>
+
+    <div class="fp-section-head">
+      <span>Entity chain · buyer</span>
+      <span class="cnt">4 levels deep</span>
+    </div>
+    <div class="fp-list" id="entity-list"></div>
+
+    <div class="fp-section-head">
+      <span>Capital stack</span>
+      <span class="cnt">3 layers</span>
+    </div>
+    <div class="fp-list" id="cap-list"></div>
+
+    <div class="fp-section-head">
+      <span>Lease stack</span>
+      <span class="cnt">42 tenants · 4 need SNDA</span>
+    </div>
+    <div class="fp-list" id="lease-list"></div>
+  </aside>
+
+  <section class="activity">
+    <div class="activity-head">
+      <div class="t">Agent activity</div>
+      <div class="sub" id="feed-sub">idle · click Start</div>
+    </div>
+    <div class="feed" id="feed">
+      <div class="idle-banner" id="idle">
+        <div class="big">Commercial prelim agent · Tampa Bay Commerce Tower</div>
+        <div>Entity resolution. 48 parallel plant searches. 60-year chain of title.<br/>
+          42 lease abstracts. Prior policy analysis. Prelim draft. Ready in ~90 seconds.</div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="evidence">
+    <div class="ev-head">
+      <div class="t">Evidence &amp; live actions</div>
+      <div class="s" id="ev-sub">idle</div>
+    </div>
+    <div id="ev-stack"></div>
+  </aside>
+</main>
+
+<footer class="metrics">
+  <div class="stat">
+    <div class="k">Elapsed · agent run</div>
+    <div class="v" id="m-time">0:00</div>
+    <div class="sub">vs 21 business days human queue</div>
+  </div>
+  <div class="stat">
+    <div class="k">Plant searches</div>
+    <div class="v gold" id="m-plant">0 / 48</div>
+    <div class="sub">parcels × indices</div>
+  </div>
+  <div class="stat">
+    <div class="k">Chain of title</div>
+    <div class="v gold" id="m-chain">0 yrs</div>
+    <div class="sub">built from 1962 forward</div>
+  </div>
+  <div class="stat">
+    <div class="k">Labor saved · $</div>
+    <div class="v green" id="m-dollars">$0</div>
+    <div class="sub">this file</div>
+  </div>
+  <div class="stat">
+    <div class="k">Routed to human</div>
+    <div class="v" id="m-esc">0</div>
+    <div class="sub">underwriter gates</div>
+  </div>
+  <button class="done-cta" id="done-cta">View cleared prelim →</button>
+</footer>
+
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2>Commercial Preliminary Title Report · Ready for Underwriter Review</h2>
+        <div class="sub">File 2026-FNF-C-00988 · Tampa Bay Commerce Tower · ALTA 2021 Commercial</div>
+      </div>
+      <button class="close" id="modal-close">Close</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA MODEL
+   ============================================================ */
+const PARCELS = [
+  { id:'p1', n:'01', label:'Parcel A · Tower base', detail:'1.24 acres · Folio 193042-0100' },
+  { id:'p2', n:'02', label:'Parcel B · Lobby annex', detail:'0.18 acres · Folio 193042-0110' },
+  { id:'p3', n:'03', label:'Parcel C · Plaza', detail:'0.33 acres · Folio 193042-0120' },
+  { id:'p4', n:'04', label:'Parcel D · Garage structure', detail:'0.51 acres · Folio 193042-0130' },
+  { id:'p5', n:'05', label:'Parcel E · Ramp easement', detail:'0.09 acres · Folio 193042-0140' },
+  { id:'p6', n:'06', label:'Parcel F · Alley vacation', detail:'0.04 acres · Folio 193042-0150' },
+  { id:'p7', n:'07', label:'Parcel G · Loading dock', detail:'0.12 acres · Folio 193042-0160' },
+  { id:'p8', n:'08', label:'Parcel H · Air rights 36F+', detail:'Vertical · Inst. 201-334-7711' },
+];
+
+const ENTITIES = [
+  { id:'e1', n:'01', label:'Crescent Heights Tampa LLC', detail:'DE LLC · foreign-qualified in FL · File F24000142' },
+  { id:'e2', n:'02', label:'Crescent Heights Commercial Holdings LLC', detail:'DE LLC · 100% member of above' },
+  { id:'e3', n:'03', label:'CH Florida Portfolio LP', detail:'DE LP · sole member' },
+  { id:'e4', n:'04', label:'Crescent Heights Real Estate Partners IV LP', detail:'DE LP · GP: CHREP IV Management LLC · ultimate owner' },
+];
+
+const CAPSTACK = [
+  { id:'c1', n:'01', label:'Senior · Wells Fargo CMBS', detail:'$125M · 10yr fixed · Inst. pending' },
+  { id:'c2', n:'02', label:'Mezz A · KKR RE Finance', detail:'$28M · LIBOR+750 · intercreditor required' },
+  { id:'c3', n:'03', label:'Mezz B · Blackstone REIT', detail:'$10M · PIK toggle · subordination required' },
+];
+
+const LEASES = [
+  { id:'l1', n:'01', label:'Raymond James · 12F–18F', detail:'Anchor · 7 years remaining · SNDA required' },
+  { id:'l2', n:'02', label:'Morgan Lewis · 22F', detail:'2 floors · SNDA required' },
+  { id:'l3', n:'03', label:'WeWork · 28F–30F', detail:'Sub-anchor · operator change clause · SNDA + estoppel' },
+  { id:'l4', n:'04', label:'Ford GM Americas · 34F', detail:'Auto HQ · long-term · SNDA required' },
+  { id:'l5', n:'05', label:'+ 38 additional tenants', detail:'Abstracted: terms, options, assignments · no SNDAs needed' },
+];
+
+/* ============================================================
+   RENDER LEFT PANEL
+   ============================================================ */
+function mkItem(it) { return `
+  <div class="fp-item" data-id="${it.id}">
+    <span class="nm">${it.n}</span>
+    <div class="body">
+      <div class="lb">${it.label}</div>
+      <div class="dt">${it.detail}</div>
+      <div class="sig" data-sig="${it.id}"></div>
+    </div>
+    <div class="dot" data-dot="${it.id}"></div>
+  </div>`;
+}
+document.getElementById('parcel-list').innerHTML = PARCELS.map(mkItem).join('');
+document.getElementById('entity-list').innerHTML = ENTITIES.map(mkItem).join('');
+document.getElementById('cap-list').innerHTML = CAPSTACK.map(mkItem).join('');
+document.getElementById('lease-list').innerHTML = LEASES.map(mkItem).join('');
+
+/* ============================================================
+   TIMING / HELPERS
+   ============================================================ */
+let SPEED = 1;
+document.querySelectorAll('#speed button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#speed button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    SPEED = parseInt(b.dataset.spd);
+  });
+});
+const wait = ms => new Promise(r => setTimeout(r, ms / SPEED));
+
+let elapsedMs = 0, timerInterval = null;
+function startTimer() {
+  const start = Date.now();
+  timerInterval = setInterval(() => {
+    elapsedMs = (Date.now() - start) * SPEED;
+    const s = Math.floor(elapsedMs / 1000);
+    document.getElementById('m-time').textContent = `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
+  }, 50);
+}
+function stopTimer() { clearInterval(timerInterval); }
+
+const feed = document.getElementById('feed');
+const evStack = document.getElementById('ev-stack');
+let clk = 0;
+function fmt(s) { const m = Math.floor(s/60); const ss = (s%60).toFixed(1).padStart(4,'0'); return `T+${m}:${ss}`; }
+function row(tag, msg, opts={}) {
+  const s = opts.t != null ? opts.t : clk;
+  clk = s + (opts.inc || 0.3);
+  const d = document.createElement('div');
+  d.className = 'row';
+  d.innerHTML = `<span class="ts">${fmt(s)}</span><span class="ic">${opts.ic || '›'}</span>
+    <span class="msg"><span class="tag ${tag}">${tag}</span>${msg}</span>`;
+  feed.appendChild(d);
+  feed.scrollTop = feed.scrollHeight;
+}
+function phase(t) {
+  const d = document.createElement('div');
+  d.className = 'phase';
+  d.textContent = t;
+  feed.appendChild(d);
+  feed.scrollTop = feed.scrollHeight;
+}
+function phaseUpdate(n, name, what) {
+  document.getElementById('step-eyebrow').textContent = `Step ${n} of 7`;
+  document.getElementById('phase-name').textContent = name;
+  document.getElementById('phase-what').innerHTML = what;
+  document.querySelectorAll('#progress-ticks .t').forEach((tk, i) => {
+    tk.classList.remove('active','done');
+    if (i+1 < n) tk.classList.add('done');
+    else if (i+1 === n) tk.classList.add('active');
+  });
+}
+function setDot(id, cls) {
+  const el = document.querySelector(`[data-dot="${id}"]`);
+  if (el) el.className = `dot ${cls}`;
+  const parent = document.querySelector(`[data-id="${id}"]`);
+  if (parent && (cls === 'cleared' || cls === 'escalated')) parent.classList.add('done');
+}
+function setSig(id, text) {
+  const el = document.querySelector(`[data-sig="${id}"]`);
+  if (el) el.textContent = text;
+}
+
+let evHero = null;
+function evCard({id,tag,label,status='active',hero=true,body='',footer=''}) {
+  evStack.querySelectorAll('.ev-card.hero').forEach(c => c.classList.remove('hero'));
+  const d = document.createElement('div');
+  d.className = 'ev-card' + (hero ? ' hero' : '');
+  d.id = id;
+  d.innerHTML = `<div class="ev-card-head">
+    <span class="tag-sm">${tag}</span>
+    <span class="label">${label}</span>
+    <span class="status ${status}" data-status>${status}</span>
+  </div><div class="ev-card-body" data-body>${body}</div>
+  ${footer ? `<div class="ev-footer">${footer}</div>` : ''}`;
+  evStack.prepend(d);
+  evHero = d;
+  return d;
+}
+function evStatus(id, s) {
+  const el = document.querySelector(`#${id} [data-status]`);
+  if (el) { el.className = `status ${s}`; el.textContent = s; }
+}
+
+/* ============================================================
+   COUNTERS & METRICS
+   ============================================================ */
+let auto=0, uwR=0, human=0, xcheck=0, audit=0;
+let plantDone = 0, chainYrs = 0;
+let minsSaved = 0;
+const RATE = 52; // commercial examiner
+const BASELINE_MIN = 45*60; // 45 hours
+const COMMERCIAL_PRELIMS_YR = 85000;
+
+function addSaved(min) {
+  minsSaved += min;
+  const h = Math.floor(minsSaved/60), m = minsSaved%60;
+  const timeStr = h===0 ? `${m} minutes` : (m===0 ? `${h} ${h===1?'hour':'hours'}` : `${h}h ${m}m`);
+  const heroH = document.getElementById('hero-hours');
+  heroH.classList.add('flash');
+  setTimeout(()=>heroH.classList.remove('flash'), 500);
+  heroH.textContent = timeStr;
+
+  const dollars = Math.round((minsSaved/60) * RATE);
+  document.getElementById('hero-dollars').textContent = dollars.toLocaleString();
+  document.getElementById('m-dollars').textContent = `$${dollars.toLocaleString()}`;
+  const annM = Math.round((dollars * COMMERCIAL_PRELIMS_YR) / 1_000_000);
+  document.getElementById('hero-annual').textContent = annM.toLocaleString();
+}
+function bumpAuto() { auto++; document.getElementById('t-auto').textContent = auto; audit+=2; document.getElementById('m-audit').textContent = audit; xcheck++; }
+function bumpUW() { uwR++; document.getElementById('t-uw').textContent = uwR; document.getElementById('m-esc').textContent = uwR+human; }
+function bumpHuman() { human++; document.getElementById('t-human').textContent = human; document.getElementById('m-esc').textContent = uwR+human; }
+
+function bumpPlant() {
+  plantDone++;
+  document.getElementById('m-plant').textContent = `${plantDone} / 48`;
+}
+function setChain(y) {
+  chainYrs = y;
+  document.getElementById('m-chain').textContent = `${y} yrs`;
+}
+
+/* ============================================================
+   RUN
+   ============================================================ */
+async function runDemo() {
+  document.getElementById('idle').remove();
+  document.getElementById('run').disabled = true;
+  document.getElementById('live-pill').style.display = 'inline-block';
+  document.getElementById('feed-sub').textContent = 'running · 7 phases · 48 parallel searches';
+  document.getElementById('ev-sub').textContent = 'streaming live actions';
+  document.getElementById('hero-tat').textContent = 'running…';
+  startTimer();
+
+  // ============================================================
+  // PHASE 1: INTAKE & PACKET PARSE
+  // ============================================================
+  phase('Phase 1 · Intake & transaction packet parse');
+  phaseUpdate(1, 'Intake &amp; packet parse',
+    '<b>The agent just received the commercial order from ResWare.</b> It is pulling the PSA, loan term sheet, buyer/seller formation documents, prior Stewart policy, and the 42 lease abstracts. At Fidelity today: 2–3 business days in the intake queue before an examiner even opens the file.');
+
+  row('parse', '<span class="hl">ResWare order 2026-FNF-C-00988</span> pulled · purchase $185M · simultaneous $125M loan · 8 parcels identified', {t:0.3, ic:'↻'});
+  evCard({ id:'ev-intake', tag:'DOC AI', label:'Commercial packet parse',
+    body:`<div style="font-size:11.5px; line-height:1.55;">
+      <b>Documents identified and classified:</b><br>
+      · Purchase &amp; Sale Agreement · 128 pp · $185M · simultaneous close<br>
+      · Loan Term Sheet · Wells Fargo CMBS · $125M · 10yr fixed<br>
+      · Mezz A term sheet · KKR RE Finance · $28M<br>
+      · Mezz B term sheet · Blackstone REIT · $10M<br>
+      · Prior policy · Stewart M-2019-C-88104 · issued 2019-03-22<br>
+      · 42 lease abstracts · 1,287 pp total<br>
+      · Formation docs · 4 Delaware LLCs/LPs<br>
+      · Phase 1 ESA · Avison Young · 2023-08-14<br>
+      · ALTA/NSPS survey · Stantec · 2019-02-18 (needs update)
+    </div>`,
+    footer:`<span class="k">Docs classified:</span> 9 · <span class="k">Pages:</span> 1,721 · <span class="k">Confidence:</span> 97.2% avg`
+  });
+  await wait(1600);
+  row('parse', 'All 9 document types classified. 1,721 pages abstracted to structured fields. <span class="hl">Ready for cross-reference.</span>', {ic:'✓', inc:0.4});
+  evStatus('ev-intake','ok');
+  bumpAuto();
+  addSaved(180); // 3 hours saved on intake
+
+  // ============================================================
+  // PHASE 2: ENTITY RESOLUTION
+  // ============================================================
+  phase('Phase 2 · Entity resolution · 4-deep buyer chain');
+  phaseUpdate(2, 'Entity resolution',
+    '<b>The agent is tracing the buyer entity chain through Delaware.</b> Four levels deep. Each entity verified for good standing in DE, foreign-qualified in FL, and screened against judgments, bankruptcies, and OFAC. At Fidelity today: 2–3 days of manual SOS lookups and counsel back-and-forth.');
+
+  for (let i = 0; i < ENTITIES.length; i++) {
+    setDot(ENTITIES[i].id,'running');
+    row('entity', `Verifying <span class="hl">${ENTITIES[i].label}</span> · DE SOS API · FL DoS cross-ref · OFAC screen`, {ic:'▸'});
+    if (i === 0) {
+      evCard({id:'ev-entity', tag:'ENTITY', label:'Buyer entity chain verification',
+        body:`<div class="entity-chain" id="entity-body"></div>`,
+        footer:`<span class="k">Sources:</span> DE SOS · FL DoS · OFAC · Lexis judgment · PACER bankruptcy`
+      });
+    }
+    await wait(550);
+    setDot(ENTITIES[i].id,'cleared');
+    setSig(ENTITIES[i].id, '✓ DE good standing · FL qualified · OFAC clear');
+    document.getElementById('entity-body').insertAdjacentHTML('beforeend', `
+      <div class="link">
+        <span class="lv">L${i+1}</span>
+        <div>
+          <div class="nm">${ENTITIES[i].label}</div>
+          <div class="det">${ENTITIES[i].detail}</div>
+        </div>
+        <span class="ok">CLEAR</span>
+      </div>`);
+    bumpAuto();
+  }
+  row('api', '<span class="hl">OFAC SDN list</span> · all 4 entities + 12 identified principals · <span class="gold">no matches.</span>', {ic:'✓'});
+  row('complete', 'Entity chain verified. <span class="hl">No upstream liens, judgments, or sanctions hits.</span> <span class="saved">saved 3h</span>', {ic:'✓', inc:0.4});
+  evStatus('ev-entity','ok');
+  addSaved(180);
+
+  // ============================================================
+  // PHASE 3: PARALLEL PLANT SEARCHES (the hero visual)
+  // ============================================================
+  phase('Phase 3 · 48 parallel title plant searches');
+  phaseUpdate(3, 'Parallel plant searches',
+    '<b>This is the workflow that had Ellen waiting 3 weeks.</b> 8 parcels × 6 index types = 48 title plant searches. Done by hand, they run serially because each examiner can only have one index loaded at a time. The agent opens 48 connections in parallel.');
+
+  // Build heatmap
+  const indices = ['Grantor','Grantee','Judgment','UCC','Lien','Lis Pendens'];
+  let heatHTML = `<div class="hh"><div class="ht">Title plant · 8 parcels × 6 indices</div><div class="hs" id="plant-hs">0 / 48 complete · 0 findings</div></div>
+    <div class="plant-grid">
+      <div class="col-head"></div>`;
+  indices.forEach(ix => heatHTML += `<div class="col-head">${ix}</div>`);
+  PARCELS.forEach(p => {
+    heatHTML += `<div class="row-head">${p.n}</div>`;
+    indices.forEach(ix => {
+      heatHTML += `<div class="plant-cell" data-cell="${p.id}-${ix.replace(/\\s+/g,'')}"></div>`;
+    });
+  });
+  heatHTML += `</div>
+    <div class="progress">
+      <span>Running · 48 concurrent connections</span>
+      <span class="p-v" id="plant-pv">0%</span>
+    </div>`;
+  evCard({ id:'ev-plant', tag:'PLANT', label:'Parallel plant search · heatmap', body: heatHTML });
+
+  row('plant', 'Opening <span class="hl">48 concurrent AIM+ plant connections</span> · parcels × indices', {ic:'▶'});
+  await wait(500);
+
+  // Animate cells: start them all "running" together, then complete in waves
+  const cells = [];
+  PARCELS.forEach(p => {
+    indices.forEach(ix => {
+      cells.push(`[data-cell="${p.id}-${ix.replace(/\s+/g,'')}"]`);
+    });
+  });
+  // Mark all running
+  cells.forEach(sel => { const c = document.querySelector(sel); if (c) c.classList.add('running'); });
+  await wait(800);
+  row('plant', 'All 48 connections live. Streaming results…', {ic:'↻'});
+
+  // Finish in waves — ~8 per wave, some flagged
+  const flaggedCells = new Set(['p3-Judgment', 'p4-UCC', 'p7-Lien', 'p1-LisPendens']);
+  let plantFindings = 0;
+  const waves = 6;
+  for (let w = 0; w < waves; w++) {
+    await wait(420);
+    const start = w * 8, end = Math.min(start + 8, cells.length);
+    for (let i = start; i < end; i++) {
+      const sel = cells[i];
+      const c = document.querySelector(sel);
+      if (!c) continue;
+      const key = c.dataset.cell;
+      c.classList.remove('running');
+      if (flaggedCells.has(key)) {
+        c.classList.add('flag');
+        plantFindings++;
+      } else {
+        c.classList.add('done');
+      }
+      bumpPlant();
+    }
+    document.getElementById('plant-hs').textContent = `${plantDone} / 48 complete · ${plantFindings} findings`;
+    document.getElementById('plant-pv').textContent = `${Math.round(plantDone/48*100)}%`;
+  }
+  // wrap up remaining
+  cells.forEach(sel => {
+    const c = document.querySelector(sel);
+    if (c && c.classList.contains('running')) { c.classList.remove('running'); c.classList.add('done'); bumpPlant(); }
+  });
+  document.getElementById('plant-hs').textContent = `${plantDone} / 48 complete · ${plantFindings} findings`;
+  document.getElementById('plant-pv').textContent = `100%`;
+
+  row('plant', '48/48 complete. <span class="hl">4 findings flagged</span> for review: 1 old judgment (Parcel C), 1 UCC fixture filing (Parcel D), 1 mechanics lien (Parcel G, released), 1 lis pendens (Parcel A, dismissed 2020).', {ic:'⚑', inc:0.4});
+  row('complete', 'Plant searches complete. <span class="hl">Baseline: 10 business days of examiner queue time.</span> <span class="saved">saved 24h</span>', {ic:'✓'});
+  evStatus('ev-plant','ok');
+  PARCELS.forEach(p => { setDot(p.id,'cleared'); setSig(p.id, '✓ 6 indices clear · flagged items packaged for UW'); });
+  for (let i = 0; i < 8; i++) bumpAuto();
+  addSaved(24*60);
+
+  // ============================================================
+  // PHASE 4: CHAIN OF TITLE
+  // ============================================================
+  phase('Phase 4 · 60-year chain of title construction');
+  phaseUpdate(4, 'Chain of title',
+    '<b>Commercial prelims require 60 years of chain.</b> The agent is sequencing every deed, mortgage, release, and assignment from 1962 forward across all 8 parcels. OCR on the 1960s–1980s scans falls back to the FNF title plant abstract when confidence drops below 90%.');
+
+  evCard({id:'ev-chain', tag:'CHAIN', label:'60-yr chain · 8 parcels',
+    body:`<div id="chain-body" style="font-size:11.5px; line-height:1.6;">
+      <div style="font-family: ui-monospace, Menlo, monospace; color: var(--muted);">Building…</div>
+    </div>`,
+    footer:`<span class="k">Earliest root:</span> 1962 · <span class="k">Instruments traced:</span> 47 · <span class="k">OCR fallbacks:</span> 6`
+  });
+
+  const years = [1962, 1971, 1978, 1983, 1991, 1998, 2005, 2013, 2019, 2026];
+  for (let i = 0; i < years.length; i++) {
+    setChain(2026 - years[i]);
+    row('ofr', `Chain node <span class="hl">${years[i]}</span> · ${['WD','WD+Mortgage','WD','WD','WD+Mtg','Release+WD','WD','WD+Mtg Assignment','WD+Mtg (prior policy)','Current purchase pending'][i]}`, {ic:'◆'});
+    await wait(280);
+  }
+  document.getElementById('chain-body').innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:4px;">
+      ${years.map((y, i) => `
+        <div style="display:grid; grid-template-columns:50px 1fr auto; gap:10px; padding:4px 0; border-bottom:1px dashed var(--rule); align-items:center;">
+          <span style="font-family:'Fraunces',serif; font-size:13px; color:var(--gold-2); font-weight:600;">${y}</span>
+          <span style="font-size:11px; color:var(--ink);">${['Warranty Deed · Sunland Development → Jackson St Partners', 'WD + Mtg · to First Florida Bank', 'WD · to Jackson Tower Associates', 'WD · recapitalization, same owners', 'WD + Mtg · Crescent II Ltd → Wachovia', 'Release (Wachovia) + WD · to Tampa Tower REIT', 'WD · to CH Tampa Holdings', 'WD + assignment of Stewart policy', 'WD (current seller) + Stewart 2019 policy', 'Current purchase pending · this file'][i]}</span>
+          <span style="color:var(--green); font-weight:700; font-size:10px;">✓ linked</span>
+        </div>
+      `).join('')}
+    </div>`;
+  setChain(64);
+  row('complete', '64-year chain complete. <span class="hl">47 instruments · 6 OCR fallbacks · 0 gaps.</span> <span class="saved">saved 16h</span>', {ic:'✓'});
+  evStatus('ev-chain','ok');
+  bumpAuto();
+  addSaved(16*60);
+
+  // ============================================================
+  // PHASE 5: ENCUMBRANCE AGGREGATION + LEASE ANALYSIS
+  // ============================================================
+  phase('Phase 5 · Encumbrance aggregation + lease analysis');
+  phaseUpdate(5, 'Encumbrances &amp; leases',
+    '<b>Mortgages, mezz, UCCs, easements, leases.</b> Agent pulls existing loan satisfactions, drafts intercreditor requirements for the 2 mezz lenders, abstracts 42 lease terms, and flags the 4 leases where SNDAs are required for the new senior loan.');
+
+  CAPSTACK.forEach(c => setDot(c.id,'running'));
+  row('doc', '<span class="hl">3-layer capital stack</span> aggregated: Wells Fargo senior ($125M) · KKR mezz ($28M) · Blackstone mezz ($10M). Intercreditor draft prepared.', {ic:'📄'});
+  await wait(700);
+  CAPSTACK.forEach(c => { setDot(c.id,'cleared'); setSig(c.id, '✓ terms extracted · intercreditor drafted'); });
+  [1,2,3].forEach(() => bumpAuto());
+
+  row('api', '<span class="hl">UCC aggregation</span> · FL Sec of State · DE Sec of State · SDNY federal · 7 filings returned · 3 fixture filings for prior loan (need release at close)', {ic:'↗'});
+  await wait(600);
+
+  LEASES.forEach(l => setDot(l.id,'running'));
+  row('doc', '<span class="hl">42 lease abstracts</span> extracted · terms · options · assignments · radius restrictions · use clauses', {ic:'📄'});
+  await wait(700);
+  evCard({id:'ev-leases', tag:'LEASE', label:'Lease stack · SNDA flags',
+    body:`<div style="font-size:11.5px;">
+      <div style="margin-bottom:8px; font-weight:600;">SNDAs required · 4 of 42 tenants</div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Raymond James</b> · floors 12–18 · anchor · assignment + option renewal language · <span style="color:var(--amber); font-weight:700;">SNDA + estoppel drafted</span></div>
+        <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Morgan Lewis</b> · floor 22 · <span style="color:var(--amber); font-weight:700;">SNDA drafted</span></div>
+        <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>WeWork</b> · floors 28–30 · operator change clause flagged · <span style="color:var(--amber); font-weight:700;">SNDA + estoppel + ownership attestation</span></div>
+        <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Ford GM Americas</b> · floor 34 · long-term · <span style="color:var(--amber); font-weight:700;">SNDA drafted</span></div>
+        <div style="padding:6px 10px; background:#F7FBF8; border-left:3px solid var(--green);"><b>38 other tenants</b> · abstracted · no SNDA required under senior loan terms</div>
+      </div>
+    </div>`,
+    footer:`<span class="k">Abstracted:</span> 42 leases, 1,287 pages · <span class="k">SNDAs drafted:</span> 4 · <span class="k">Flags:</span> 1 operator change`
+  });
+  LEASES.forEach(l => { setDot(l.id,'cleared'); setSig(l.id, '✓ terms abstracted · SNDA drafted if required'); });
+  for (let i = 0; i < 5; i++) bumpAuto();
+  row('complete', '42 lease abstracts + 4 SNDAs drafted + intercreditor prepared. <span class="saved">saved 9h</span>', {ic:'✓', inc:0.4});
+  addSaved(9*60);
+
+  // ============================================================
+  // PHASE 6: JUDGMENT CALLS → UW
+  // ============================================================
+  phase('Phase 6 · Judgment calls to underwriter');
+  phaseUpdate(6, 'Judgment calls',
+    '<b>Three items need a commercial underwriter.</b> The air-rights easement from the adjacent 40-story tower; the WeWork operator-change clause; and the KKR intercreditor language. Agent has the research, drafts, and endorsement options assembled.');
+
+  row('legal', '<span class="hl">Air rights easement</span> (Parcel H · Inst. 201-334-7711) · reciprocal with adjacent tower · reviewed against 2004 recording · impact analysis complete', {ic:'§'});
+  await wait(500);
+  row('escalate', 'Routing to <span class="hl">W. Chen, CCA underwriter</span> · ALTA 28.1 endorsement drafted · 2 coverage options presented · 15-min review budget', {ic:'⚑'});
+  bumpUW();
+
+  row('legal', '<span class="hl">WeWork operator-change clause</span> (floor 28–30 lease) · triggered in Flex Offices bankruptcy 2023 · current operator is successor · estoppel required', {ic:'§'});
+  await wait(500);
+  row('escalate', 'Routing to W. Chen · tenant attestation drafted · estoppel template ready for dispatch', {ic:'⚑'});
+  bumpUW();
+
+  row('legal', '<span class="hl">KKR intercreditor</span> · standard industry form 2018 (Sixth Amended) · 2 non-material modifications flagged · draft prepared', {ic:'§'});
+  await wait(500);
+  row('escalate', 'Routing to W. Chen · intercreditor redline + 1-page summary · ready for counterparty review', {ic:'⚑'});
+  bumpUW();
+  addSaved(5*60);
+
+  // ============================================================
+  // PHASE 7: COMPILE PRELIM
+  // ============================================================
+  phase('Phase 7 · Compile preliminary report');
+  phaseUpdate(7, 'Compile prelim',
+    '<b>Schedule A locked. Schedule B-I (22 requirements) drafted. Schedule B-II (31 exceptions) drafted.</b> Prior Stewart policy exceptions carried forward where still applicable, dropped where cured. Ready for W. Chen to sign out.');
+
+  row('emit', 'Writing prelim to <span class="hl">SoftPro ProForm commercial</span> · Schedule A · Schedule B-I (22 reqs) · Schedule B-II (31 exceptions)', {ic:'◈'});
+  await wait(800);
+  row('emit', 'Audit trail written to FNF SIEM (78 events) · signed · all 4 entities noted · 48 plant searches logged · 47 chain nodes indexed', {ic:'↓'});
+  await wait(600);
+  row('emit', 'Notifying <span class="hl">W. Chen, CCA</span> + <span class="hl">D. Nakamura</span> via Teams + ResWare queue · close target on track', {ic:'◈'});
+  await wait(500);
+
+  row('complete', '<span class="gold">Commercial prelim complete.</span> 3 items to underwriter · D. Nakamura gets a complete draft · Ellen (buyer counsel) gets her prelim in 90 seconds instead of 3 weeks.', {ic:'✓', inc:0.4});
+
+  stopTimer();
+  document.getElementById('live-pill').style.display = 'none';
+  document.getElementById('feed-sub').textContent = '✓ complete · 78 audit events';
+  document.getElementById('ev-sub').textContent = 'complete';
+  document.getElementById('hero-tat').textContent = '~90 seconds';
+  document.getElementById('done-cta').classList.add('ready');
+  document.querySelectorAll('.ev-card').forEach(c => c.classList.remove('hero'));
+  document.getElementById('run').textContent = 'Replay prelim run';
+  document.getElementById('run').disabled = false;
+  document.getElementById('run').onclick = () => location.reload();
+}
+document.getElementById('run').addEventListener('click', runDemo);
+
+/* ============================================================
+   MODAL CONTENT
+   ============================================================ */
+const modalBody = () => {
+  const h = Math.floor(minsSaved/60);
+  const m = minsSaved%60;
+  const timeStr = h===0 ? `${m} min` : (m===0 ? `${h} hours` : `${h}h ${m}m`);
+  const dollars = Math.round((minsSaved/60) * RATE);
+  const annM = Math.round((dollars * COMMERCIAL_PRELIMS_YR) / 1_000_000);
+  return `
+  <div class="biz-hero">
+    <div class="eb">The 21-day wait, replaced</div>
+    <h2>Ellen's prelim is done. <em>90 seconds.</em><br/>The same workflow compounds across every commercial file FNF touches.</h2>
+    <div class="horizons-grid">
+      <div class="horizon-b">
+        <div class="k">Time to prelim</div>
+        <div class="v">~90<span class="s">s</span></div>
+        <div class="sub">vs 21 days queued · 42,000× faster than the human baseline</div>
+      </div>
+      <div class="horizon-b">
+        <div class="k">File-level $ saved</div>
+        <div class="v"><span class="d">$</span>${dollars.toLocaleString()}</div>
+        <div class="sub">examiner labor only · $52/hr commercial CCA rate</div>
+      </div>
+      <div class="horizon-b">
+        <div class="k">Deals unblocked</div>
+        <div class="v">3–21d</div>
+        <div class="sub">calendar compression · buyers stop walking</div>
+      </div>
+      <div class="horizon-b hero">
+        <div class="k">Annualized · FNF commercial</div>
+        <div class="v"><span class="d">$</span>${annM}<span class="s">M</span></div>
+        <div class="sub">85,000 commercial prelims/yr · scales deal pipeline with zero new hiring</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="t">Schedule A · Identification</div>
+    <div class="eb">ALTA 2021 Commercial form · FNTIC</div>
+  </div>
+  <table class="prelim">
+    <tbody>
+      <tr><td class="n">1</td><td>Proposed Insured</td><td>Harrison Street Income REIT IV LP · $185M owner's policy + $125M loan policy</td><td class="st"><span class="ok">READY</span></td></tr>
+      <tr><td class="n">2</td><td>Estate or Interest</td><td>Fee Simple · 8-parcel assemblage · air rights vertical estate on Parcel H</td><td class="st"><span class="ok">READY</span></td></tr>
+      <tr><td class="n">3</td><td>Title Vested In</td><td>Crescent Heights Tampa LLC · DE LLC · foreign-qualified in FL (File F24000142)</td><td class="st"><span class="ok">READY</span></td></tr>
+      <tr><td class="n">4</td><td>Legal Description</td><td>Lots 1–7, Block 22, Tampa Original Townsite (8 parcels) + vertical air estate above floor 36 · PB 1 PG 14</td><td class="st"><span class="ok">READY</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-head">
+    <div class="t">Schedule B-I · Requirements · 22 items</div>
+    <div class="eb">agent-drafted · UW review for 3</div>
+  </div>
+  <table class="prelim">
+    <tbody>
+      <tr><td class="n">1</td><td>Satisfy prior senior mortgage · Wachovia / Wells Fargo legacy</td><td>Payoff initiated · voice · good-through 2026-06-30 · $98.4M</td><td class="st"><span class="ok">CLEARED</span></td></tr>
+      <tr><td class="n">2</td><td>Satisfy prior mezz · former Prudential position</td><td>Portal request · acked TRU-POFF-…</td><td class="st"><span class="ok">CLEARED</span></td></tr>
+      <tr><td class="n">3</td><td>Release 3 UCC fixture filings</td><td>Termination statements drafted · queued for recording</td><td class="st"><span class="ok">CLEARED</span></td></tr>
+      <tr><td class="n">4</td><td>Intercreditor · KKR mezz A</td><td>2018 standard form + 2 non-material redlines · W. Chen review</td><td class="st"><span class="warn">UW</span></td></tr>
+      <tr><td class="n">5</td><td>Intercreditor · Blackstone mezz B</td><td>PIK toggle language reviewed · clean</td><td class="st"><span class="ok">CLEARED</span></td></tr>
+      <tr><td class="n">6</td><td>SNDAs · 4 anchor tenants</td><td>Raymond James · Morgan Lewis · WeWork · Ford GM · drafted</td><td class="st"><span class="ok">READY</span></td></tr>
+      <tr><td class="n">7</td><td>Tenant attestation · WeWork operator change</td><td>Estoppel + ownership attestation drafted · W. Chen review</td><td class="st"><span class="warn">UW</span></td></tr>
+      <tr><td class="n">8</td><td>Current ALTA/NSPS survey</td><td>Stantec 2019 on file · update ordered · ETA 2026-05-12</td><td class="st"><span class="ok">TRACKED</span></td></tr>
+      <tr><td class="n">…</td><td colspan="2" style="color:var(--muted); font-size:11px;">+ 14 additional requirements (tax verification, entity good-standing certs, resolutions, title affidavit, borrower closing docs, etc.)</td><td class="st"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-head">
+    <div class="t">Schedule B-II · Exceptions · 31 items · summary</div>
+    <div class="eb">agent-drafted · UW review for 1</div>
+  </div>
+  <table class="prelim">
+    <tbody>
+      <tr><td class="n">1</td><td>Air-rights reciprocal easement · adjacent tower</td><td>2004 recording · ALTA 28.1 endorsement drafted · 2 coverage options for UW</td><td class="st"><span class="warn">UW</span></td></tr>
+      <tr><td class="n">2</td><td>Parking reciprocal easement · Parcel D garage</td><td>1998 REA · overlaid against current use · clean</td><td class="st"><span class="ok">ENDORSED</span></td></tr>
+      <tr><td class="n">3</td><td>FDEP environmental covenant</td><td>2015 remediation complete · no active obligations · Phase 1 ESA confirms</td><td class="st"><span class="ok">ENDORSED</span></td></tr>
+      <tr><td class="n">4</td><td>Prior policy exceptions (Stewart M-2019-C-88104)</td><td>Reviewed · 7 carried forward · 4 cured since 2019</td><td class="st"><span class="ok">CARRIED</span></td></tr>
+      <tr><td class="n">…</td><td colspan="2" style="color:var(--muted); font-size:11px;">+ 27 standard exceptions (utility easements, platting, zoning, taxes, leases 1–42, matters of survey, etc.)</td><td class="st"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-head">
+    <div class="t">Commercial vs residential · why this workflow matters</div>
+    <div class="eb">At FNF scale</div>
+  </div>
+  <table class="prelim">
+    <thead>
+      <tr><th></th><th>Residential curative</th><th>Commercial prelim</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Average human cycle time</td><td>3 business days</td><td><b>14–28 business days</b></td></tr>
+      <tr><td>Examiner labor per file</td><td>~14 hrs</td><td><b>~45 hrs</b></td></tr>
+      <tr><td>FNF-wide annual volume</td><td>573,000 curative files</td><td><b>85,000 commercial prelims</b></td></tr>
+      <tr><td>Revenue per file at risk when deals slip</td><td>$1,200–$3,000 fee</td><td><b>$45,000–$185,000 fee</b></td></tr>
+      <tr><td>Customer experience impact</td><td>Closing date slips by days</td><td><b>Deals die from delay · buyers walk</b></td></tr>
+      <tr><td>Agent time on this file</td><td>90 seconds (residential demo)</td><td><b>90 seconds (this demo)</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="cta-row">
+    <a href="index.html">← See residential curative demo</a>
+    <button class="secondary" onclick="alert('Sam Chen from Roam will reach out within 2 business hours with the LOI draft.')">Review &amp; sign the LOI →</button>
+    <button class="secondary" onclick="alert('Second-workflow scoping session scheduled.')">Scope commercial pilot (Tampa + Atlanta)</button>
+  </div>
+
+  <div class="fine-print">Demo dataset based on a representative FL commercial assemblage. Entities, tenants, and instruments are illustrative. Production pilots run inside FNF's Azure tenant with Entra ID SSO, RBAC-scoped agent permissions, SIEM audit streaming, and commercial underwriter gates. No autonomous fund movement. No Schedule B modification without CCA sign-off. Labor math: 45h commercial baseline (n=7, FNTIC Tampa Q1 2026), $52/hr loaded CCA rate, 85,000 commercial prelims/yr derived from FNF FY25 National Commercial Services volume.</div>
+  `;
+};
+
+document.getElementById('done-cta').addEventListener('click', () => {
+  document.getElementById('modal-body').innerHTML = modalBody();
+  document.getElementById('modal-bg').classList.add('open');
+  document.querySelector('.modal-body').scrollTop = 0;
+});
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal-bg').classList.remove('open');
+});
+document.getElementById('modal-bg').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-bg') e.target.classList.remove('open');
+});
+</script>
+</body>
+</html>
