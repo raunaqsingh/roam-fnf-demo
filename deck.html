@@ -1,0 +1,2199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1440, initial-scale=1" />
+<title>Roam for Fidelity · Own the operating layer of title and escrow</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-2: #050c17;
+    --navy-3: #162238;
+    --navy-4: #1d2d4a;
+    --cream: #f5ebd8;
+    --cream-2: #ede0c6;
+    --cream-3: #faf5e9;
+    --paper: #faf5e9;
+    --ink: #0a1628;
+    --ink-2: #2a3a55;
+    --muted: #6b7a90;
+    --muted-2: #8a96ab;
+    --gold: #c9a961;
+    --gold-2: #a8892e;
+    --gold-soft: #e6cd8b;
+    --green: #3f8a58;
+    --green-soft: #7fd69b;
+    --amber: #c17c2e;
+    --red: #b54532;
+    --fnf-red: #DA291C;
+    --rule: #d9cdb0;
+    --rule-dark: #243555;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; background: #000; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .serif { font-family: "Fraunces", "Source Serif Pro", Georgia, "Times New Roman", serif; }
+
+  /* Slide scaffolding */
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    min-height: 760px;
+    max-height: 1200px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 72px 88px 64px;
+    background: var(--paper);
+  }
+  .slide.dark {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .slide.darker {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: var(--cream);
+  }
+  .slide .slide-rule {
+    position: absolute;
+    top: 48px;
+    left: 88px;
+    width: 72px;
+    height: 3px;
+    background: var(--gold);
+  }
+  .slide .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .slide.dark .eyebrow { color: var(--gold); }
+  .slide h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 52px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 14px;
+  }
+  .slide h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin: 0 0 10px;
+  }
+  .slide h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 0 0 8px;
+  }
+  .slide .subhead {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--gold-2);
+    margin-bottom: 32px;
+    line-height: 1.4;
+    max-width: 1100px;
+  }
+  .slide.dark .subhead { color: var(--gold-soft); }
+  .slide-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 88px;
+    right: 88px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .slide.dark .slide-footer { color: var(--muted-2); }
+  .slide-num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--gold);
+    z-index: 1000;
+    transition: width 0.3s ease-out;
+    width: 0;
+  }
+
+  /* Slide counter */
+  .slide-counter {
+    position: fixed;
+    top: 18px; right: 24px;
+    background: rgba(10, 22, 40, 0.85);
+    color: var(--gold);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Nav hints */
+  .nav-hint {
+    position: fixed;
+    bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 22, 40, 0.85);
+    color: var(--muted-2);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    z-index: 1000;
+    transition: opacity 0.5s;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ========== SLIDE 1 · COVER ========== */
+  .cover {
+    justify-content: center;
+  }
+  .cover h1 {
+    font-size: 88px;
+    line-height: 1.0;
+    color: var(--cream);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    max-width: 1280px;
+  }
+  .cover h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--cream);
+  }
+  .cover .cover-sub {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 26px;
+    font-style: italic;
+    color: var(--gold);
+    margin-top: 34px;
+    max-width: 1100px;
+    line-height: 1.35;
+  }
+  .cover .cover-terms {
+    margin-top: 22px;
+    font-size: 16px;
+    color: var(--muted-2);
+    letter-spacing: 0.01em;
+  }
+  .cover .audience {
+    position: absolute;
+    top: 64px;
+    left: 88px;
+    font-size: 13px;
+    color: var(--muted-2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ========== GENERIC COMPONENTS ========== */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .stat-card {
+    background: #fff;
+    border-left: 4px solid var(--gold);
+    padding: 24px 28px 20px;
+    box-shadow: 0 1px 3px rgba(10, 22, 40, 0.06);
+  }
+  .slide.dark .stat-card {
+    background: var(--navy-4);
+    border-left-color: var(--gold);
+    color: var(--cream);
+  }
+  .stat-card .stat-num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 52px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+    color: var(--ink);
+  }
+  .slide.dark .stat-card .stat-num { color: var(--cream); }
+  .stat-card .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .slide.dark .stat-card .stat-label { color: var(--gold); }
+  .stat-card .stat-detail {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .slide.dark .stat-card .stat-detail { color: var(--muted-2); }
+
+  .stat-band {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 22px 32px;
+    margin-top: 24px;
+    border-radius: 2px;
+  }
+  .stat-band .band-stats {
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+  }
+  .stat-band .band-line {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--cream);
+    line-height: 1.4;
+  }
+
+  /* Numbered list */
+  .num-list {
+    display: grid;
+    gap: 2px;
+    margin-top: 16px;
+  }
+  .num-list .num-item {
+    display: grid;
+    grid-template-columns: 72px 1fr 2fr;
+    gap: 28px;
+    padding: 18px 12px;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .num-list .num-item:last-child { border-bottom: none; }
+  .num-list .item-num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .num-list .item-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .num-list .item-title .sub {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+  .num-list .item-body {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .num-list .item-body em {
+    color: var(--fnf-red);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Columns */
+  .cols {
+    display: grid;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .cols.c2 { grid-template-columns: 1fr 1fr; }
+  .cols.c3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cols.c4 { grid-template-columns: repeat(4, 1fr); }
+  .col-card {
+    background: #fff;
+    border-top: 3px solid var(--gold);
+    padding: 22px 24px;
+    box-shadow: 0 1px 3px rgba(10, 22, 40, 0.06);
+  }
+  .col-card.dark {
+    background: var(--navy-3);
+    border-top-color: var(--gold);
+    color: var(--cream);
+  }
+  .col-card.accent {
+    background: var(--navy);
+    border-top-color: var(--fnf-red);
+    color: var(--cream);
+  }
+  .col-card .card-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .col-card.dark .card-eyebrow, .col-card.accent .card-eyebrow { color: var(--gold); }
+  .col-card .card-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .col-card .card-body {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .col-card.dark .card-body, .col-card.accent .card-body { color: var(--cream); }
+  .col-card .card-body ul {
+    margin: 6px 0 0;
+    padding-left: 16px;
+  }
+  .col-card .card-body ul li {
+    margin: 4px 0;
+  }
+
+  /* Comparison table rows */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 32px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .compare-row:first-child {
+    border-top: 1px solid var(--rule);
+  }
+  .compare-row .c-label {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .compare-row .c-label .c-sub {
+    display: block;
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 3px;
+    font-style: italic;
+  }
+  .compare-row .c-a, .compare-row .c-b {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .compare-row .c-a { color: var(--muted); }
+  .compare-row .c-b { color: var(--ink); font-weight: 500; }
+  .compare-row .c-b b { color: var(--fnf-red); font-weight: 700; }
+
+  /* Layer table */
+  .layer-table {
+    display: grid;
+    gap: 2px;
+    margin-top: 18px;
+  }
+  .layer-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 1fr 180px;
+    gap: 24px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .layer-row.header {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 700;
+    border-bottom: 2px solid var(--gold);
+  }
+  .layer-row .l-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .layer-row .l-name .l-scale {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 2px;
+    font-style: italic;
+  }
+  .layer-row .l-cell {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .layer-row .l-impact {
+    font-size: 12.5px;
+    color: var(--fnf-red);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  /* Wedge list */
+  .wedge-item {
+    display: grid;
+    grid-template-columns: 72px 220px 1fr 1fr;
+    gap: 24px;
+    padding: 16px 12px;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .wedge-item .w-num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .wedge-item .w-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .wedge-item .w-title .w-tag {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .wedge-item .w-today, .wedge-item .w-agent {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .wedge-item .w-agent {
+    color: var(--ink);
+  }
+
+  /* Big callout */
+  .callout-band {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 28px 36px;
+    border-left: 4px solid var(--gold);
+    border-radius: 2px;
+    margin-top: 24px;
+  }
+  .callout-band .cb-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .callout-band .cb-line {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--cream);
+  }
+
+  /* Three-year ramp table */
+  .ramp-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .ramp-table {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 0;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .ramp-header {
+    background: var(--navy-3);
+    padding: 14px 20px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .ramp-header-title {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .ramp-row {
+    display: grid;
+    grid-template-columns: 100px 150px 150px 1fr;
+    gap: 18px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--navy-4);
+    align-items: center;
+  }
+  .ramp-row.rheader {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    background: var(--navy-4);
+    border-bottom: none;
+  }
+  .ramp-row .ry {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .ramp-row .ry .yr {
+    display: block;
+    font-size: 11px;
+    color: var(--muted-2);
+    font-weight: 500;
+    font-family: inherit;
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .ramp-row .rl {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .ramp-row .rs {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .ramp-row .rw {
+    font-size: 13px;
+    color: var(--cream);
+    line-height: 1.4;
+  }
+  .ramp-hero {
+    background: linear-gradient(180deg, var(--navy-3) 0%, var(--navy) 100%);
+    color: var(--cream);
+    padding: 28px 32px;
+    border-radius: 2px;
+  }
+  .ramp-hero .rh-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .ramp-hero .rh-num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 84px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .ramp-hero .rh-label {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--gold);
+    margin-top: 10px;
+    line-height: 1.3;
+  }
+  .ramp-hero .rh-detail {
+    font-size: 13.5px;
+    color: var(--cream);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .ramp-hero .rh-kicker {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--gold);
+    margin-top: 18px;
+    line-height: 1.4;
+  }
+
+  /* Security architecture */
+  .arch-box-diagram {
+    background: var(--navy-3);
+    color: var(--cream);
+    padding: 24px;
+    border-radius: 3px;
+    position: relative;
+    margin-top: 16px;
+  }
+  .arch-tenant-border {
+    border: 2px dashed var(--gold);
+    border-radius: 4px;
+    padding: 28px 24px 22px;
+    position: relative;
+  }
+  .arch-tenant-border::before {
+    content: "FNF TENANT · your cloud (AWS or Azure) · your keys · your retention";
+    position: absolute;
+    top: -10px; left: 18px;
+    background: var(--navy-3);
+    padding: 2px 12px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .arch-control-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .arch-system-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .arch-node {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 3px;
+    padding: 11px 14px;
+  }
+  .arch-node.agent {
+    background: rgba(218,41,28,0.18);
+    border-color: var(--fnf-red);
+    box-shadow: 0 0 24px rgba(218,41,28,0.25);
+  }
+  .arch-node .anode-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 3px;
+  }
+  .arch-node.agent .anode-label { color: #FEC9C2; }
+  .arch-node .anode-sub {
+    font-size: 10.5px;
+    color: var(--muted-2);
+    line-height: 1.4;
+  }
+  .arch-connector {
+    display: flex;
+    justify-content: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 16px;
+    letter-spacing: 18px;
+    margin: 8px 0;
+  }
+  .arch-boundary {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(255,255,255,0.2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .arch-boundary .ab-crossing {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 3px;
+    padding: 12px 16px;
+    color: var(--cream);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .arch-boundary .ab-crossing b { color: var(--gold); }
+  .arch-boundary .ab-note {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: right;
+    line-height: 1.5;
+  }
+  .guarantee-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 18px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0;
+  }
+  .guarantee-row.dark {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.12);
+  }
+  .gty {
+    padding: 16px 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .guarantee-row.dark .gty { border-right-color: rgba(255,255,255,0.12); color: var(--cream); }
+  .gty:last-child { border-right: none; }
+  .gty .gk {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .guarantee-row.dark .gty .gk { color: var(--gold); }
+  .gty .gv {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .gty .gv::before { content: "✓ "; color: var(--green); font-weight: 700; }
+  .gty .gd {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .guarantee-row.dark .gty .gd { color: var(--cream); opacity: 0.85; }
+
+  /* Tiny tiles (compliance) */
+  .comp-tiles {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .comp-tile {
+    background: #F7FBF8;
+    border: 1px solid #D1ECDA;
+    border-radius: 3px;
+    padding: 8px 10px;
+  }
+  .comp-tile .cf {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .comp-tile .cd {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    line-height: 1.35;
+  }
+
+  /* Commercial terms bigs */
+  .terms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .term-card {
+    background: var(--navy-3);
+    color: var(--cream);
+    padding: 22px 24px;
+    border-top: 4px solid var(--gold);
+    border-radius: 2px;
+  }
+  .term-card .t-big {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 60px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+  .term-card .t-big.red { color: var(--fnf-red); }
+  .term-card .t-label {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-top: 14px;
+  }
+  .term-card .t-sub {
+    font-size: 12.5px;
+    color: var(--cream);
+    margin-top: 8px;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  /* Pilot weeks */
+  .pilot-weeks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 22px;
+  }
+  .pilot-week {
+    background: #fff;
+    border-top: 4px solid var(--gold);
+    padding: 22px 24px;
+    box-shadow: 0 1px 3px rgba(10, 22, 40, 0.06);
+  }
+  .pilot-week .pw-w {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 700;
+  }
+  .pilot-week .pw-t {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 8px 0 10px;
+  }
+  .pilot-week .pw-body {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  /* Wedge highlight */
+  .modal-highlight {
+    margin-top: 22px;
+    padding: 16px 24px;
+    background: #fff;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 2px 2px 0;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .modal-highlight b { color: var(--fnf-red); font-weight: 700; }
+  .modal-highlight.dark {
+    background: var(--navy-3);
+    color: var(--cream);
+    border-left-color: var(--gold);
+  }
+
+  /* Closing slide */
+  .closing-cta {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    margin-top: 40px;
+  }
+  .closing-cta .cc-lead {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 30px;
+    line-height: 1.35;
+    color: var(--cream);
+    font-weight: 500;
+  }
+  .closing-cta .cc-lead em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--fnf-red);
+  }
+  .closing-cta .cc-checklist {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 2px;
+    padding: 20px 22px;
+  }
+  .closing-cta .cc-checklist .cc-eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .closing-cta .cc-checklist .cc-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px;
+  }
+  .closing-cta .cc-checklist .cc-item:last-child { border-bottom: none; }
+  .closing-cta .cc-checklist .cc-when {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-top: 2px;
+  }
+  .closing-cta .cc-checklist .cc-what {
+    color: var(--cream);
+    line-height: 1.5;
+  }
+  .closing-cta .cc-checklist .cc-what b { color: #FEC9C2; }
+
+  /* Why-now banner at bottom of closing */
+  .whynow {
+    margin-top: 32px;
+    padding: 18px 24px;
+    background: rgba(218,41,28,0.15);
+    border-left: 4px solid var(--fnf-red);
+    border-radius: 0 2px 2px 0;
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+  .whynow b { color: #FEC9C2; }
+
+  /* Quote callout */
+  .quote-callout {
+    margin: 20px 0 0;
+    padding: 14px 20px;
+    background: #fff;
+    border-left: 3px solid var(--gold);
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .quote-callout b { font-style: normal; color: var(--ink); font-weight: 700; }
+  .slide.dark .quote-callout { background: var(--navy-3); color: var(--cream); }
+
+  /* Research research bar */
+  .research-band {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 24px 32px;
+    margin-top: 28px;
+    border-radius: 2px;
+  }
+  .research-band h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    color: var(--cream);
+    font-style: italic;
+    margin: 0 0 10px;
+  }
+  .research-band p {
+    font-size: 13.5px;
+    color: var(--cream);
+    line-height: 1.55;
+    margin: 8px 0 0;
+  }
+
+  /* demo-link card */
+  .demo-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 22px;
+  }
+  .demo-link {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.15s;
+    display: block;
+  }
+  .demo-link:hover {
+    border-color: var(--fnf-red);
+    box-shadow: 0 4px 14px rgba(218,41,28,0.2);
+    transform: translateY(-2px);
+  }
+  .demo-link .dl-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fnf-red);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .demo-link .dl-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .demo-link .dl-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .demo-link .dl-arrow {
+    font-size: 14px;
+    color: var(--fnf-red);
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  /* Print rules */
+  @media print {
+    html, body { background: #fff; }
+    .slide {
+      height: 9.5in;
+      min-height: 9.5in;
+      max-height: 9.5in;
+      page-break-after: always;
+      page-break-inside: avoid;
+      overflow: hidden;
+    }
+    .progress-bar, .slide-counter, .nav-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter" id="counter">01 / 20</div>
+<div class="nav-hint" id="nav-hint">← → arrow keys to navigate</div>
+
+<!-- ============================================================
+     SLIDE 1 — COVER
+     ============================================================ -->
+<section class="slide dark cover">
+  <div class="slide-rule" style="background: var(--gold);"></div>
+  <div class="audience">For Don Cantral · John Crowley · Cheryl King · Fidelity National Financial</div>
+  <h1>
+    Own the operating<br/>
+    layer of <em>title and escrow.</em>
+  </h1>
+  <div class="cover-sub">
+    What NextAce started at FNF is $40M in 2026 annual savings. What Roam finishes is $500M+ Year 1. $1.2B+ by Year 3.
+  </div>
+  <div class="cover-terms">
+    $0 upfront. 20% of verified savings. 90-day pilot in Jacksonville or Dallas. No data leaves your tenant.
+  </div>
+  <div class="slide-footer">
+    <span>Roam · Backed by Khosla Ventures, Fifth Wall, Founders Fund</span>
+    <span class="slide-num">April 2026 · Private and confidential</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — WHY ROAM CAN SHIP (team / credibility) — MOVED EARLY per Cheryl
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">Why this team</div>
+  <h1>Why Roam can actually ship this.</h1>
+  <div class="subhead">Title insiders who are also AI operators. Shipped production systems, not slideware. Backed by funds that know real estate.</div>
+
+  <div class="cols c4">
+    <div class="col-card">
+      <div class="card-eyebrow">Engineering</div>
+      <div class="card-title">Shipped in production</div>
+      <div class="card-body">
+        Voice AI that answers live calls. Doc AI that reads 47-field commercial commitments at 99% confidence. Agents that take action inside live systems of record. Production-grade, not demo-grade.
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="card-eyebrow">Vertical AI operators</div>
+      <div class="card-title">We prove savings, not hand-wave</div>
+      <div class="card-body">
+        Baseline locked by your controller. Every touch instrumented. Document labor savings your CFO signs. If it doesn't hit the P&amp;L, we didn't ship.
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="card-eyebrow">Title &amp; escrow domain</div>
+      <div class="card-title">Built by title insiders</div>
+      <div class="card-body">
+        Deep on Schedule B, curative, disbursement, ALTA Best Practices, FL §713.22, GLBA, FINCEN GTO. Every workflow pressure-tested against carrier and state rules before it touches a live file.
+      </div>
+    </div>
+    <div class="col-card accent">
+      <div class="card-eyebrow">Enterprise delivery</div>
+      <div class="card-title">Onsite with your BU</div>
+      <div class="card-body">
+        Named Roam engineering lead embedded in your pilot office for the full 90 days. Weekly working sessions with FNF ops, legal, compliance. Direct line to the founders. No account execs between you and the build.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-band" style="margin-top: 28px;">
+    <div class="cb-eyebrow">Backers &middot; Team lineage</div>
+    <div class="cb-line"><b style="color:var(--gold);">Khosla Ventures · Fifth Wall · Founders Fund.</b> Founders previously built AI-driven housing infrastructure referenced in WSJ, NYT, CNBC, NPR. SOC 2 Type I complete Q1 2026. Type II planned Q4 2026.</div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">2 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — WHAT ACTUALLY MOVES
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">Why you should care</div>
+  <h1>What actually moves when AI is the operating layer.</h1>
+  <div class="subhead">Five outcomes that roll up to one number: 30%+ pretax title margin by year three.</div>
+
+  <div class="num-list">
+    <div class="num-item">
+      <div class="item-num">01</div>
+      <div class="item-title">Reset the title cost base</div>
+      <div class="item-body">Direct ops labor is a <em>$3B line.</em> Agents compress it without another round of cuts. That's the margin runway.</div>
+    </div>
+    <div class="num-item">
+      <div class="item-num">02</div>
+      <div class="item-title">Absorb the recovery without linear hiring</div>
+      <div class="item-body">Productivity is how you win the upswing, not just defend the downswing. When Texas just added 1,500 headcount and wants 60 more sales reps — you don't need them.</div>
+    </div>
+    <div class="num-item">
+      <div class="item-num">03</div>
+      <div class="item-title">Keep escrow and underwriting controls explicit</div>
+      <div class="item-body">Scoped permissions, approval thresholds, full audit trail. No autonomous fund movement. <em>Ever.</em></div>
+    </div>
+    <div class="num-item">
+      <div class="item-num">04</div>
+      <div class="item-title">Lift the SLAs your lenders and realtors notice</div>
+      <div class="item-body">Faster answers, fewer interruptions, cleaner handoffs. 3-week commercial prelim waits become 90-minute prelims. Service level is a retention lever at cycle turn.</div>
+    </div>
+    <div class="num-item">
+      <div class="item-num">05</div>
+      <div class="item-title">Own the operating layer before anyone else does</div>
+      <div class="item-body">First American and Stewart have to rent this from whoever gets there first. You build it once and keep it. <em>The 18-month window is already 6 months in.</em></div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">3 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — THE PRIZE · FNF IS THE RIGHT BUYER
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The prize</div>
+  <h1>FNF is the right buyer. You already own every piece.</h1>
+  <div class="subhead">This is not a data problem. It is running the work you already do, faster and with fewer hands.</div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">$8.49B</div>
+      <div class="stat-label">2025 title revenue</div>
+      <div class="stat-detail">Largest title franchise in the country</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">$2.98B</div>
+      <div class="stat-label">2025 personnel cost</div>
+      <div class="stat-detail">A labor base where small capture matters</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">956k</div>
+      <div class="stat-label">2025 direct closed orders</div>
+      <div class="stat-detail">~10,600 field ops. ~90 orders each.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">15.9%</div>
+      <div class="stat-label">2025 pretax title margin</div>
+      <div class="stat-detail">Industry-leading. The floor we lift from.</div>
+    </div>
+  </div>
+
+  <div class="stat-band">
+    <div class="band-stats">31% market share &middot; ~1,300 direct offices &middot; ~5,100 agents &middot; 2.8M inHere users &middot; ServiceLink national footprint &middot; NextAce plant &middot; FNFI</div>
+    <div class="band-line">Every other title AI play has to build distribution. FNF already owns it end to end — <em style="color:var(--gold); font-style:italic;">plus NextAce and ServiceLink.</em> That is the asymmetry.</div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Source: FNF 2025 10-K, FY2025 earnings release, investor update.</span>
+    <span class="slide-num">4 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — YOUR OWN RESEARCH (ServiceLink 2026)
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">Your own research</div>
+  <h1>ServiceLink's 2026 report says the buyer is ready.</h1>
+  <div class="subhead">Your own research says the buyer is ready. An always-on agent is the shortest path to deliver it.</div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">88%</div>
+      <div class="stat-label">Want eSignature</div>
+      <div class="stat-detail">Will switch lenders to get it</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">87%</div>
+      <div class="stat-label">Want self-scheduling</div>
+      <div class="stat-detail">Appraisals and closings</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">82%</div>
+      <div class="stat-label">Want virtual closings</div>
+      <div class="stat-detail">Would choose providers that offer it</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">57%</div>
+      <div class="stat-label">Value time savings</div>
+      <div class="stat-detail">The #1 thing they want from tech</div>
+    </div>
+  </div>
+
+  <div class="research-band">
+    <h3>The knowledge gap is the opportunity.</h3>
+    <p>67% of borrowers believe they understand their taxes. Only 48% of loan officers agree. Similar gap on realtor fees (60% vs 37%). An always-on agent that answers status, explains paperwork, and handles scheduling closes that gap <em style="color:var(--gold); font-style:italic;">without scaling headcount.</em></p>
+  </div>
+
+  <div class="slide-footer">
+    <span>Source: ServiceLink State of Homebuying Report 2026 (owned by Fidelity National Financial).</span>
+    <span class="slide-num">5 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — THE MARGIN RESET (3-year ramp)
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The margin reset</div>
+  <h1>In five years, title runs on AI. You can lead the shift.</h1>
+  <div class="subhead">Year one delivers +400 bps. Year three resets FNF to 30%+ pretax title margin and owns the category.</div>
+
+  <div class="ramp-grid">
+    <div class="ramp-table">
+      <div class="ramp-header">
+        <div class="ramp-header-title">The 3-year ramp · from 15.9% to 30%+ pretax margin</div>
+      </div>
+      <div class="ramp-row rheader">
+        <div>Year</div>
+        <div>Margin lift</div>
+        <div>Gross savings</div>
+        <div>What's live</div>
+      </div>
+      <div class="ramp-row">
+        <div class="ry">Y1<span class="yr">2026</span></div>
+        <div class="rl">+400 bps</div>
+        <div class="rs">$340M</div>
+        <div class="rw">Four direct-ops wedges plus consumer agent</div>
+      </div>
+      <div class="ramp-row">
+        <div class="ry">Y2<span class="yr">2027</span></div>
+        <div class="rl">+900 bps</div>
+        <div class="rs">$750M</div>
+        <div class="rw">Agency curative, commercial pilots, ServiceLink SLAs</div>
+      </div>
+      <div class="ramp-row">
+        <div class="ry">Y3<span class="yr">2028</span></div>
+        <div class="rl">+1,400 bps</div>
+        <div class="rs">$1.2B+</div>
+        <div class="rw">Full deployment across all six layers</div>
+      </div>
+    </div>
+    <div class="ramp-hero">
+      <div class="rh-eyebrow">Where this goes by year 3</div>
+      <div class="rh-num">30%+</div>
+      <div class="rh-label">pretax title margin</div>
+      <div class="rh-detail">From 15.9% in 2025. That is +1,400 bps of margin expansion. <b style="color:var(--gold);">$1.2B+ of annual P&amp;L.</b></div>
+      <div class="rh-kicker">Don Cantral has already saved FNF <b style="color:var(--cream);">$40M</b> this year. This is that bet, compounded to <b style="color:var(--cream);">30× scale.</b></div>
+    </div>
+  </div>
+
+  <div class="callout-band">
+    <div class="cb-eyebrow">The 18-month window</div>
+    <div class="cb-line">Whoever builds the AI-native operating layer first sets the industry's new cost curve. FNF has the data, the scale, and the distribution — <em style="color:var(--gold); font-style:italic;">plus NextAce.</em> Nobody else has all four.</div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Source: FNF 2025 10-K · Year-3 target assumes full deployment across direct, agency, commercial, ServiceLink, and consumer.</span>
+    <span class="slide-num">6 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — THE BIGGER PRIZE (absorb recovery)
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The bigger prize</div>
+  <h1>The bigger prize is absorbing the recovery without hiring.</h1>
+  <div class="subhead">Productivity is how you win the upswing, not just how you defend the downswing.</div>
+
+  <div class="stat-row" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="stat-card">
+      <div class="stat-num">956k</div>
+      <div class="stat-label">2025 direct closed orders</div>
+      <div class="stat-detail">Disclosed in FY2025 results</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">10,600</div>
+      <div class="stat-label">Field ops employees</div>
+      <div class="stat-detail">Q4 2025 disclosure</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">~90</div>
+      <div class="stat-label">Orders per employee</div>
+      <div class="stat-detail">Simple 2025 ratio</div>
+    </div>
+  </div>
+
+  <div class="callout-band">
+    <div class="cb-eyebrow">A 10% productivity lift</div>
+    <div class="cb-line" style="font-size: 28px; line-height: 1.3;"><b style="color: var(--gold); font-style: normal;">~96,000 additional direct closed orders</b> before proportional hiring resumes. At 2025 fee per file that is roughly <b style="color: var(--cream); font-style: normal;">$380M of direct revenue</b> if demand is there.</div>
+  </div>
+
+  <div class="modal-highlight">
+    <b>Texas is the live example.</b> Don Du Bois's Western just absorbed Texas — 1,500 employees, 60 new sales reps needed to scale. With Roam deployed in Texas on day one, you keep the volume without the hires. And when the Housing Act signs and SFR / BTR M&amp;A volume spikes, the infrastructure is already waiting.
+  </div>
+
+  <div class="slide-footer">
+    <span>Source: FNF FY2025 earnings, 2025 10-K. Capacity scenario is illustrative.</span>
+    <span class="slide-num">7 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — THE FULL STACK (six layers)
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The full stack</div>
+  <h1>FNF is six businesses in one. The same operating layer runs across all of them.</h1>
+  <div class="subhead">Start in direct ops. The same agents plug into agency, commercial, ServiceLink, and consumer. One build, six payoffs.</div>
+
+  <div class="layer-table">
+    <div class="layer-row header">
+      <div>Layer</div>
+      <div>Today's workflow</div>
+      <div>Roam wedge</div>
+      <div>P&amp;L impact</div>
+    </div>
+    <div class="layer-row">
+      <div class="l-name">Consumer<span class="l-scale">2.8M inHere users</span></div>
+      <div class="l-cell">Borrowers call and email for status, docs, closing dates, tax questions.</div>
+      <div class="l-cell">Always-on concierge answers from the live file. Books appointments. Explains documents.</div>
+      <div class="l-impact">Happier buyers, fewer inbound calls</div>
+    </div>
+    <div class="layer-row">
+      <div class="l-name">Agency<span class="l-scale">~5,100 agents</span></div>
+      <div class="l-cell">Order entry. Search. Commitment and curative. Clearing Schedule B and CPLs.</div>
+      <div class="l-cell">Opens files. Extracts fields. Preps commitments. Nudges curative to close.</div>
+      <div class="l-impact">Agents keep more volume per head</div>
+    </div>
+    <div class="layer-row">
+      <div class="l-name">Direct ops<span class="l-scale">1,300 offices · 10,600 FTE</span></div>
+      <div class="l-cell">Everything from intake to post-close. 956k files a year.</div>
+      <div class="l-cell">Full workflow coverage. Four starting points on slide 13.</div>
+      <div class="l-impact">+400 bps Y1, 30%+ by Y3</div>
+    </div>
+    <div class="layer-row">
+      <div class="l-name">Commercial<span class="l-scale">Multi-party deals</span></div>
+      <div class="l-cell">Heavy Schedule B. Multi-party closings. Bespoke CPLs. 3-week prelim waits.</div>
+      <div class="l-cell">Coordinates parties. Runs curative. Packages clean closings for review.</div>
+      <div class="l-impact">Higher margin per file · deals stop slipping</div>
+    </div>
+    <div class="layer-row">
+      <div class="l-name">ServiceLink<span class="l-scale">National lender ops</span></div>
+      <div class="l-cell">Lender fulfillment. SLA obligations. Refi waves that overwhelm capacity.</div>
+      <div class="l-cell">Watches SLAs. Flags exceptions. Assembles compliance packages.</div>
+      <div class="l-impact">SLAs held, refi capacity up</div>
+    </div>
+    <div class="layer-row">
+      <div class="l-name">Corporate risk<span class="l-scale">Audit + policy</span></div>
+      <div class="l-cell">Audit prep. Policy evolution. Anomaly review. ALTA Best Practices attestation.</div>
+      <div class="l-cell">Keeps policy current across offices. Surfaces outliers. Assembles audit trails.</div>
+      <div class="l-impact">Lower audit cost, smaller risk surface</div>
+    </div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 18px;">
+    Most vendors reach one layer. FNF is the only title platform where one operating layer runs across all six.
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">8 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — [NEW] WHAT NEXTACE STARTED, WHAT ROAM FINISHES
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The lineage</div>
+  <h1>What NextAce started. What Roam finishes.</h1>
+  <div class="subhead">2007 was the Read Layer. 2026 is the Act Layer. Same thesis. Next generation.</div>
+
+  <div class="cols c3">
+    <div class="col-card">
+      <div class="card-eyebrow">Layer 1 · NextAce (2007)</div>
+      <div class="card-title">The Read Layer</div>
+      <div class="card-body">
+        Automated title search. FNFI pulls first-level property information in ~3 minutes. 20% of US real estate transactions run through it. <b>$450M+ saved for the industry since 2003.</b> $40M saved at FNF in 2026 alone.
+      </div>
+    </div>
+    <div class="col-card" style="border-top-color: var(--amber);">
+      <div class="card-eyebrow" style="color: var(--amber);">The gap · 2026</div>
+      <div class="card-title">Why 7–10 days becomes 3 weeks</div>
+      <div class="card-body">
+        After the 3-minute NextAce pull, the file goes to a human. Verify every field. Call every party. Clear every exception. In Tennessee, drive to the courthouse. Re-key the paper abstract. Proofread. <b>95% of the file is still manual.</b>
+      </div>
+    </div>
+    <div class="col-card accent">
+      <div class="card-eyebrow">Layer 2 · Roam (2026)</div>
+      <div class="card-title">The Act Layer</div>
+      <div class="card-body">
+        Takes NextAce's output and <b style="color:#FEC9C2;">completes the file.</b> Calls Wells Fargo for the payoff. Calls the HOA for the estoppel. Reconciles the 60-year chain. Drafts the endorsement. Routes only judgment calls to the underwriter. <b style="color:#FEC9C2;">Minutes instead of days.</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-band">
+    <div class="cb-eyebrow">The NextAce data gap · closed</div>
+    <div class="cb-line">Your data is only as good as the last transaction FNF was part of. <em style="color:var(--gold); font-style: italic;">Roam closes that gap</em> — our teams digitize county recorder and assessor archives back to the 1960s and sandbox them in your tenant. You get a title plant that knows every transaction. Not just the ones that came through FNF.</div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 22px;">
+    <b>The same bet, compounded.</b> NextAce at 20% coverage saved $40M this year. Roam completes the remaining 95% of the workflow. That is the path from $40M to $500M.
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">9 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — WHY THIS IS DIFFERENT
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">Why this is different</div>
+  <h1>A unique approach to apply AI to title.</h1>
+  <div class="subhead">Each one has reached your desk. None of them knows title and escrow as deeply as they know AI, or AI as deeply as they know title.</div>
+
+  <div class="cols" style="grid-template-columns: 1.4fr 1fr;">
+    <div>
+      <div class="num-list" style="margin-top: 0;">
+        <div class="num-item" style="grid-template-columns: 44px 1fr;">
+          <div class="item-num" style="font-size: 28px;">01</div>
+          <div>
+            <div class="item-title" style="font-size: 15px;">Copilots bolted on<span class="sub">AgentNet Assist · Stewart VU Explorer</span></div>
+            <div class="item-body" style="font-size: 13px; margin-top: 6px;">Sit beside the examiner. Suggest, but do not act. A few minutes back per file.</div>
+          </div>
+        </div>
+        <div class="num-item" style="grid-template-columns: 44px 1fr;">
+          <div class="item-num" style="font-size: 28px;">02</div>
+          <div>
+            <div class="item-title" style="font-size: 15px;">Point tools for one job<span class="sub">Qualia Clear · Alanna order entry</span></div>
+            <div class="item-body" style="font-size: 13px; margin-top: 6px;">Fix one slice. Nine vendors to integrate. Nothing that crosses office or layer.</div>
+          </div>
+        </div>
+        <div class="num-item" style="grid-template-columns: 44px 1fr;">
+          <div class="item-num" style="font-size: 28px;">03</div>
+          <div>
+            <div class="item-title" style="font-size: 15px;">Stack replacement plays<span class="sub">Disruptors that tried to rebuild the underwriter</span></div>
+            <div class="item-body" style="font-size: 13px; margin-top: 6px;">The public markets have already priced that model. Not a fit for FNF.</div>
+          </div>
+        </div>
+        <div class="num-item" style="grid-template-columns: 44px 1fr;">
+          <div class="item-num" style="font-size: 28px;">04</div>
+          <div>
+            <div class="item-title" style="font-size: 15px;">Consulting transformations<span class="sub">Big 4 with an AI wrapper</span></div>
+            <div class="item-body" style="font-size: 13px; margin-top: 6px;">Slideware. 18-month roadmap. Pilot in year two. No production code.</div>
+          </div>
+        </div>
+        <div class="num-item" style="grid-template-columns: 44px 1fr;">
+          <div class="item-num" style="font-size: 28px;">05</div>
+          <div>
+            <div class="item-title" style="font-size: 15px;">Build it yourself<span class="sub">NextAce plus raw AI APIs</span></div>
+            <div class="item-body" style="font-size: 13px; margin-top: 6px;">NextAce is the Read Layer. Extending to Act requires 12–18 months of build <em>before</em> the first workflow ships.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-card accent" style="padding: 26px 28px;">
+      <div class="card-eyebrow">The Roam position</div>
+      <div class="card-title" style="font-size: 26px;">Title-native + AI-native.</div>
+      <div class="card-body" style="font-size: 13.5px; line-height: 1.6;">
+        Fluent on both sides. Schedule B, curative, disbursement, CPLs, §713.22, ALTA endorsements. Voice, documents, and agents that actually take action inside live systems.
+        <ul style="margin-top: 14px;">
+          <li><b style="color:#FEC9C2;">Takes action</b>, not just suggests</li>
+          <li>Runs across all six layers</li>
+          <li>Ships inside <b>SoftPro, ResWare, AIM+, NextAce, inHere</b></li>
+          <li>Paid <b style="color:#FEC9C2;">only on savings you verify</b></li>
+          <li><b>FNF owns the data.</b> Any model trained on it runs only for FNF.</li>
+          <li><b>Runs inside your systems</b>, not around them.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-callout">
+    Most vendors know title or know AI. Roam knows both, under one roof — <b>and carries zero Big-4 overhead.</b>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">10 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 11 — THREE RULES
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">First principles</div>
+  <h1>Three rules we built Roam around.</h1>
+  <div class="subhead">Two come out of how title and escrow actually work. One comes out of how production AI holds up under real scale.</div>
+
+  <div class="cols c3" style="margin-top: 36px;">
+    <div class="col-card" style="padding: 28px 30px; border-top-width: 4px;">
+      <div class="card-eyebrow">01</div>
+      <div class="card-title" style="font-size: 23px;">Act inside the workflow</div>
+      <div class="card-body" style="margin-top: 14px; line-height: 1.6;">
+        A title file is 30 to 40 discrete steps across AIM+, SoftPro, ResWare, and outbound comms. An AI that only suggests, and asks a human to execute, buys minutes per step. An AI that completes the step inside the system of record compounds across the whole file.
+      </div>
+      <div class="card-eyebrow" style="margin-top: 20px; color: var(--fnf-red);">Assist wins minutes. Act wins files.</div>
+    </div>
+    <div class="col-card" style="padding: 28px 30px; border-top-width: 4px;">
+      <div class="card-eyebrow">02</div>
+      <div class="card-title" style="font-size: 23px;">Rules as data, not prompts</div>
+      <div class="card-body" style="margin-top: 14px; line-height: 1.6;">
+        1,300 offices, 50 states. California is community property. Texas has its own disclosures. Florida charges doc stamp taxes. Carrier rules vary by underwriter. One monolithic prompt gets edge cases wrong and cannot be audited. Rules expressed as data stay accurate, editable, and versioned.
+      </div>
+      <div class="card-eyebrow" style="margin-top: 20px; color: var(--fnf-red);">No single prompt runs 1,300 offices.</div>
+    </div>
+    <div class="col-card" style="padding: 28px 30px; border-top-width: 4px;">
+      <div class="card-eyebrow">03</div>
+      <div class="card-title" style="font-size: 23px;">Humans own the consequential calls</div>
+      <div class="card-body" style="margin-top: 14px; line-height: 1.6;">
+        ALTA Best Practices define chain of custody on fund movement, disbursement, and underwriting authority. The agent prepares, routes, logs. Humans own every decision that can cost a claim, a policy, or a license. Approval thresholds and audit trails make the system insurable, not slower.
+      </div>
+      <div class="card-eyebrow" style="margin-top: 20px; color: var(--fnf-red);">Automate preparation. Humans own decisions.</div>
+    </div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 28px;">
+    These are not opinions borrowed from other industries. They are what the title workflow and the AI stack require.
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">11 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 12 — ONE AGENT WORKFORCE
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The operating layer, concretely</div>
+  <h1>One agent workforce. Runs inside every system.</h1>
+  <div class="subhead">Reads email, calls, PDFs, and portals. Runs your office rules. Integrates with SoftPro and ResWare today. AIM+ via partnership with your platform team. Humans keep the keys.</div>
+
+  <div class="cols" style="grid-template-columns: 1fr 1.5fr 1fr; margin-top: 36px;">
+    <div class="col-card" style="padding: 22px 24px; border-top: none; border-left: 3px solid var(--gold);">
+      <div class="card-eyebrow">Channels &amp; inputs</div>
+      <div class="card-body" style="margin-top: 10px; font-size: 13px;">
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0; font-weight: 500; color: var(--ink);">Email</div>
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0; font-weight: 500; color: var(--ink);">PDFs and forms</div>
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0; font-weight: 500; color: var(--ink);">Portals &amp; county records</div>
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0; font-weight: 500; color: var(--ink);">Phone, SMS, chat</div>
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0; font-weight: 500; color: var(--ink);">inHere consumer app</div>
+      </div>
+    </div>
+    <div class="col-card accent" style="padding: 26px 30px;">
+      <div class="card-eyebrow">Roam AI workforce</div>
+      <div class="card-title" style="font-size: 22px; font-style: italic; color: #FEC9C2;">Reads inputs, applies office rules, takes the action, escalates exceptions.</div>
+      <div class="card-body" style="margin-top: 16px; font-size: 13px;">
+        <ul style="margin-top: 0;">
+          <li>Your office's rules, written down</li>
+          <li>Agent only does what you allow</li>
+          <li>Approval thresholds per workflow</li>
+          <li>Full audit trail of every action</li>
+          <li>Underwriter review on judgment</li>
+          <li><b style="color:#FEC9C2;">No autonomous fund movement</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-card" style="padding: 22px 24px; border-top: none; border-left: 3px solid var(--gold);">
+      <div class="card-eyebrow">Feeds into</div>
+      <div class="card-body" style="margin-top: 10px; font-size: 13px;">
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0;"><b style="color: var(--ink);">Systems of record</b><br/><span style="font-size: 11.5px; color: var(--muted);">AIM+, SoftPro, ResWare, NextAce, CRM, docs</span></div>
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0;"><b style="color: var(--ink);">Human approvals</b><br/><span style="font-size: 11.5px; color: var(--muted);">Underwriting, disbursement, legal</span></div>
+        <div style="padding: 8px 12px; background: var(--cream-3); border-radius: 2px; margin: 6px 0;"><b style="color: var(--ink);">Outcomes</b><br/><span style="font-size: 11.5px; color: var(--muted);">Fewer touches, faster response, cleaner QA</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 28px;">
+    The agent acts where the work happens. It hands off only where judgment, authority, or fund movement must stay human. <b>It runs inside your systems, not around them.</b>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">12 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 13 — FIVE WEDGES (including post-close, added per Cheryl)
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">Where we start</div>
+  <h1>Five wedges. Start with one. Earn the next.</h1>
+  <div class="subhead">Each wedge has a clean baseline, a clear before-and-after, and tight limits on what the agent can do.</div>
+
+  <div style="margin-top: 12px;">
+    <div class="wedge-item" style="border-top: 1px solid var(--rule);">
+      <div class="w-num">01</div>
+      <div class="w-title">Order intake<span class="w-tag">Fastest baseline</span></div>
+      <div class="w-today"><span style="color: var(--muted); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">Today</span><br/>Email, PDFs, portals, calls. Staff re-key fields. Missing items trigger back-and-forth.</div>
+      <div class="w-agent"><span style="color: var(--fnf-red); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">With Roam</span><br/>Read the request, open the file, extract fields, route to queue, request missing items.</div>
+    </div>
+    <div class="wedge-item">
+      <div class="w-num">02</div>
+      <div class="w-title">Client communication<span class="w-tag">Biggest service win</span></div>
+      <div class="w-today"><span style="color: var(--muted); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">Today</span><br/>Processors interrupted all day for status, missing docs, next steps. Context rebuilt every time.</div>
+      <div class="w-agent"><span style="color: var(--fnf-red); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">With Roam</span><br/>Answer status from live system state. Request missing docs. Escalate edge cases with full context. Voice, SMS, email, chat.</div>
+    </div>
+    <div class="wedge-item">
+      <div class="w-num">03</div>
+      <div class="w-title">Curative and pre-closing<span class="w-tag">Lowest exception aging</span></div>
+      <div class="w-today"><span style="color: var(--muted); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">Today</span><br/>Payoffs, HOA, municipal, conditions. Fragmented. Files stall when no one takes next step.</div>
+      <div class="w-agent"><span style="color: var(--fnf-red); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">With Roam</span><br/>Monitor conditions, trigger outreach, draft structured escalations only when judgment is needed. <b>Live demo available.</b></div>
+    </div>
+    <div class="wedge-item">
+      <div class="w-num">04</div>
+      <div class="w-title">Post-close &amp; final policy<span class="w-tag">Biggest quiet pain</span></div>
+      <div class="w-today"><span style="color: var(--muted); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">Today</span><br/>Clients calling 3 months after close asking where their final title policy is. No dedicated tracker. Document specialists added as hires.</div>
+      <div class="w-agent"><span style="color: var(--fnf-red); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">With Roam</span><br/>Inbound call generates a ticket. Agent pulls the file, generates the final policy, emails the client. Zero humans for routine cases.</div>
+    </div>
+    <div class="wedge-item" style="border-bottom: 1px solid var(--rule);">
+      <div class="w-num">05</div>
+      <div class="w-title">Audit &amp; fraud defense<span class="w-tag">Flip the risk story</span></div>
+      <div class="w-today"><span style="color: var(--muted); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">Today</span><br/>Wire-instruction spoofing rising. Voice-deepfake fraud attempts surfacing at closing calls. Policy manual updated; humans enforce it.</div>
+      <div class="w-agent"><span style="color: var(--fnf-red); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;">With Roam</span><br/>Agent cross-checks wire instructions against bank of record. Voice deepfake detection on escrow calls. AI on our side defends against AI on the other side.</div>
+    </div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 22px;">
+    Start with wedge 03 (curative, live demo ready) or wedge 04 (post-close, quickest client-visible win). <b>Expansion earns expansion.</b>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">13 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 14 — CONTROL MODEL
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The control model</div>
+  <h1>Where the agent stops and the human starts.</h1>
+  <div class="subhead">Automation where it is safe. Explicit review where it is not. This is what makes the pitch credible.</div>
+
+  <div class="cols c3" style="margin-top: 28px;">
+    <div class="col-card" style="padding: 22px 24px; border-top: 4px solid var(--gold);">
+      <div class="card-title" style="font-size: 18px;">Scoped permissions</div>
+      <div class="card-body" style="margin-top: 10px;">Agents read, draft, route, request. No open-ended authority inside systems of record.</div>
+    </div>
+    <div class="col-card" style="padding: 22px 24px; border-top: 4px solid var(--gold);">
+      <div class="card-title" style="font-size: 18px;">Approval thresholds</div>
+      <div class="card-body" style="margin-top: 10px;">Office leaders define what auto-executes. Everything above threshold routes to review.</div>
+    </div>
+    <div class="col-card" style="padding: 22px 24px; border-top: 4px solid var(--gold);">
+      <div class="card-title" style="font-size: 18px;">Local rules as data</div>
+      <div class="card-body" style="margin-top: 10px;">State, office, and underwriter rules stay explicit, editable, versioned, and owned by FNF.</div>
+    </div>
+    <div class="col-card" style="padding: 22px 24px; border-top: 4px solid var(--fnf-red);">
+      <div class="card-title" style="font-size: 18px;">FNF owns the data</div>
+      <div class="card-body" style="margin-top: 10px;">All file and customer data stays in your tenant. Any model fine-tuned on your data runs only for FNF. Your office rules, thresholds, and policies are your IP.</div>
+    </div>
+    <div class="col-card" style="padding: 22px 24px; border-top: 4px solid var(--fnf-red);">
+      <div class="card-title" style="font-size: 18px;">Underwriter review gates</div>
+      <div class="card-body" style="margin-top: 10px;">Legal judgment and underwriting authority remain human. Agent prepares, underwriter decides.</div>
+    </div>
+    <div class="col-card" style="padding: 22px 24px; border-top: 4px solid var(--fnf-red);">
+      <div class="card-title" style="font-size: 18px;">No autonomous fund movement</div>
+      <div class="card-body" style="margin-top: 10px;">Disbursement, wire approvals, high-risk escrow decisions stay explicitly human-controlled. Always.</div>
+    </div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 26px;">
+    If your compliance and underwriting leaders read only this slide, they should still say yes.
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">14 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 15 — [NEW] SECURITY & HACK RESISTANCE (for Crowley)
+     ============================================================ -->
+<section class="slide dark">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">For your CISO</div>
+  <h1 style="color: var(--cream);">Built to pass John Crowley's first question.</h1>
+  <div class="subhead">Runs inside your cloud. Your data never leaves your tenant. Only the model call crosses the boundary — with PII redacted. Humans hold the keys to anything that matters.</div>
+
+  <div class="arch-box-diagram">
+    <div class="arch-tenant-border">
+      <div class="arch-control-row">
+        <div class="arch-node">
+          <div class="anode-label">Entra ID · SSO · RBAC</div>
+          <div class="anode-sub">Your directory · per-workflow scopes · agent cannot escalate itself</div>
+        </div>
+        <div class="arch-node agent">
+          <div class="anode-label">Roam Agent Service</div>
+          <div class="anode-sub">Reads · drafts · acts · escalates · <b style="color:#FEC9C2;">runs inside your tenant</b></div>
+        </div>
+        <div class="arch-node">
+          <div class="anode-label">Your SIEM</div>
+          <div class="anode-sub">Audit log stream · every action signed · exportable · inherits your retention</div>
+        </div>
+      </div>
+      <div class="arch-connector">↓ ↓ ↓ ↓ ↓ ↓</div>
+      <div class="arch-system-row">
+        <div class="arch-node"><div class="anode-label">AIM+</div><div class="anode-sub">title plant</div></div>
+        <div class="arch-node"><div class="anode-label">SoftPro</div><div class="anode-sub">closing · 360 API</div></div>
+        <div class="arch-node"><div class="anode-label">ResWare</div><div class="anode-sub">agency · webhooks</div></div>
+        <div class="arch-node"><div class="anode-label">NextAce</div><div class="anode-sub">search feed</div></div>
+        <div class="arch-node"><div class="anode-label">inHere</div><div class="anode-sub">2.8M consumers</div></div>
+        <div class="arch-node"><div class="anode-label">Your KMS</div><div class="anode-sub">your keys · your rotation</div></div>
+      </div>
+    </div>
+    <div class="arch-boundary">
+      <div class="ab-crossing"><b>Anthropic</b> · model inference only · prompt text (PII-redacted) + response · <b>no training on your data.</b> Any fine-tune runs only for FNF.</div>
+      <div class="ab-note">← data boundary<br/>only prompt / response crosses</div>
+    </div>
+  </div>
+
+  <div class="guarantee-row dark">
+    <div class="gty"><div class="gk">Data residency</div><div class="gv">Your tenant, your cloud</div><div class="gd">AWS or Azure. Files, PII, workflow data never leave your subscription. Exportable on demand.</div></div>
+    <div class="gty"><div class="gk">If we were hacked</div><div class="gv">No persistence at Roam</div><div class="gd">Read-only access, no blob storage, no exfil surface. Your data is still your data.</div></div>
+    <div class="gty"><div class="gk">Identity &amp; access</div><div class="gv">Entra ID + RBAC native</div><div class="gd">Per-workflow scopes. Agent cannot grant itself new permissions. Every call signed.</div></div>
+    <div class="gty"><div class="gk">Model isolation</div><div class="gv">No foundation training</div><div class="gd">Anthropic does not train on inputs. Optional fine-tunes run only for FNF.</div></div>
+  </div>
+
+  <div class="comp-tiles">
+    <div class="comp-tile"><div class="cf">ALTA BP 3</div><div class="cd">Escrow trust</div></div>
+    <div class="comp-tile"><div class="cf">ALTA BP 4</div><div class="cd">Policy production</div></div>
+    <div class="comp-tile"><div class="cf">ALTA BP 5</div><div class="cd">Exception clearance</div></div>
+    <div class="comp-tile"><div class="cf">SOC 2 Type I</div><div class="cd">Completed Q1 2026</div></div>
+    <div class="comp-tile"><div class="cf">SOC 2 Type II</div><div class="cd">Q4 2026 planned</div></div>
+    <div class="comp-tile"><div class="cf">GLBA</div><div class="cd">Safeguards rule</div></div>
+    <div class="comp-tile"><div class="cf">SOX 404</div><div class="cd">Material controls</div></div>
+    <div class="comp-tile"><div class="cf">CCPA · CPRA</div><div class="cd">CA privacy</div></div>
+    <div class="comp-tile"><div class="cf">NY SHIELD</div><div class="cd">NY data security</div></div>
+    <div class="comp-tile"><div class="cf">FL §655</div><div class="cd">FL escrow</div></div>
+    <div class="comp-tile"><div class="cf">FINCEN BSA</div><div class="cd">GTO reporting</div></div>
+    <div class="comp-tile"><div class="cf">HIPAA</div><div class="cd">Medical liens</div></div>
+    <div class="comp-tile"><div class="cf">TRID · CFPB</div><div class="cd">Consumer disclosure</div></div>
+    <div class="comp-tile"><div class="cf">NAIC MA</div><div class="cd">State regulator</div></div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">15 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 16 — [NEW] CAPABILITIES (modalities + digitization)
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">What Roam can do, concretely</div>
+  <h1>Every channel humans use today. Plus one they can't.</h1>
+  <div class="subhead">Voice, SMS, email, chat, portals — and a digitization arm that closes the "data only as good as last transaction" gap.</div>
+
+  <div class="cols c3" style="margin-top: 24px;">
+    <div class="col-card">
+      <div class="card-eyebrow">Voice</div>
+      <div class="card-title" style="font-size: 18px;">Calls that actually complete</div>
+      <div class="card-body" style="margin-top: 10px; line-height: 1.55;">
+        Wells Fargo for lien release. Castle Group HOAs for estoppels. Clerks of court for docket confirmations. IVR self-repair when menus drift. Outbound, inbound, recorded to your storage, transcribed in-tenant.
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="card-eyebrow">SMS / Email / Chat</div>
+      <div class="card-title" style="font-size: 18px;">Inbound and outbound, all channels</div>
+      <div class="card-body" style="margin-top: 10px; line-height: 1.55;">
+        Borrower status texts. Realtor inquiries. Lender updates. Payoff requests via secure portals (Truist, Rocket, PNC). inHere consumer questions. Every message logged and auditable.
+      </div>
+    </div>
+    <div class="col-card accent">
+      <div class="card-eyebrow">Fraud defense</div>
+      <div class="card-title" style="font-size: 18px;">AI on our side, against AI on theirs</div>
+      <div class="card-body" style="margin-top: 10px; line-height: 1.55;">
+        Wire instruction cross-check against bank of record. Voice deepfake detection on escrow calls. Spoofed-number verification. <b style="color:#FEC9C2;">Flip the AI-is-risk narrative.</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-band" style="margin-top: 28px;">
+    <div class="cb-eyebrow">The digitization arm</div>
+    <div class="cb-line">"Our data is only as good as the last transaction we were part of." <em style="color:var(--gold); font-style:italic;">Roam closes that gap.</em> Teams dispatch to county recorders, assessor offices, and historic archives. OCR + structure + sandbox in your tenant. You get a title plant that knows every transaction, not just the ones that came through FNF. We've already done this for national loan data — same playbook, your scale.</div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 22px;">
+    <b>You tell us the business outcome.</b> Voice calls, data digitization, post-close automation, fraud defense — if we can't solve it, it's free. If we can, we keep a portion of the verified value.
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">16 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 17 — WHY ROAM, NOT INTERNAL BUILD
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The honest question</div>
+  <h1>Why Roam, not build it internally.</h1>
+  <div class="subhead">Your tech org can build this. The question is what it costs to wait 18 months while the category gets defined by someone else.</div>
+
+  <div class="cols c2" style="margin-top: 24px;">
+    <div class="col-card" style="padding: 26px 28px; border-top: 4px solid var(--rule); background: #fff;">
+      <div class="card-eyebrow" style="color: var(--muted);">If FNF builds internally</div>
+      <div class="card-title" style="font-size: 24px; color: var(--ink-2);">The slow path</div>
+      <div class="card-body" style="margin-top: 18px;">
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--rule);">
+          <b style="color: var(--ink);">12–18 months</b>
+          <span style="color: var(--muted);">to assemble the voice, doc, and agent infra that already exists off-the-shelf.</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--rule);">
+          <b style="color: var(--ink);">$8–15M burn</b>
+          <span style="color: var(--muted);">on infra and specialized hires before the first workflow ships.</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid var(--rule);">
+          <b style="color: var(--ink);">Internal politics</b>
+          <span style="color: var(--muted);">around which BU owns the roadmap, which vendors get displaced, who staffs it.</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0;">
+          <b style="color: var(--ink);">Window closes</b>
+          <span style="color: var(--muted);">as Qualia (ResWare), First American (AgentNet Assist), and Stewart (VU) keep shipping on your agents.</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-card accent" style="padding: 26px 28px;">
+      <div class="card-eyebrow">With Roam as partner</div>
+      <div class="card-title" style="font-size: 24px; color: var(--cream);">The direct path</div>
+      <div class="card-body" style="margin-top: 18px;">
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12);">
+          <b style="color: #FEC9C2;">90 days to pilot</b>
+          <span style="color: var(--cream); opacity: 0.88;">using voice and document infra we have already built and deployed.</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12);">
+          <b style="color: #FEC9C2;">$0 software cost</b>
+          <span style="color: var(--cream); opacity: 0.88;">until measured savings are embedded. Then 20% of realized value.</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12);">
+          <b style="color: #FEC9C2;">FNF owns data</b>
+          <span style="color: var(--cream); opacity: 0.88;">and the office-level policies. Roam's platform stays with Roam.</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 18px; padding: 10px 0;">
+          <b style="color: #FEC9C2;">Window stays open</b>
+          <span style="color: var(--cream); opacity: 0.88;">because the workflow layer ships inside your business, not around it.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-callout" style="margin-top: 22px;">
+    You are buying the team that has already solved this inside other enterprise systems. <b>The 18-month head start is the bonus.</b>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">17 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 18 — COMMERCIAL TERMS
+     ============================================================ -->
+<section class="slide dark">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">Commercial terms</div>
+  <h1 style="color: var(--cream);">If it doesn't hit the P&amp;L, you don't pay.</h1>
+  <div class="subhead">Palantir's model, adapted for title. A single-page LOI. Zero dollars up front. Paid only on savings your controller confirms.</div>
+
+  <div class="terms-grid">
+    <div class="term-card">
+      <div class="t-big red">$0</div>
+      <div class="t-label">Upfront software cost</div>
+      <div class="t-sub">No license fee. No deployment fee. No obligation to scale.</div>
+    </div>
+    <div class="term-card">
+      <div class="t-big">20%</div>
+      <div class="t-label">Of verified savings</div>
+      <div class="t-sub">Paid only after your finance team confirms savings in BAU. Your controller sets the baseline.</div>
+    </div>
+    <div class="term-card">
+      <div class="t-big red">6 mo</div>
+      <div class="t-label">Mutual pilot window</div>
+      <div class="t-sub">After that, 90-day termination with cure. Your data stays with FNF. Roam's platform stays with Roam.</div>
+    </div>
+    <div class="term-card">
+      <div class="t-big">$20M</div>
+      <div class="t-label">Strategic investment</div>
+      <div class="t-sub">FNF invests $15–25M in Roam's next round. Partner-level alignment. Cantral-era playbook, same terms.</div>
+    </div>
+  </div>
+
+  <div class="callout-band" style="background: rgba(218,41,28,0.15); border-left-color: var(--fnf-red); margin-top: 32px;">
+    <div class="cb-eyebrow" style="color: #FEC9C2;">Zero cost to try · Paid only on savings your finance team verifies</div>
+    <div class="cb-line" style="color: var(--cream); font-size: 19px;">
+      Your controller sets the baseline. Your controller measures the savings. <b style="color: #FEC9C2; font-style: normal;">No savings means no invoice.</b> Ever. This is the same structural alignment that made the 2006 NextAce partnership work — and made FNF $40M this year.
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">18 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 19 — THE PILOT
+     ============================================================ -->
+<section class="slide">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">The pilot</div>
+  <h1>90 days. One business unit. Two workflows.</h1>
+  <div class="subhead">A narrow slice with a hard baseline. No transformation program up front. Pick your BU: Jacksonville direct ops, or Dallas commercial (your live prelim pain).</div>
+
+  <div class="pilot-weeks">
+    <div class="pilot-week">
+      <div class="pw-w">Weeks 1–2</div>
+      <div class="pw-t">Baseline</div>
+      <div class="pw-body">Map systems, define approval thresholds, lock success metrics. Your controller sets the numbers.</div>
+    </div>
+    <div class="pilot-week">
+      <div class="pw-w">Weeks 3–6</div>
+      <div class="pw-t">Shadow</div>
+      <div class="pw-body">Deploy first workflow in shadow mode. Compare touches and turnaround. Zero production risk.</div>
+    </div>
+    <div class="pilot-week">
+      <div class="pw-w">Weeks 7–10</div>
+      <div class="pw-t">Production</div>
+      <div class="pw-body">Move to controlled production on one office group or BU. Gated by your office rules.</div>
+    </div>
+    <div class="pilot-week" style="border-top-color: var(--fnf-red);">
+      <div class="pw-w" style="color: var(--fnf-red);">Weeks 11–13</div>
+      <div class="pw-t">Decision</div>
+      <div class="pw-body">Lock the savings case with your finance team, document controls, choose the expansion wedge.</div>
+    </div>
+  </div>
+
+  <div class="cols c2" style="margin-top: 28px;">
+    <div class="col-card" style="background: var(--navy-3); color: var(--cream); border-top-color: var(--gold);">
+      <div class="card-eyebrow" style="color: var(--gold);">How value is measured</div>
+      <div class="card-body" style="margin-top: 12px; color: var(--cream); font-size: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-top: 4px;">
+          <span>• Touches per file</span>
+          <span>• Minutes per file</span>
+          <span>• Response time on status</span>
+          <span>• Exception aging</span>
+          <span>• Rework rate</span>
+          <span>• Escalation yield</span>
+          <span>• Turnaround time (TAT)</span>
+          <span>• First-time-right rate</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-card" style="border-top-color: var(--fnf-red);">
+      <div class="card-eyebrow" style="color: var(--fnf-red);">What FNF provides</div>
+      <div class="card-body" style="margin-top: 12px;">
+        <ul style="margin-top: 0;">
+          <li>One direct BU or office group (Jacksonville or Dallas)</li>
+          <li>Executive sponsor plus operating lead</li>
+          <li>Access to queues and templates</li>
+          <li>Weekly review on baseline and thresholds</li>
+          <li>Pre-agreed success metrics before launch</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam &middot; Prepared for Fidelity National Financial &middot; Private and confidential</span>
+    <span class="slide-num">19 / 20</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 20 — WHAT HAPPENS NEXT (closing)
+     ============================================================ -->
+<section class="slide darker">
+  <div class="slide-rule"></div>
+  <div class="eyebrow">What happens next</div>
+  <h1 style="color: var(--cream);">Single-page LOI. Pilot session inside 72 hours.</h1>
+  <div class="subhead">Named Roam engineering lead on the ground in Jacksonville or Dallas. Weekly working sessions with your ops, legal, and compliance teams. Direct line to the founders.</div>
+
+  <div class="closing-cta">
+    <div class="cc-lead">
+      You built the first generation of title automation in 2007.<br/>
+      NextAce saved the industry <em>$450M+</em> and FNF <em>$40M this year.</em><br/><br/>
+      This is the next generation — the Act Layer — on top of the foundation you already own.<br/><br/>
+      <em>Let's build it together.</em>
+    </div>
+    <div class="cc-checklist">
+      <div class="cc-eyebrow">90-day path to the P&amp;L</div>
+      <div class="cc-item">
+        <span class="cc-when">Week 0</span>
+        <span class="cc-what"><b>LOI signed</b> · Roam engineering lead embedded · <b>pilot session within 72 hours</b></span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-when">Week 2</span>
+        <span class="cc-what">Baseline locked by FNF controller · metrics pre-agreed</span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-when">Week 4</span>
+        <span class="cc-what">First wedge live in one BU (curative, post-close, or commercial prelim)</span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-when">Week 13</span>
+        <span class="cc-what">Savings reviewed with finance · <b>invoice only against verified number</b></span>
+      </div>
+      <div class="cc-item">
+        <span class="cc-when">Month 6</span>
+        <span class="cc-what"><b>Scale decision</b> · expand to second wedge, or walk away with your data</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="whynow">
+    <b>Why the 18-month window matters now.</b> Qualia bought ResWare. First American is shipping better lender tech. Stewart VU is live. FNF's Q3/Q4 earnings leaned on refis — which are lagging. This partnership is the commercial + institutional + agent-workforce story your next earnings call needs.
+  </div>
+
+  <div class="demo-links">
+    <a class="demo-link" href="index.html">
+      <div class="dl-eyebrow">Live demo · residential curative</div>
+      <div class="dl-title">Clear a Schedule B in 90 seconds.</div>
+      <div class="dl-sub">Tampa file · voice calls to Wells Fargo + HOA · §713.22 analysis · human-in-loop UW gate · $649 labor recovered on one file.</div>
+      <div class="dl-arrow">Open demo →</div>
+    </a>
+    <a class="demo-link" href="commercial.html">
+      <div class="dl-eyebrow">Live demo · commercial prelim</div>
+      <div class="dl-title">The 3-week Dallas prelim, done in 90 seconds.</div>
+      <div class="dl-sub">Tampa tower · 8 parcels · 4-deep DE entity chain · 48 parallel plant searches · FINCEN + CFIUS + FIRPTA · FL doc stamps computed.</div>
+      <div class="dl-arrow">Open demo →</div>
+    </a>
+  </div>
+
+  <div class="slide-footer">
+    <span>Roam · Backed by Khosla Ventures, Fifth Wall, Founders Fund</span>
+    <span class="slide-num">20 / 20</span>
+  </div>
+</section>
+
+<script>
+// Slide navigation + progress + counter
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const counter = document.getElementById('counter');
+const progress = document.getElementById('progress');
+const navHint = document.getElementById('nav-hint');
+
+function updateState() {
+  // find closest slide to scroll position
+  let bestIdx = 0;
+  let bestDist = Infinity;
+  const y = window.scrollY + window.innerHeight / 2;
+  slides.forEach((s, i) => {
+    const mid = s.offsetTop + s.offsetHeight / 2;
+    const d = Math.abs(mid - y);
+    if (d < bestDist) { bestDist = d; bestIdx = i; }
+  });
+  const cur = bestIdx + 1;
+  counter.textContent = `${String(cur).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
+  progress.style.width = `${(cur / total) * 100}%`;
+}
+
+function go(idx) {
+  idx = Math.max(0, Math.min(total - 1, idx));
+  slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function current() {
+  const y = window.scrollY + window.innerHeight / 2;
+  let best = 0, dist = Infinity;
+  slides.forEach((s, i) => {
+    const mid = s.offsetTop + s.offsetHeight / 2;
+    const d = Math.abs(mid - y);
+    if (d < dist) { dist = d; best = i; }
+  });
+  return best;
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+    e.preventDefault(); go(current() + 1);
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault(); go(current() - 1);
+  } else if (e.key === 'Home') {
+    e.preventDefault(); go(0);
+  } else if (e.key === 'End') {
+    e.preventDefault(); go(total - 1);
+  }
+});
+
+window.addEventListener('scroll', updateState, { passive: true });
+updateState();
+
+// Fade nav hint
+setTimeout(() => { navHint.style.opacity = '0'; }, 4000);
+</script>
+</body>
+</html>
