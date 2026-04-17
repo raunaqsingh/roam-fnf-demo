@@ -2112,6 +2112,363 @@
   .cta-confirm.show { display: block; }
   .cta-confirm b { color: #B3E6C3; }
 
+  /* Security, PII, compliance, and integration (for CISO / compliance / ops) */
+  .security-section { margin: 24px 0; }
+  .security-section .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .security-section .section-head .t {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .security-section .section-head .eb {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fnf-red); font-weight: 700;
+  }
+  .security-section .section-lead {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .security-section .section-lead b { color: var(--ink); font-weight: 600; }
+
+  /* Architecture diagram */
+  .arch-diagram {
+    background: linear-gradient(180deg, #001B3A 0%, #000814 100%);
+    border-radius: 4px;
+    padding: 28px;
+    position: relative;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .arch-diagram::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fnf-red), var(--gold));
+  }
+  .arch-tenant {
+    border: 2px dashed rgba(255,255,255,0.25);
+    border-radius: 4px;
+    padding: 24px 24px 20px;
+    position: relative;
+  }
+  .arch-tenant::before {
+    content: "FNF AZURE TENANT · your data never leaves";
+    position: absolute;
+    top: -10px; left: 20px;
+    background: #000814;
+    padding: 2px 10px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .arch-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .arch-row.systems {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .arch-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px;
+    padding: 12px 14px;
+    color: #FFFFFF;
+  }
+  .arch-box .label {
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+  .arch-box .sub {
+    font-size: 10.5px;
+    color: #9DB3CC;
+    line-height: 1.4;
+  }
+  .arch-box.agent {
+    background: rgba(218,41,28,0.18);
+    border-color: var(--fnf-red);
+    box-shadow: 0 0 24px rgba(218,41,28,0.25);
+  }
+  .arch-box.agent .label { color: #FEC9C2; }
+  .arch-box.system {
+    background: rgba(201,169,97,0.08);
+    border-color: rgba(201,169,97,0.3);
+  }
+  .arch-box.system .label { font-size: 11.5px; color: var(--gold); }
+  .arch-box.system .sub { font-size: 10px; }
+  .arch-connectors {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 6px 0;
+    color: rgba(255,255,255,0.3);
+    font-size: 14px;
+    letter-spacing: 12px;
+  }
+  .arch-external {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  .arch-external .boundary-note {
+    font-size: 10.5px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: right;
+  }
+  .arch-external .anthropic {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    padding: 10px 14px;
+    color: #C9D5E5;
+    font-size: 11.5px;
+  }
+  .arch-external .anthropic b { color: #FFFFFF; font-weight: 600; }
+
+  /* Data guarantees */
+  .data-guarantees {
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .data-guarantees .gty {
+    padding: 0 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .data-guarantees .gty:first-child { padding-left: 0; }
+  .data-guarantees .gty:last-child { border-right: none; padding-right: 0; }
+  .data-guarantees .gty .k {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .data-guarantees .gty .v {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .data-guarantees .gty .v::before {
+    content: "✓ "; color: var(--green); font-weight: 700;
+  }
+  .data-guarantees .gty .sub {
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Compliance frameworks grid */
+  .compliance-grid {
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 20px 24px 22px;
+    margin-bottom: 24px;
+  }
+  .compliance-grid .grid-head {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .compliance-grid .grid-head .tail {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .compliance-grid .tiles {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .compliance-grid .tile {
+    padding: 10px 12px;
+    background: #F7FBF8;
+    border: 1px solid #D1ECDA;
+    border-radius: 3px;
+    position: relative;
+  }
+  .compliance-grid .tile .framework {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .compliance-grid .tile .desc {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    line-height: 1.35;
+  }
+  .compliance-grid .tile .status {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+  .compliance-grid .tile.pending {
+    background: #FFF9F0;
+    border-color: #F0DEB5;
+  }
+  .compliance-grid .tile.pending .status { color: var(--amber); }
+
+  /* Stack integration (ResWare + SoftPro + etc.) */
+  .stack-integration {
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .stack-integration .integ-head {
+    background: var(--cream);
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .stack-integration .integ-head .t {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .stack-integration .integ-head .tail {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .stack-integration .systems {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stack-integration .sys-card {
+    padding: 18px 22px;
+    border-right: 1px solid var(--rule);
+  }
+  .stack-integration .sys-card:last-child { border-right: none; }
+  .stack-integration .sys-name {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+  .stack-integration .sys-role {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fnf-red);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .stack-integration .sys-line {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.4;
+    padding: 3px 0;
+  }
+  .stack-integration .sys-line .k {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 1px;
+  }
+
+  /* PII handling panel */
+  .pii-panel {
+    background: linear-gradient(135deg, #FFF9F0 0%, #FDF0E2 100%);
+    border: 1px solid #F0DEB5;
+    border-left: 4px solid var(--amber);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .pii-panel .pii-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .pii-panel .pii-head .t {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 0.02em;
+  }
+  .pii-panel .pii-head .t::before { content: "🔒 "; font-size: 14px; }
+  .pii-panel .pii-head .tail {
+    font-size: 10.5px;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .pii-panel .pii-rows {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 28px;
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .pii-panel .pii-item {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+  }
+  .pii-panel .pii-item .check {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+  .pii-panel .pii-item .body b { color: var(--ink); font-weight: 600; }
+  .pii-panel .pii-item .body .detail {
+    color: var(--muted);
+    font-size: 10.5px;
+    margin-top: 2px;
+  }
+
   /* Prevention counter for modal */
   .prevention-strip {
     background: #FFFFFF;
@@ -3728,6 +4085,184 @@ const modalBody = () => {
       <div class="level dim">Level 5 · Full auto<div class="sub">not offered for title</div></div>
     </div>
     <div class="dial-note"><b>Start conservative. Earn trust. Expand.</b> Disbursement and Schedule B modifications remain human-gated at every level. Office rules, approval thresholds, and escalation triggers are your data, editable and versioned — they never live in a prompt.</div>
+  </div>
+
+  <div class="security-section">
+    <div class="section-head">
+      <div class="t">Security, PII, and your existing stack</div>
+      <div class="eb">For your CISO · compliance · platform team</div>
+    </div>
+    <div class="section-lead"><b>We run inside your Azure tenant, on top of ResWare and SoftPro.</b> No data leaves the boundary except prompt text to Anthropic for model inference — with PII redacted. No foundation model training on your data. Your KMS keys. Your retention rules. Your Entra ID. Your SIEM.</div>
+
+    <div class="arch-diagram">
+      <div class="arch-tenant">
+        <div class="arch-row">
+          <div class="arch-box">
+            <div class="label">Entra ID · SSO</div>
+            <div class="sub">RBAC native · your user directory · per-workflow scopes</div>
+          </div>
+          <div class="arch-box agent">
+            <div class="label">Roam Agent Service</div>
+            <div class="sub">reads · drafts · acts · escalates · inside your tenant</div>
+          </div>
+          <div class="arch-box">
+            <div class="label">Your SIEM</div>
+            <div class="sub">audit log stream · every action · signed · exportable</div>
+          </div>
+        </div>
+        <div class="arch-connectors">↓ ↓ ↓ ↓ ↓</div>
+        <div class="arch-row systems">
+          <div class="arch-box system"><div class="label">AIM+</div><div class="sub">title plant<br/>system of record</div></div>
+          <div class="arch-box system"><div class="label">SoftPro</div><div class="sub">closing / escrow<br/>ProForm · 360 API</div></div>
+          <div class="arch-box system"><div class="label">ResWare</div><div class="sub">agency platform<br/>webhooks + REST</div></div>
+          <div class="arch-box system"><div class="label">inHere</div><div class="sub">consumer app<br/>2.8M users</div></div>
+          <div class="arch-box system"><div class="label">Your KMS</div><div class="sub">key management<br/>your rotation policy</div></div>
+        </div>
+      </div>
+      <div class="arch-external">
+        <div class="anthropic"><b>Anthropic</b> · model inference only · prompt text (PII-redacted) + response · <b>no training on your data</b>, any fine-tune runs only for FNF</div>
+        <div class="boundary-note">← data boundary<br/>only prompt/response crosses</div>
+      </div>
+    </div>
+
+    <div class="data-guarantees">
+      <div class="gty">
+        <div class="k">Data residency</div>
+        <div class="v">Your Azure tenant</div>
+        <div class="sub">files, PII, workflow data never leave your subscription. Exportable on demand.</div>
+      </div>
+      <div class="gty">
+        <div class="k">Model isolation</div>
+        <div class="v">No foundation training</div>
+        <div class="sub">Anthropic does not train on inputs. Fine-tunes (optional) run only for FNF.</div>
+      </div>
+      <div class="gty">
+        <div class="k">Identity &amp; access</div>
+        <div class="v">Entra ID SSO · RBAC</div>
+        <div class="sub">your directory. Per-workflow scopes. Agent cannot escalate itself.</div>
+      </div>
+      <div class="gty">
+        <div class="k">Audit</div>
+        <div class="v">Every action · signed</div>
+        <div class="sub">32 events streamed to your SIEM for this file. Reversal path per action.</div>
+      </div>
+    </div>
+
+    <div class="pii-panel">
+      <div class="pii-head">
+        <div class="t">PII handling on this exact file</div>
+        <div class="tail">GLBA · CCPA/CPRA · NY SHIELD · FL §655 controls held</div>
+      </div>
+      <div class="pii-rows">
+        <div class="pii-item">
+          <div class="check">✓</div>
+          <div class="body">
+            <b>SSN tokenized before every prompt.</b>
+            <div class="detail">Borrowers' last-four entered into Wells Fargo IVR via DTMF tone, never recorded or placed in a prompt. Token maps live in your KMS only.</div>
+          </div>
+        </div>
+        <div class="pii-item">
+          <div class="check">✓</div>
+          <div class="body">
+            <b>Bank account &amp; wire info never touches model.</b>
+            <div class="detail">Payoff amounts ($412,883.22) captured from voice, written directly to SoftPro ProForm. Model sees "captured" flag, not the digits.</div>
+          </div>
+        </div>
+        <div class="pii-item">
+          <div class="check">✓</div>
+          <div class="body">
+            <b>Borrower authorization on file for every payoff request.</b>
+            <div class="detail">Kovač signed 2026-04-11 per ALTA BP 3. Authorization hash logged before each payoff call/email. Missing = agent refuses.</div>
+          </div>
+        </div>
+        <div class="pii-item">
+          <div class="check">✓</div>
+          <div class="body">
+            <b>Medical lien (Bay Medical) handled under HIPAA minimization.</b>
+            <div class="detail">Agent read only instrument number, creditor, and amount. No patient or treatment details pulled into prompt. Packet to M. Rodriguez uses generic labels.</div>
+          </div>
+        </div>
+        <div class="pii-item">
+          <div class="check">✓</div>
+          <div class="body">
+            <b>Voice calls recorded to your storage, transcribed in-tenant.</b>
+            <div class="detail">Wells Fargo + Castle Group recordings sit in your Azure blob. Transcription runs on your compute. Retention per your policy.</div>
+          </div>
+        </div>
+        <div class="pii-item">
+          <div class="check">✓</div>
+          <div class="body">
+            <b>Right-to-erasure and retention honored per workflow.</b>
+            <div class="detail">File data purge follows your existing ResWare / SoftPro retention rules. Agent logs never extend retention — they inherit the file's policy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compliance-grid">
+      <div class="grid-head">
+        <span>Compliance frameworks · held on this file</span>
+        <span class="tail">13 frameworks · all active · auditable now</span>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="framework">ALTA BP 3</div><div class="desc">Escrow trust account controls</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">ALTA BP 4</div><div class="desc">Policy production controls</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">ALTA BP 5</div><div class="desc">Exception clearance procedures</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">SOC 2 Type I</div><div class="desc">Security controls audit</div><div class="status">COMPLETED Q1 2026</div></div>
+        <div class="tile pending"><div class="framework">SOC 2 Type II</div><div class="desc">Operating effectiveness, 12mo</div><div class="status">Q4 2026 PLANNED</div></div>
+        <div class="tile"><div class="framework">GLBA</div><div class="desc">Financial privacy · safeguards rule</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">SOX 404</div><div class="desc">Material controls (FNF public co)</div><div class="status">TRACEABLE ✓</div></div>
+        <div class="tile"><div class="framework">CCPA · CPRA</div><div class="desc">CA consumer privacy</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">NY SHIELD</div><div class="desc">NY data security</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">FL §655</div><div class="desc">FL escrow control act</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">FINCEN BSA · GTO</div><div class="desc">AML geographic targeting</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">HIPAA</div><div class="desc">PHI minimization (medical liens)</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">PCI-DSS</div><div class="desc">Wire / card data isolation</div><div class="status">NOT IN SCOPE</div></div>
+        <div class="tile"><div class="framework">NAIC MA</div><div class="desc">State regulator examinability</div><div class="status">HELD ✓</div></div>
+        <div class="tile"><div class="framework">TRID / CFPB</div><div class="desc">Consumer disclosure integrity</div><div class="status">HELD ✓</div></div>
+      </div>
+    </div>
+
+    <div class="stack-integration">
+      <div class="integ-head">
+        <div class="t">Integration with your existing stack · no rip-and-replace</div>
+        <div class="tail">Deploys in days, not quarters · production-grade connectors exist today</div>
+      </div>
+      <div class="systems">
+        <div class="sys-card">
+          <div class="sys-name">ResWare</div>
+          <div class="sys-role">Agency platform</div>
+          <div class="sys-line"><div class="k">Read</div><div>file queue, notes, commitment drafts, Schedule B items, agent status</div></div>
+          <div class="sys-line"><div class="k">Write</div><div>curative progress updates, examiner queue entries, file notes, agent audit</div></div>
+          <div class="sys-line"><div class="k">Protocol</div><div>ResWare REST API + webhooks · OAuth2 + mTLS · rate-limited to your native caps</div></div>
+          <div class="sys-line"><div class="k">Deploy</div><div>connector package ships as a signed add-on, no core changes</div></div>
+        </div>
+        <div class="sys-card">
+          <div class="sys-name">SoftPro</div>
+          <div class="sys-role">Closing / escrow</div>
+          <div class="sys-line"><div class="k">Read</div><div>ProForm fields, HUD-1/CD lines, parties, disbursement schedule</div></div>
+          <div class="sys-line"><div class="k">Write</div><div>commitment regen, endorsement text, CD line items (human-gated), exam notes</div></div>
+          <div class="sys-line"><div class="k">Protocol</div><div>SoftPro 360 integration API + SoftPro Live · SAML SSO · your license</div></div>
+          <div class="sys-line"><div class="k">Deploy</div><div>registers as a SoftPro 360 integration, Jacksonville-scoped by RBAC</div></div>
+        </div>
+        <div class="sys-card">
+          <div class="sys-name">AIM+</div>
+          <div class="sys-role">Title plant · system of record</div>
+          <div class="sys-line"><div class="k">Read</div><div>prior policies, chain of title, plat records, grantor-grantee index, abstracts</div></div>
+          <div class="sys-line"><div class="k">Write</div><div>examiner tasks, Schedule B working drafts, audit trail entries</div></div>
+          <div class="sys-line"><div class="k">Protocol</div><div>internal AIM+ service endpoints · FNF-supplied auth · no public egress</div></div>
+          <div class="sys-line"><div class="k">Deploy</div><div>service-to-service within your tenant · your platform team owns the connector</div></div>
+        </div>
+        <div class="sys-card">
+          <div class="sys-name">inHere</div>
+          <div class="sys-role">Consumer experience</div>
+          <div class="sys-line"><div class="k">Read</div><div>borrower questions, status asks, document uploads</div></div>
+          <div class="sys-line"><div class="k">Write</div><div>status updates, explanations, document checklists (borrower-facing)</div></div>
+          <div class="sys-line"><div class="k">Protocol</div><div>inHere backend APIs · your existing auth model · agent hands off to human on sensitive topics</div></div>
+          <div class="sys-line"><div class="k">Deploy</div><div>activates inside your 2.8M-user app without a separate login</div></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="roi-calc">
