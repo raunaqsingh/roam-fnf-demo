@@ -1429,34 +1429,210 @@
 
   /* Highlight callout — used for key moments (IVR drift, OCR fallback) */
   .moment-banner {
-    background: linear-gradient(90deg, #FFF7E6 0%, #FFE8A8 100%);
+    background: linear-gradient(135deg, #FFF7E6 0%, #FFE8A8 100%);
     border: 1px solid var(--amber);
-    border-radius: 3px;
-    padding: 10px 14px;
-    margin: 10px 14px;
-    font-size: 12px;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 12px 14px;
+    font-size: 12.5px;
     display: grid;
-    grid-template-columns: 24px 1fr;
-    gap: 10px;
+    grid-template-columns: 32px 1fr auto;
+    gap: 14px;
     align-items: center;
-    animation: momentIn 0.4s ease-out;
+    animation: momentIn 0.5s ease-out;
+    position: relative;
+    box-shadow: 0 2px 12px rgba(217,119,6,0.18);
   }
   @keyframes momentIn {
-    0% { opacity: 0; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1); }
+    0% { opacity: 0; transform: translateY(8px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
   .moment-banner .icon {
-    width: 24px; height: 24px;
+    width: 32px; height: 32px;
     border-radius: 50%;
     background: var(--amber);
     color: #FFFFFF;
     text-align: center;
-    line-height: 24px;
+    line-height: 32px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 16px;
+    box-shadow: 0 0 0 4px rgba(217,119,6,0.18);
   }
-  .moment-banner .txt { color: var(--ink); line-height: 1.45; }
+  .moment-banner .txt { color: var(--ink); line-height: 1.55; }
   .moment-banner .txt b { color: var(--amber); }
+  .moment-banner .prevented {
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    padding: 6px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(218,41,28,0.4);
+    transform: rotate(-2deg);
+  }
+
+  /* Compression ratio indicator in labor hero */
+  .compression-ratio {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 10px;
+    background: rgba(218,41,28,0.15);
+    border: 1px solid rgba(218,41,28,0.45);
+    border-radius: 999px;
+    font-size: 11px;
+    color: #FEC9C2;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-top: 8px;
+  }
+  .compression-ratio .mult {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .compression-ratio .mult-suffix { color: var(--fnf-red); font-weight: 700; }
+
+  /* Meanwhile-at-Fidelity reveal — closing crescendo */
+  .meanwhile {
+    background:
+      radial-gradient(ellipse at top, #1a2d4a 0%, #001B3A 70%);
+    color: #FFFFFF;
+    padding: 40px 40px 36px;
+    margin: -24px -28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .meanwhile::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 50%, var(--gold) 100%);
+  }
+  .meanwhile .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #FEC9C2;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .meanwhile h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: #FFFFFF;
+    margin: 0 0 26px;
+    line-height: 1.25;
+  }
+  .meanwhile h2 em { color: var(--fnf-red); font-style: normal; font-weight: 700; }
+  .horizons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .horizons::before {
+    content: "";
+    position: absolute;
+    top: 48px; left: 0; right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+  .horizon {
+    padding: 0 24px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .horizon:first-child { padding-left: 0; }
+  .horizon:last-child { border-right: none; padding-right: 0; }
+  .horizon .tag {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9DB3CC;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .horizon .num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #FFFFFF;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .horizon.hero .num { color: var(--fnf-red); font-size: 52px; }
+  .horizon .num .dollar { font-size: 0.7em; color: var(--fnf-red); vertical-align: 10px; margin-right: 2px; }
+  .horizon .num .suffix { color: var(--fnf-red); font-size: 0.55em; margin-left: 4px; }
+  .horizon .caption {
+    font-size: 12px;
+    color: #C9D5E5;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .horizon .caption b { color: #FFFFFF; font-weight: 600; }
+  .meanwhile .subline {
+    margin-top: 24px;
+    padding: 14px 18px;
+    background: rgba(218,41,28,0.1);
+    border-left: 3px solid var(--fnf-red);
+    border-radius: 0 3px 3px 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #FFFFFF;
+  }
+  .meanwhile .subline b { color: #FEC9C2; }
+
+  /* Prevention counter for modal */
+  .prevention-strip {
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: center;
+  }
+  .prevention-strip .pv-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    line-height: 40px;
+    box-shadow: 0 0 0 5px #FBE3E0;
+  }
+  .prevention-strip .pv-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .prevention-strip .pv-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .prevention-strip .pv-count {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--fnf-red);
+    font-variant-numeric: tabular-nums;
+  }
 
   /* UW decision confirmation */
   .uw-decision {
@@ -1827,6 +2003,11 @@
     <div class="lbl">Examiner time saved · this file</div>
     <div class="big primary"><span id="hero-hours">Not started</span></div>
     <div class="sub">Baseline M. Rodriguez · 14 hours 22 min across 3 business days · $47/hr fully loaded (FNF FY25 model)</div>
+    <div class="compression-ratio" id="comp-ratio" style="display:none;">
+      <span>Agent is running</span>
+      <span class="mult" id="comp-mult">0×</span>
+      <span class="mult-suffix">faster than a human examiner</span>
+    </div>
   </div>
   <div class="sep-v"></div>
   <div class="block">
@@ -2096,10 +2277,16 @@ function phase(name) {
 }
 
 /* Highlighted "integrity moment" — slows the stream down and calls attention to self-correction */
+let mistakesPrevented = 0;
 function momentBanner(html) {
+  mistakesPrevented++;
   const div = document.createElement('div');
   div.className = 'moment-banner';
-  div.innerHTML = `<div class="icon">!</div><div class="txt"><b>Integrity moment.</b> ${html}</div>`;
+  div.innerHTML = `
+    <div class="icon">!</div>
+    <div class="txt"><b>Mistake prevented.</b> ${html}</div>
+    <div class="prevented">Mistake #${mistakesPrevented} prevented</div>
+  `;
   feed.appendChild(div);
   feed.scrollTop = feed.scrollHeight;
 }
@@ -2273,6 +2460,16 @@ function addSaved(mins, touches = 0) {
   totalMinSaved += mins;
   totalTouchesSaved += touches;
 
+  // compression ratio: human minutes / agent minutes
+  const compEl = document.getElementById('comp-ratio');
+  const multEl = document.getElementById('comp-mult');
+  if (compEl && multEl && totalMinSaved > 0) {
+    compEl.style.display = 'inline-flex';
+    const agentMin = Math.max(0.3, elapsedMs / 60000);
+    const ratio = Math.round(totalMinSaved / agentMin);
+    if (ratio > 1) multEl.textContent = `${ratio.toLocaleString()}×`;
+  }
+
   // Hero labor ticker — human-readable time format
   const heroH = document.getElementById('hero-hours');
   heroH.classList.add('flash');
@@ -2326,7 +2523,7 @@ async function runDemo() {
 
   // ========== PHASE 1: INTAKE & PARSE ==========
   phase('Phase 1 · Intake & parse');
-  phaseUpdate(1, 'Intake &amp; parse',
+  phaseUpdate(1, 'Intake & parse',
     '<b>The agent just received a Florida title commitment from SoftPro.</b> It is extracting all 47 ALTA fields and classifying every Schedule B item. At Fidelity today, an examiner spends 20 minutes here — re-keying from the PDF into the file.');
   row('parse', '<span class="hl">SoftPro file sync</span> — pulling commitment 2026-FNF-044281.pdf, title plant record CRCR-18-24-2026, seller packet, buyer packet', {t:0.3, ic:'↻'});
   evCard({
@@ -2358,7 +2555,7 @@ async function runDemo() {
 
   // ========== PHASE 2: PLAN ==========
   phase('Phase 2 · Plan & authorization check');
-  phaseUpdate(2, 'Plan &amp; authorize',
+  phaseUpdate(2, 'Plan & authorize',
     '<b>Before taking any action, the agent loads Jacksonville office rules.</b> It is authorized to read, draft, and route — but cannot disburse funds or modify Schedule B without a human signing off. "Automate preparation, humans own decisions."');
   row('plan', 'Building curative graph. <span class="hl">16 nodes, 9 parallel branches.</span>', {ic:'◈'});
   row('plan', 'Applied Jacksonville BU office rules v2.4.11. Approval thresholds: <span class="amt">$10K routine / $50K UW review / any FL §627 matter → UW.</span>', {ic:'◈'});
@@ -2712,7 +2909,7 @@ X-Vendor: FNTIC-JAX-30155271
 
   // ========== PHASE 5: FINALIZE ==========
   phase('Phase 5 · Compile cleared commitment');
-  phaseUpdate(5, 'Compile &amp; notify',
+  phaseUpdate(5, 'Compile & notify',
     '<b>The agent regenerates Schedule B in SoftPro</b>, writes 32 audit events to FNF SIEM, and notifies M. Rodriguez and L. Padilla. The close date stays on May 2 with a 5-day buffer. Across a year at Fidelity scale, this workflow eliminates ~190,000 examiner-hours.');
   await wait(400);
   row('parse', 'Regenerating Schedule B with cleared status. Writing to <span class="hl">SoftPro ProForm</span>. Change manifest: 7 requirements, 9 exceptions, 2 escalations.', {ic:'◈'});
@@ -2746,9 +2943,48 @@ const modalBody = () => {
   const timeStr = totalH === 0 ? `${totalM} min` : (totalM === 0 ? `${totalH} hours` : `${totalH}h ${totalM}m`);
   const fileDollars = Math.round((totalMinSaved/60) * RATE_PER_HOUR);
   const annualDollars = Math.round((fileDollars * ANNUAL_CURATIVE_FILES) / 1_000_000);
-  const roamShare = Math.round(annualDollars * 0.20);
-  const netFNF = annualDollars - roamShare;
+  const hourlyBurn = Math.round((annualDollars * 1_000_000) / (250 * 8) / 1000); // $K per business hour
+  const dailyBurn = Math.round((annualDollars * 1_000_000) / 250 / 1_000_000 * 10) / 10; // $M per day, 1 decimal
   return `
+  <div class="meanwhile">
+    <div class="eyebrow">Meanwhile at Fidelity, today</div>
+    <h2>This agent just replaced <em>13 hours and ${totalM} minutes</em> of one examiner's manual work.<br/>Here is what that compounds to.</h2>
+    <div class="horizons">
+      <div class="horizon">
+        <div class="tag">This one file</div>
+        <div class="num"><span class="dollar">$</span>${fileDollars.toLocaleString()}</div>
+        <div class="caption"><b>recovered.</b> Examiner labor · $47/hr fully loaded. Two potential errors prevented live — IVR drift and a 72% OCR scan.</div>
+      </div>
+      <div class="horizon">
+        <div class="tag">Every business hour</div>
+        <div class="num"><span class="dollar">$</span>${hourlyBurn}<span class="suffix">K</span></div>
+        <div class="caption"><b>burning at FNF right now</b> on manual curative work — at 2,600 direct orders a day, this workflow runs roughly 163 times per hour.</div>
+      </div>
+      <div class="horizon">
+        <div class="tag">Every business day</div>
+        <div class="num"><span class="dollar">$</span>${dailyBurn}<span class="suffix">M</span></div>
+        <div class="caption"><b>on the table, daily.</b> 2,605 curative-bearing files across 1,300 offices. Today, humans do all of them, one at a time.</div>
+      </div>
+      <div class="horizon hero">
+        <div class="tag">Year one at FNF scale</div>
+        <div class="num"><span class="dollar">$</span>${annualDollars}<span class="suffix">M</span></div>
+        <div class="caption"><b>+400 bps of pretax margin.</b> Exactly the Y1 deck target, derived file-by-file from the baseline you just watched.</div>
+      </div>
+    </div>
+    <div class="subline">
+      <b>And this is one workflow inside one layer.</b> Curative is Wedge 3 of 4 in direct ops. Apply the same agent workforce to intake, client communication, post-close — and to agency, commercial, ServiceLink — and Y3 is <b>30%+ pretax title margin</b>.
+    </div>
+  </div>
+
+  <div class="prevention-strip">
+    <div class="pv-icon">✓</div>
+    <div>
+      <div class="pv-title">Errors prevented on this file</div>
+      <div class="pv-sub">Agent rejected its own answer when confidence dropped below the 90% gate, and re-mapped a changed IVR menu in real time. Neither would have happened with a human examiner — both would have cost M. Rodriguez hours or produced a bad commitment.</div>
+    </div>
+    <div class="pv-count">${mistakesPrevented}</div>
+  </div>
+
   <div class="savings-hero">
     <div>
       <div class="k">Examiner time saved</div>
