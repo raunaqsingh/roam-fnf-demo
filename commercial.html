@@ -505,6 +505,53 @@
 
   .fine-print { font-size: 10.5px; color: var(--muted); font-style: italic;
     margin-top: 20px; line-height: 1.55; }
+
+  /* Integrity moment banner */
+  .moment-banner {
+    background: linear-gradient(135deg, #FFF7E6 0%, #FFE8A8 100%);
+    border: 1px solid var(--amber);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 12px 24px;
+    font-size: 12.5px;
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    animation: momentIn 0.5s ease-out;
+    box-shadow: 0 2px 12px rgba(217,119,6,0.18);
+    color: var(--ink);
+  }
+  @keyframes momentIn {
+    0% { opacity: 0; transform: translateY(8px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .moment-banner .icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--amber);
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 32px;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 0 0 4px rgba(217,119,6,0.18);
+  }
+  .moment-banner .txt { line-height: 1.55; }
+  .moment-banner .txt b { color: var(--amber); }
+  .moment-banner .prevented {
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    padding: 6px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(218,41,28,0.4);
+    transform: rotate(-2deg);
+  }
 </style>
 </head>
 <body>
@@ -535,8 +582,8 @@
 <section class="pain-callout">
   <div class="icon">!</div>
   <div class="pc-body">
-    <b>"We've been waiting 3 weeks on a prelim."</b> — Ellen, buyer's counsel · Tampa Bay Commerce Tower acquisition.<br/>
-    The file has been sitting in the title plant search queue. 8 parcels to search. 60-year chain. Multi-state entities. 42 tenant leases. A human examiner would still be re-keying grantor indices next Tuesday. Watch the agent do it all in <b>under 2 minutes.</b>
+    <b>"We've been waiting 3 weeks on a prelim."</b> — Ellen R., buyer's counsel at Skadden · Tampa Bay Commerce Tower acquisition.<br/>
+    The file has been sitting in the title plant search queue. 8 parcels to search. 60-year chain. 4-deep Delaware entity stack with foreign LPs behind it. 42 tenant leases. FINCEN GTO filings due. FL doc stamp tax ~$1.3M. A human CCA would still be re-keying grantor indices next Tuesday. Watch the agent do it all in <b>under 2 minutes.</b>
   </div>
   <div class="pc-stat">
     <div class="n">21</div>
@@ -561,7 +608,7 @@
     </div>
     <div class="kv">
       <div class="k">Counsel waiting</div>
-      <div class="v">Ellen R. · Morgan Lewis</div>
+      <div class="v">Ellen R. · Skadden</div>
     </div>
   </div>
   <div class="cta-wrap">
@@ -753,7 +800,7 @@ const CAPSTACK = [
 
 const LEASES = [
   { id:'l1', n:'01', label:'Raymond James · 12F–18F', detail:'Anchor · 7 years remaining · SNDA required' },
-  { id:'l2', n:'02', label:'Morgan Lewis · 22F', detail:'2 floors · SNDA required' },
+  { id:'l2', n:'02', label:'Holland &amp; Knight · 22F', detail:'2 floors · SNDA required' },
   { id:'l3', n:'03', label:'WeWork · 28F–30F', detail:'Sub-anchor · operator change clause · SNDA + estoppel' },
   { id:'l4', n:'04', label:'Ford GM Americas · 34F', detail:'Auto HQ · long-term · SNDA required' },
   { id:'l5', n:'05', label:'+ 38 additional tenants', detail:'Abstracted: terms, options, assignments · no SNDAs needed' },
@@ -820,6 +867,15 @@ function phase(t) {
   const d = document.createElement('div');
   d.className = 'phase';
   d.textContent = t;
+  feed.appendChild(d);
+  feed.scrollTop = feed.scrollHeight;
+}
+let mistakesPrevented = 0;
+function momentBanner(html) {
+  mistakesPrevented++;
+  const d = document.createElement('div');
+  d.className = 'moment-banner';
+  d.innerHTML = `<div class="icon">!</div><div class="txt"><b>Mistake prevented.</b> ${html}</div><div class="prevented">Error #${mistakesPrevented} caught</div>`;
   feed.appendChild(d);
   feed.scrollTop = feed.scrollHeight;
 }
@@ -975,9 +1031,15 @@ async function runDemo() {
     bumpAuto();
   }
   row('api', '<span class="hl">OFAC SDN list</span> · all 4 entities + 12 identified principals · <span class="gold">no matches.</span>', {ic:'✓'});
-  row('complete', 'Entity chain verified. <span class="hl">No upstream liens, judgments, or sanctions hits.</span> <span class="saved">saved 3h</span>', {ic:'✓', inc:0.4});
+  await wait(400);
+  row('legal', '<span class="hl">CFIUS screen</span> · traced ultimate beneficial ownership through CHREP IV LP to 3 tier-2 LPs · 2 sovereign wealth (Singapore GIC, Norway Norges) &lt;10% passive · <span class="gold">not reportable</span>', {ic:'§'});
+  await wait(500);
+  row('api', '<span class="hl">FINCEN BSA · Tampa GTO</span> · Hillsborough Co is covered · purchase is financed, not all-cash · <span class="gold">reporting not triggered.</span> Filing draft prepared in case cash portion emerges at close.', {ic:'⚑'});
+  await wait(400);
+  row('legal', '<span class="hl">FIRPTA</span> · seller Crescent Heights Tampa LLC · US entity per IRC §1445 · <span class="gold">certificate of non-foreign status drafted.</span>', {ic:'§'});
+  row('complete', 'Entity chain verified. <span class="hl">No upstream liens, judgments, sanctions, CFIUS, or FIRPTA issues.</span> <span class="saved">saved 5h</span>', {ic:'✓', inc:0.4});
   evStatus('ev-entity','ok');
-  addSaved(180);
+  addSaved(300);
 
   // ============================================================
   // PHASE 3: PARALLEL PLANT SEARCHES (the hero visual)
@@ -1015,9 +1077,14 @@ async function runDemo() {
       cells.push(`[data-cell="${p.id}-${ix.replace(/\s+/g,'')}"]`);
     });
   });
-  // Mark all running
-  cells.forEach(sel => { const c = document.querySelector(sel); if (c) c.classList.add('running'); });
-  await wait(800);
+  // Stagger the running state so it feels alive (all 48 launch within ~700ms)
+  cells.forEach((sel, i) => {
+    setTimeout(() => {
+      const c = document.querySelector(sel);
+      if (c) c.classList.add('running');
+    }, (i * 14) / SPEED);
+  });
+  await wait(900);
   row('plant', 'All 48 connections live. Streaming results…', {ic:'↻'});
 
   // Finish in waves — ~8 per wave, some flagged
@@ -1053,11 +1120,11 @@ async function runDemo() {
   document.getElementById('plant-pv').textContent = `100%`;
 
   row('plant', '48/48 complete. <span class="hl">4 findings flagged</span> for review: 1 old judgment (Parcel C), 1 UCC fixture filing (Parcel D), 1 mechanics lien (Parcel G, released), 1 lis pendens (Parcel A, dismissed 2020).', {ic:'⚑', inc:0.4});
-  row('complete', 'Plant searches complete. <span class="hl">Baseline: 10 business days of examiner queue time.</span> <span class="saved">saved 24h</span>', {ic:'✓'});
+  row('complete', 'Plant searches complete. <span class="hl">Baseline: 10 business days of examiner queue time.</span> <span class="saved">saved 18h</span>', {ic:'✓'});
   evStatus('ev-plant','ok');
   PARCELS.forEach(p => { setDot(p.id,'cleared'); setSig(p.id, '✓ 6 indices clear · flagged items packaged for UW'); });
   for (let i = 0; i < 8; i++) bumpAuto();
-  addSaved(24*60);
+  addSaved(18*60);
 
   // ============================================================
   // PHASE 4: CHAIN OF TITLE
@@ -1078,6 +1145,12 @@ async function runDemo() {
     setChain(2026 - years[i]);
     row('ofr', `Chain node <span class="hl">${years[i]}</span> · ${['WD','WD+Mortgage','WD','WD','WD+Mtg','Release+WD','WD','WD+Mtg Assignment','WD+Mtg (prior policy)','Current purchase pending'][i]}`, {ic:'◆'});
     await wait(280);
+    // Impossible-today moment: name variance reconciliation between 1978 and 1983 nodes
+    if (years[i] === 1978) {
+      await wait(500);
+      momentBanner('The 1978 grantee recorded as <b>"Jackson St Partners"</b> but the 1983 grantor recorded as <b>"Jackson Street Partners, a Florida general partnership"</b>. A manual examiner often assumes continuity. The agent cross-referenced the FL Division of Corporations archive and confirmed it is the same entity (partnership name standardized under 1979 statute), then flagged the 1978 recording for a corrective scrivener\'s affidavit.');
+      await wait(1200);
+    }
   }
   document.getElementById('chain-body').innerHTML = `
     <div style="display:flex; flex-direction:column; gap:4px;">
@@ -1090,10 +1163,10 @@ async function runDemo() {
       `).join('')}
     </div>`;
   setChain(64);
-  row('complete', '64-year chain complete. <span class="hl">47 instruments · 6 OCR fallbacks · 0 gaps.</span> <span class="saved">saved 16h</span>', {ic:'✓'});
+  row('complete', '64-year chain complete. <span class="hl">47 instruments · 6 OCR fallbacks · 1 name reconciliation · 0 gaps.</span> <span class="saved">saved 9h</span>', {ic:'✓'});
   evStatus('ev-chain','ok');
   bumpAuto();
-  addSaved(16*60);
+  addSaved(9*60);
 
   // ============================================================
   // PHASE 5: ENCUMBRANCE AGGREGATION + LEASE ANALYSIS
@@ -1119,7 +1192,7 @@ async function runDemo() {
       <div style="margin-bottom:8px; font-weight:600;">SNDAs required · 4 of 42 tenants</div>
       <div style="display:flex; flex-direction:column; gap:6px;">
         <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Raymond James</b> · floors 12–18 · anchor · assignment + option renewal language · <span style="color:var(--amber); font-weight:700;">SNDA + estoppel drafted</span></div>
-        <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Morgan Lewis</b> · floor 22 · <span style="color:var(--amber); font-weight:700;">SNDA drafted</span></div>
+        <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Holland &amp; Knight</b> · floor 22 · <span style="color:var(--amber); font-weight:700;">SNDA drafted</span></div>
         <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>WeWork</b> · floors 28–30 · operator change clause flagged · <span style="color:var(--amber); font-weight:700;">SNDA + estoppel + ownership attestation</span></div>
         <div style="padding:6px 10px; background:#FFF9F0; border-left:3px solid var(--amber); border-radius:0 2px 2px 0;"><b>Ford GM Americas</b> · floor 34 · long-term · <span style="color:var(--amber); font-weight:700;">SNDA drafted</span></div>
         <div style="padding:6px 10px; background:#F7FBF8; border-left:3px solid var(--green);"><b>38 other tenants</b> · abstracted · no SNDA required under senior loan terms</div>
@@ -1163,11 +1236,15 @@ async function runDemo() {
     '<b>Schedule A locked. Schedule B-I (22 requirements) drafted. Schedule B-II (31 exceptions) drafted.</b> Prior Stewart policy exceptions carried forward where still applicable, dropped where cured. Ready for W. Chen to sign out.');
 
   row('emit', 'Writing prelim to <span class="hl">SoftPro ProForm commercial</span> · Schedule A · Schedule B-I (22 reqs) · Schedule B-II (31 exceptions)', {ic:'◈'});
-  await wait(800);
-  row('emit', 'Audit trail written to FNF SIEM (78 events) · signed · all 4 entities noted · 48 plant searches logged · 47 chain nodes indexed', {ic:'↓'});
-  await wait(600);
-  row('emit', 'Notifying <span class="hl">W. Chen, CCA</span> + <span class="hl">D. Nakamura</span> via Teams + ResWare queue · close target on track', {ic:'◈'});
+  await wait(700);
+  row('legal', '<span class="hl">FL documentary stamp tax</span> · deed $0.70/$100 on $185M = <span class="amt">$1,295,000</span> · <span class="hl">FL intangible tax</span> on $125M mortgage at 0.2% = <span class="amt">$250,000</span> · computed, queued to CD', {ic:'§'});
   await wait(500);
+  row('parse', '<span class="hl">Endorsement suite assembled</span> for commercial policy: ALTA 3.1 (zoning) · 9 (CCRs) · 17 (access) · 17.1 (indirect access) · 18 (single tax parcel) · 19 (contiguity, 8 parcels) · 22 (location) · 25 (survey) · 28.1 (encroachment, air rights) · 32 (construction) · 33 (disbursement) · Comprehensive', {ic:'◆', inc:0.4});
+  await wait(500);
+  row('emit', 'Audit trail written to FNF SIEM (78 events) · signed · all 4 entities noted · 48 plant searches logged · 47 chain nodes indexed · CFIUS/FIRPTA/GTO screens retained', {ic:'↓'});
+  await wait(500);
+  row('emit', 'Notifying <span class="hl">W. Chen, CCA</span> + <span class="hl">D. Nakamura</span> via Teams + ResWare queue · Ellen (Skadden) gets prelim link · close target on track', {ic:'◈'});
+  await wait(400);
 
   row('complete', '<span class="gold">Commercial prelim complete.</span> 3 items to underwriter · D. Nakamura gets a complete draft · Ellen (buyer counsel) gets her prelim in 90 seconds instead of 3 weeks.', {ic:'✓', inc:0.4});
 
@@ -1263,6 +1340,29 @@ const modalBody = () => {
       <tr><td class="n">3</td><td>FDEP environmental covenant</td><td>2015 remediation complete · no active obligations · Phase 1 ESA confirms</td><td class="st"><span class="ok">ENDORSED</span></td></tr>
       <tr><td class="n">4</td><td>Prior policy exceptions (Stewart M-2019-C-88104)</td><td>Reviewed · 7 carried forward · 4 cured since 2019</td><td class="st"><span class="ok">CARRIED</span></td></tr>
       <tr><td class="n">…</td><td colspan="2" style="color:var(--muted); font-size:11px;">+ 27 standard exceptions (utility easements, platting, zoning, taxes, leases 1–42, matters of survey, etc.)</td><td class="st"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-head">
+    <div class="t">Commercial endorsement suite · drafted &amp; queued</div>
+    <div class="eb">ALTA 2021 · for W. Chen sign-off</div>
+  </div>
+  <table class="prelim">
+    <thead>
+      <tr><th>Endorsement</th><th>Purpose</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ALTA 3.1</td><td>Zoning — unimproved and improved use categories (office + ground-floor retail)</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>ALTA 9</td><td>Restrictions, encroachments, minerals — CCRs and REA reviewed</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>ALTA 17 / 17.1</td><td>Access to named public street · and indirect access via easement</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>ALTA 18</td><td>Single tax parcel — all 8 parcels assessed under combined folio</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>ALTA 19</td><td>Contiguity — confirms 8 parcels are contiguous with no strips or gores</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>ALTA 22 / 22.1</td><td>Location — building is located on named street, within parcel boundaries</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>ALTA 25</td><td>Survey — 2019 Stantec baseline plus 2026 update pending</td><td class="st"><span class="ok">TRACKED</span></td></tr>
+      <tr><td>ALTA 28.1</td><td>Encroachment — air rights, adjacent tower reciprocal · <b>W. Chen review</b></td><td class="st"><span class="warn">UW</span></td></tr>
+      <tr><td>ALTA 32 + 33</td><td>Construction loan + disbursement — TI and capex work at 34F–36F</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>Comprehensive</td><td>Multi-parcel comprehensive protection for commercial assemblage</td><td class="st"><span class="ok">DRAFTED</span></td></tr>
+      <tr><td>FL intangible tax + doc stamp</td><td>$1,295,000 deed doc stamp + $250,000 intangible · CD line items computed</td><td class="st"><span class="ok">COMPUTED</span></td></tr>
     </tbody>
   </table>
 
