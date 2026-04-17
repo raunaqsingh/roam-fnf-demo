@@ -1,0 +1,2085 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1440" />
+<title>Schedule B Curative · Live · Roam for FNF</title>
+<style>
+  :root {
+    /* Fidelity National Financial brand system */
+    --navy: #002D5C;          /* FNF primary navy */
+    --navy-2: #001B3A;        /* deepest navy, top bars */
+    --navy-3: #1a3d6b;        /* hover / mid */
+    --navy-4: #00458C;        /* accent bright */
+    --fnf-red: #DA291C;       /* FNF signature red */
+    --fnf-red-dark: #B3231A;
+    --fnf-red-soft: #FBE3E0;
+    --cream: #F5F5F7;         /* clean off-white panel */
+    --cream-2: #EAEAF0;
+    --paper: #FFFFFF;         /* pure white canvas */
+    --ink: #001B3A;
+    --ink-2: #2A3A55;
+    --muted: #6B7280;
+    --muted-2: #9CA3AF;
+    --gold: #C9A961;          /* retained as Roam accent */
+    --gold-2: #A8892E;
+    --gold-soft: #E6CD8B;
+    --green: #0A7D3B;
+    --green-soft: #5EB37E;
+    --amber: #D97706;
+    --red: #DA291C;
+    --rule: #E5E7EB;
+    --rule-dark: #1a2d4a;
+    --shadow-sm: 0 1px 2px rgba(0,27,58,0.06);
+    --shadow-md: 0 4px 12px rgba(0,27,58,0.08);
+    --shadow-lg: 0 12px 32px rgba(0,27,58,0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    min-width: 1320px;
+  }
+
+  /* Top brand bar */
+  .brand-bar {
+    background: var(--navy-2);
+    color: #ffffff;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #000;
+    box-shadow: var(--shadow-md);
+  }
+  .fnf-lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .fnf-mark {
+    box-shadow: 0 1px 4px rgba(218,41,28,0.35);
+    border-radius: 4px;
+  }
+  .fnf-text .fnf-primary {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+  .fnf-text .fnf-sec {
+    font-size: 10.5px;
+    color: #9DB3CC;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .divider {
+    width: 1px;
+    height: 34px;
+    background: rgba(255,255,255,0.14);
+    margin: 0 4px;
+  }
+  .roam-credit { display: flex; flex-direction: column; gap: 1px; }
+  .roam-credit .roam-mark {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .roam-credit .roam-mark::before {
+    content: "";
+    display: inline-block;
+    width: 14px; height: 2px;
+    background: var(--gold);
+    margin-right: 6px;
+    vertical-align: 3px;
+  }
+  .roam-credit .roam-sub {
+    font-size: 9.5px;
+    color: #7A8FA9;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-left: 20px;
+  }
+  .brand-bar .spacer { flex: 1; }
+  .brand-bar .pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #D6DEE9;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .brand-bar .pill .dim {
+    color: #7A8FA9;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+  .brand-bar .live {
+    background: rgba(218,41,28,0.14);
+    border-color: rgba(218,41,28,0.45);
+    color: #FEC9C2;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  .brand-bar .live::before {
+    content: "";
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--fnf-red);
+    margin-right: 2px;
+    animation: pulse 1.2s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--fnf-red);
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  /* File context strip */
+  .file-strip {
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+  }
+  .file-strip .file-info {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    gap: 28px;
+    align-items: center;
+  }
+  .file-strip .property-thumb {
+    width: 78px; height: 56px;
+    background: linear-gradient(135deg, #3d5a7b 0%, #6d8bb0 50%, #a8c4dc 100%);
+    border: 1px solid #334b6a;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .file-strip .property-thumb::before {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 10%; right: 10%;
+    height: 55%;
+    background: linear-gradient(180deg, #d9b88a 0%, #c4a476 100%);
+    clip-path: polygon(15% 100%, 15% 25%, 50% 0%, 85% 25%, 85% 100%);
+  }
+  .file-strip .property-thumb::after {
+    content: "";
+    position: absolute;
+    bottom: 8%; left: 45%;
+    width: 14%; height: 28%;
+    background: #5a3d24;
+  }
+  .file-strip h1 {
+    margin: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .file-strip .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .kv { display: flex; flex-direction: column; gap: 2px; }
+  .kv .k {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .kv .v {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .file-strip .cta-wrap { display: flex; gap: 8px; align-items: center; }
+  .speed-ctrl {
+    display: flex;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .speed-ctrl button {
+    background: transparent;
+    border: none;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    border-right: 1px solid var(--rule);
+  }
+  .speed-ctrl button:last-child { border-right: none; }
+  .speed-ctrl button.active {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .run-btn {
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    border: none;
+    padding: 11px 22px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(218,41,28,0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+    transition: transform 0.08s ease, box-shadow 0.12s ease;
+  }
+  .run-btn:hover { background: var(--fnf-red-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(218,41,28,0.35); }
+  .run-btn:active { transform: translateY(0); }
+  .run-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .run-btn .arrow { margin-left: 8px; color: #FFFFFF; }
+  .run-btn.reset {
+    background: var(--paper);
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+  }
+  .run-btn.reset:hover { background: #F9FAFB; }
+
+  /* Labor savings hero strip */
+  .labor-hero {
+    background:
+      linear-gradient(180deg, #002D5C 0%, #001B3A 100%);
+    color: #FFFFFF;
+    position: relative;
+    padding: 20px 28px;
+    display: grid;
+    grid-template-columns: 2.5fr 1px 1.2fr 1px 1.2fr 1px 1.7fr;
+    gap: 28px;
+    align-items: center;
+    border-bottom: 1px solid #000;
+  }
+  .labor-hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 38%, var(--gold) 100%);
+  }
+  .labor-hero::after {
+    content: "LIVE FROM JACKSONVILLE PILOT BU · JAX-23";
+    position: absolute;
+    top: 8px;
+    right: 28px;
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    color: #6B8199;
+    font-weight: 600;
+  }
+  .labor-hero .sep-v {
+    background: rgba(255,255,255,0.08);
+    width: 1px;
+    height: 72px;
+  }
+  .labor-hero .block { display: flex; flex-direction: column; gap: 5px; }
+  .labor-hero .lbl {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #FEC9C2;
+    font-weight: 700;
+  }
+  .labor-hero .big {
+    font-family: "Fraunces", "Source Serif Pro", Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .labor-hero .big.primary {
+    font-size: 52px;
+    color: #FFFFFF;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .labor-hero .big.accent {
+    color: var(--fnf-red);
+    font-weight: 600;
+    text-shadow: 0 0 1px rgba(218,41,28,0.1);
+  }
+  .labor-hero .sub {
+    font-size: 11px;
+    color: #9DB3CC;
+    line-height: 1.5;
+  }
+  .labor-hero .caret {
+    display: inline-block;
+    color: var(--green-soft);
+    font-size: 14px;
+    vertical-align: 3px;
+    margin-right: 4px;
+  }
+  .labor-hero .unit {
+    font-size: 24px;
+    color: var(--fnf-red);
+    font-weight: 500;
+    margin-left: 2px;
+    vertical-align: 4px;
+  }
+  .labor-hero .flash { animation: flash 0.6s ease-out; }
+  @keyframes flash {
+    0% { color: var(--green-soft); transform: scale(1.04); }
+    100% { color: #FFFFFF; transform: scale(1); }
+  }
+
+  /* Three column layout */
+  main {
+    display: grid;
+    grid-template-columns: 360px 1fr 520px;
+    height: calc(100vh - 240px);
+    min-height: 680px;
+    overflow: hidden;
+  }
+
+  /* Left commitment nav */
+  .commitment {
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    overflow-y: auto;
+  }
+  .doc-head {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--cream);
+  }
+  .doc-head .doc-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .doc-head .doc-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.03em;
+  }
+  .sched-head {
+    padding: 14px 20px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .sched-head .count {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+  .sched-list { padding: 0 12px 12px; }
+  .sched-item {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    gap: 10px;
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+    position: relative;
+  }
+  .sched-item:last-child { border-bottom: none; }
+  .sched-item .num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 13px;
+    color: var(--gold-2);
+    font-weight: 500;
+    margin-top: 1px;
+  }
+  .sched-item .body .label {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .sched-item .body .detail {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .sched-item .body .mins {
+    display: none;
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    margin-top: 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .sched-item.done .body .mins { display: block; }
+  .status-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #c9c2b0;
+    margin-top: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+    flex-shrink: 0;
+  }
+  .status-dot.running { background: var(--gold); animation: blink 1s infinite; }
+  .status-dot.cleared { background: var(--green); }
+  .status-dot.escalated { background: var(--amber); }
+  .status-dot.pending { background: var(--muted-2); }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Center activity stream */
+  .activity {
+    background: var(--navy);
+    color: var(--cream);
+    overflow-y: auto;
+    position: relative;
+  }
+  .activity-head {
+    position: sticky;
+    top: 0;
+    background: var(--navy);
+    padding: 14px 24px 10px;
+    border-bottom: 1px solid var(--rule-dark);
+    z-index: 10;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .activity-head .t {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .activity-head .sub {
+    font-size: 11px;
+    color: #7e8da4;
+    letter-spacing: 0.03em;
+  }
+  .feed {
+    padding: 12px 0 30px;
+  }
+  .feed .row {
+    display: grid;
+    grid-template-columns: 68px 24px 1fr;
+    gap: 12px;
+    padding: 6px 24px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #cfd6e3;
+    opacity: 0;
+    transform: translateY(4px);
+    animation: rowIn 0.22s ease-out forwards;
+  }
+  @keyframes rowIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .feed .row .ts {
+    color: #6578a0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    padding-top: 1px;
+  }
+  .feed .row .ic {
+    text-align: center;
+    padding-top: 1px;
+    font-size: 13px;
+  }
+  .feed .row .msg { color: #d4dbea; }
+  .feed .row .msg .tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: 1px;
+  }
+  .tag.parse { background: #203458; color: #9dbcff; }
+  .tag.plan { background: #2a2645; color: #c9a8ff; }
+  .tag.call { background: #2b3d24; color: #a8d98c; }
+  .tag.email { background: #3d3218; color: #e6c170; }
+  .tag.api { background: #1e3a3a; color: #7bd3d3; }
+  .tag.ofr { background: #3d2438; color: #e58cc8; }
+  .tag.doc { background: #293144; color: #aec2e8; }
+  .tag.legal { background: #2a3a24; color: #b4d691; }
+  .tag.escalate { background: #402818; color: #e8a070; }
+  .tag.complete { background: #1e3a28; color: #7fd69b; }
+  .tag.emit { background: #2a2d36; color: #b8c0d0; }
+  .tag.retry { background: #3d2823; color: #e69680; }
+  .tag.warn { background: #3d3520; color: #e6cc70; }
+  .feed .row .msg .hl { color: var(--cream); font-weight: 500; }
+  .feed .row .msg .gold { color: var(--gold); font-weight: 500; }
+  .feed .row .msg .amt {
+    color: #f1dfae;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+  }
+  .feed .row .msg .saved {
+    display: inline-block;
+    background: rgba(63,138,88,0.15);
+    color: var(--green-soft);
+    padding: 1px 8px;
+    border-radius: 3px;
+    font-size: 10.5px;
+    font-weight: 600;
+    margin-left: 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    border: 1px solid rgba(127,214,155,0.25);
+  }
+  .feed .row .msg a.ref {
+    color: #84a4d4;
+    text-decoration: none;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    border-bottom: 1px dotted #4a618a;
+  }
+  .feed .phase {
+    padding: 14px 24px 6px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    border-top: 1px solid var(--rule-dark);
+    margin-top: 10px;
+  }
+  .feed .phase:first-child {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 6px;
+  }
+
+  /* Right evidence panel */
+  .evidence {
+    background: var(--paper);
+    border-left: 1px solid var(--rule);
+    overflow-y: auto;
+  }
+  .evidence-head {
+    padding: 14px 20px 10px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--cream);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .evidence-head .t {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .evidence-head .sub { font-size: 11px; color: var(--muted); }
+  .ev-card {
+    background: white;
+    border: 1px solid var(--rule);
+    margin: 14px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    opacity: 0;
+    transform: translateY(6px);
+    animation: evIn 0.28s ease-out forwards;
+  }
+  @keyframes evIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ev-card.hero { border-color: var(--gold); box-shadow: 0 2px 8px rgba(201,169,97,0.2); }
+  .ev-card-head {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cream);
+  }
+  .ev-card.hero .ev-card-head {
+    background: linear-gradient(180deg, #fef3d6 0%, #f5e6c2 100%);
+  }
+  .ev-card-head .tag-sm {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold-2);
+    padding: 2px 6px; border: 1px solid var(--gold); border-radius: 2px;
+    background: rgba(201,169,97,0.08);
+  }
+  .ev-card-head .label { font-weight: 600; font-size: 12px; }
+  .ev-card-head .status {
+    margin-left: auto; font-size: 10px;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 500;
+  }
+  .ev-card-head .status.ok { color: var(--green); }
+  .ev-card-head .status.warn { color: var(--amber); }
+  .ev-card-head .status.active { color: var(--gold-2); }
+  .ev-card-head .status.active::before {
+    content: "●"; margin-right: 3px; animation: blink 1s infinite;
+  }
+  .ev-card-body { padding: 12px 14px; font-size: 12px; }
+
+  /* Voice transcript */
+  .voice-rows { display: flex; flex-direction: column; gap: 4px; }
+  .voice-row {
+    display: grid;
+    grid-template-columns: 42px 56px 1fr;
+    gap: 8px;
+    font-size: 11.5px;
+    line-height: 1.45;
+    padding: 2px 0;
+    opacity: 0;
+    animation: rowIn 0.18s ease-out forwards;
+  }
+  .voice-row .t {
+    color: var(--muted-2);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+  }
+  .voice-row .s {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .voice-row .s.agent { color: var(--gold-2); }
+  .voice-row .s.ivr { color: #7a6da8; }
+  .voice-row .s.rep { color: #3f7a6d; }
+  .voice-row .s.sys { color: var(--red); }
+  .voice-row .x { color: var(--ink); }
+  .voice-row .x.drift {
+    background: #fbecea;
+    border-left: 3px solid var(--red);
+    padding: 2px 6px;
+    font-style: italic;
+  }
+  .voice-row .x.hold {
+    color: var(--muted-2);
+    font-style: italic;
+  }
+  .voice-conf {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-left: 4px;
+  }
+
+  /* Email draft */
+  .email { font-family: "Fraunces", Georgia, serif; font-size: 12.5px; line-height: 1.6; }
+  .email-meta {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.55;
+  }
+  .email-meta b { color: var(--ink); font-weight: 600; }
+
+  /* API / JSON */
+  .api-panel {
+    background: #0e1a2e;
+    color: #c8d2e4;
+    padding: 12px 14px;
+    border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    line-height: 1.55;
+    overflow-x: auto;
+    margin: 0;
+    white-space: pre;
+  }
+  .api-panel .k { color: #7bb4e8; }
+  .api-panel .s { color: #f1c787; }
+  .api-panel .n { color: #a5d68f; }
+  .api-panel .b { color: #e89668; }
+
+  /* Document excerpt */
+  .doc-excerpt {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 11.5px;
+    line-height: 1.55;
+    padding: 10px 14px;
+    background: #fcf9ef;
+    border: 1px dashed #d4c8a8;
+    border-radius: 2px;
+    color: #2a2418;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .doc-excerpt .hl { background: #fde8a3; padding: 0 2px; }
+  .doc-excerpt .redact {
+    background: #2a2418; color: #2a2418; user-select: none;
+  }
+
+  /* Small inline footer */
+  .ev-footer {
+    padding: 8px 14px;
+    border-top: 1px solid var(--rule);
+    font-size: 10.5px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    background: #fbf7ea;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .ev-footer .k { font-weight: 600; color: var(--ink-2); }
+
+  /* Underwriter inbox panel (special) */
+  .uw-inbox {
+    font-size: 12px;
+  }
+  .uw-inbox .avatar {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #5a6f8f, #7f96b5);
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 32px;
+    font-weight: 600;
+    font-size: 11px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .uw-inbox .row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+  }
+  .uw-inbox .row:last-child { border-bottom: none; }
+  .uw-inbox .name { font-weight: 600; font-size: 12px; }
+  .uw-inbox .role { font-size: 10.5px; color: var(--muted); }
+  .uw-inbox .item {
+    background: #faf5e9;
+    padding: 10px 12px;
+    border-radius: 3px;
+    margin-top: 10px;
+    border-left: 3px solid var(--amber);
+  }
+  .uw-inbox .item .sub { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+  .uw-inbox .pill-row { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+  .uw-inbox .pill-item {
+    font-size: 9.5px;
+    padding: 2px 6px;
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    color: var(--ink-2);
+    letter-spacing: 0.03em;
+  }
+  .uw-inbox .actions { display: flex; gap: 6px; margin-top: 10px; }
+  .uw-inbox .btn {
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .uw-inbox .btn.approve {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+  }
+  .uw-inbox .btn.modify {
+    background: white;
+    color: var(--ink);
+    border-color: var(--rule);
+  }
+  .uw-inbox .btn.reject {
+    background: white;
+    color: var(--red);
+    border-color: #d9a6a0;
+  }
+  .uw-inbox .countdown {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--amber);
+    font-size: 10.5px;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
+  /* Competitive callout strip */
+  .vs-strip {
+    margin: 10px 14px;
+    padding: 10px 12px;
+    background: #fcf4e8;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 3px 3px 0;
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .vs-strip .k {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    margin-bottom: 4px;
+  }
+  .vs-strip b { color: var(--ink); }
+
+  /* Bottom metrics bar */
+  .metrics {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 12px 24px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr auto;
+    gap: 20px;
+    align-items: center;
+    border-top: 1px solid #000;
+  }
+  .metrics .stat .k {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7e8da4;
+    margin-bottom: 3px;
+    font-weight: 600;
+  }
+  .metrics .stat .v {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .metrics .stat .v.gold { color: var(--gold); }
+  .metrics .stat .v.green { color: var(--green-soft); }
+  .metrics .stat .sub { font-size: 10px; color: #7e8da4; margin-top: 2px; }
+  .metrics .sep { width: 1px; background: var(--rule-dark); height: 40px; }
+  .metrics .done-cta {
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    border: none;
+    cursor: pointer;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(218,41,28,0.3);
+  }
+  .metrics .done-cta.ready {
+    opacity: 1;
+    pointer-events: auto;
+    animation: pulse-red 2s ease-in-out infinite;
+  }
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 2px 8px rgba(218,41,28,0.3); }
+    50% { box-shadow: 0 4px 18px rgba(218,41,28,0.55); }
+  }
+  .metrics .done-cta:hover { background: var(--fnf-red-dark); }
+
+  /* Modal for cleared commitment */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,22,40,0.75);
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    max-width: 1100px;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .modal-head {
+    background: var(--navy-2);
+    color: #FFFFFF;
+    padding: 22px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  .modal-head::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 38%, var(--gold) 100%);
+  }
+  .modal-head h2 {
+    margin: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .modal-head .sub { font-size: 11.5px; color: #9DB3CC; margin-top: 4px; letter-spacing: 0.02em; }
+  .modal-head .close {
+    background: transparent;
+    border: 1px solid #3a4a66;
+    color: var(--cream);
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+  }
+  .modal-body { padding: 24px 28px; }
+
+  .savings-hero {
+    background:
+      linear-gradient(180deg, #002D5C 0%, #001B3A 100%);
+    color: #FFFFFF;
+    padding: 32px 36px;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1.3fr;
+    gap: 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,27,58,0.2);
+  }
+  .savings-hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 50%, var(--gold) 100%);
+  }
+  .savings-hero .k {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #FEC9C2;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .savings-hero .v {
+    font-family: "Fraunces", "Source Serif Pro", Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .savings-hero .v.hero {
+    font-size: 52px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+  }
+  .savings-hero .v.accent {
+    color: var(--fnf-red);
+    font-weight: 600;
+  }
+  .savings-hero .sub { font-size: 11px; color: #9DB3CC; margin-top: 8px; line-height: 1.55; }
+
+  .alta-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 22px 0 4px;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 4px;
+  }
+  .alta-title:first-child { margin-top: 0; }
+  .alta-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+  table.alta {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: white;
+    border: 1px solid var(--rule);
+  }
+  table.alta th {
+    background: var(--cream);
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    border-bottom: 1px solid var(--rule);
+    font-weight: 700;
+  }
+  table.alta td {
+    padding: 10px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  table.alta td.num {
+    font-family: "Fraunces", Georgia, serif;
+    color: var(--gold-2);
+    font-weight: 600;
+    width: 30px;
+  }
+  table.alta td.status { width: 120px; }
+  table.alta td.mins {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 600;
+    width: 70px;
+    text-align: right;
+  }
+  table.alta .ok { color: var(--green); font-weight: 600; }
+  table.alta .warn { color: var(--amber); font-weight: 600; }
+  table.alta .note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .fntic-sig {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    margin-top: 20px;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  .fntic-sig .hdr {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .fntic-sig .sig-line {
+    border-bottom: 1px solid var(--ink);
+    width: 260px;
+    margin: 20px 0 4px;
+    font-style: italic;
+    color: var(--navy);
+    font-family: "Snell Roundhand", "Apple Chancery", cursive;
+    font-size: 18px;
+    padding-bottom: 2px;
+  }
+  .fntic-sig .sig-meta { font-size: 10.5px; color: var(--muted); }
+
+  .legal-fine {
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 18px;
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .audit-row {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--rule);
+    color: var(--ink-2);
+    display: grid;
+    grid-template-columns: 68px 80px 1fr;
+    gap: 12px;
+  }
+  .audit-row .ts { color: var(--muted); }
+  .audit-row .t { font-weight: 600; color: var(--gold-2); }
+
+  /* Idle state banner in activity */
+  .idle-banner {
+    padding: 30px 24px;
+    text-align: center;
+    color: #6b7a90;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .idle-banner .big {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 17px;
+    color: var(--cream);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .idle-banner .tip {
+    font-size: 11px;
+    color: #6578a0;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* Escalation panel */
+  .escalation {
+    background: #2a1e10;
+    border: 1px solid #6b4520;
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-size: 11.5px;
+    color: #f0d5a8;
+    margin-top: 10px;
+  }
+  .escalation .head {
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold);
+    font-weight: 700; margin-bottom: 6px;
+  }
+  .escalation ul { margin: 6px 0 0 14px; padding: 0; }
+  .escalation li { margin: 2px 0; }
+
+  /* Scrollbar styling */
+  .activity::-webkit-scrollbar, .commitment::-webkit-scrollbar,
+  .evidence::-webkit-scrollbar, .modal-bg::-webkit-scrollbar { width: 10px; }
+  .activity::-webkit-scrollbar-track { background: var(--navy); }
+  .activity::-webkit-scrollbar-thumb { background: #243555; border-radius: 5px; }
+  .commitment::-webkit-scrollbar-track, .evidence::-webkit-scrollbar-track { background: var(--paper); }
+  .commitment::-webkit-scrollbar-thumb, .evidence::-webkit-scrollbar-thumb { background: #d4c8a8; border-radius: 5px; }
+</style>
+</head>
+<body>
+
+<header class="brand-bar">
+  <div class="fnf-lockup">
+    <svg class="fnf-mark" width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="0" y="0" width="36" height="36" rx="4" fill="#DA291C"/>
+      <text x="18" y="24" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="15" fill="#FFFFFF" letter-spacing="-0.5">FNF</text>
+    </svg>
+    <div class="fnf-text">
+      <div class="fnf-primary">Fidelity National Title</div>
+      <div class="fnf-sec">Agent Operations · Jacksonville Pilot BU</div>
+    </div>
+  </div>
+  <span class="divider"></span>
+  <div class="roam-credit">
+    <span class="roam-mark">Roam</span>
+    <span class="roam-sub">agent workforce v2.4.11</span>
+  </div>
+  <span class="spacer"></span>
+  <span class="pill"><span class="dim">Office</span>JAX-23 · FL</span>
+  <span class="pill"><span class="dim">Rules loaded</span>FL · TX · CA · NY · AZ · CO</span>
+  <span class="pill"><span class="dim">Concurrent files</span><span id="concurrent">14</span></span>
+  <span class="pill live" id="live-pill" style="display:none">Live</span>
+</header>
+
+<section class="file-strip">
+  <div class="file-info">
+    <div class="property-thumb"></div>
+    <div>
+      <h1>1247 Coral Ridge Dr, Fort Lauderdale, FL 33304</h1>
+      <div class="sub">SFR · Purchase · $985,000 · Conv loan · Close target May 2, 2026</div>
+    </div>
+    <div class="kv">
+      <div class="k">Order</div>
+      <div class="v">2026-FNF-044281</div>
+    </div>
+    <div class="kv">
+      <div class="k">Examiner</div>
+      <div class="v">M. Rodriguez</div>
+    </div>
+    <div class="kv">
+      <div class="k">Commitment</div>
+      <div class="v">Eff. Apr 14, 2026</div>
+    </div>
+  </div>
+  <div class="cta-wrap">
+    <div class="speed-ctrl" id="speed">
+      <button data-spd="1">1×</button>
+      <button data-spd="2" class="active">2×</button>
+      <button data-spd="4">4×</button>
+    </div>
+    <button class="run-btn" id="run">Start curative run<span class="arrow">→</span></button>
+  </div>
+</section>
+
+<section class="labor-hero">
+  <div class="block">
+    <div class="lbl">Examiner labor saved · this file</div>
+    <div class="big primary"><span id="hero-hours">0h 00m</span></div>
+    <div class="sub">Baseline M. Rodriguez · 14h 22m across 3 business days · $47/hr fully loaded (FNF FY25 model)</div>
+  </div>
+  <div class="sep-v"></div>
+  <div class="block">
+    <div class="lbl">File-level $ saved</div>
+    <div class="big accent"><span class="caret">▲</span>$<span id="hero-file-dollars">0</span></div>
+    <div class="sub">Direct ops labor only · excludes throughput gains</div>
+  </div>
+  <div class="sep-v"></div>
+  <div class="block">
+    <div class="lbl">Human touches eliminated</div>
+    <div class="big"><span id="hero-touches">0</span><span style="color:#6B8199; font-size:24px; margin-left:4px;"> / 7</span></div>
+    <div class="sub">M. Rodriguez interventions required</div>
+  </div>
+  <div class="sep-v"></div>
+  <div class="block">
+    <div class="lbl">Annualized · FNF scale</div>
+    <div class="big accent"><span class="caret">▲</span>$<span id="hero-annual">0</span><span class="unit">M</span></div>
+    <div class="sub">573K curative-bearing files/yr · matches Y1 target $340M (+400 bps margin lift)</div>
+  </div>
+</section>
+
+<main>
+  <!-- Left: Commitment document -->
+  <aside class="commitment">
+    <div class="doc-head">
+      <div class="doc-title">ALTA Commitment for Title Insurance</div>
+      <div class="doc-sub">Form 2021 v. 07-01-2021 · Underwriter: FNTIC · File 2026-FNF-044281</div>
+    </div>
+
+    <div class="sched-head">
+      <span>Schedule A</span>
+      <span class="count">Identification</span>
+    </div>
+    <div class="sched-list">
+      <div class="sched-item">
+        <span class="num">a</span>
+        <div class="body">
+          <div class="label">Proposed Insured</div>
+          <div class="detail">Martina J. Chen · Loan amount $788,000</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="sched-item">
+        <span class="num">b</span>
+        <div class="body">
+          <div class="label">Estate or Interest</div>
+          <div class="detail">Fee simple · Vested in James R. &amp; Patricia L. Kovač, H/W</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="sched-item">
+        <span class="num">c</span>
+        <div class="body">
+          <div class="label">Legal Description</div>
+          <div class="detail">Lot 24, Block 18, Coral Ridge Sub. Plat Book 14, Pg 52, Broward Co.</div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="sched-head">
+      <span>Schedule B-I · Requirements</span>
+      <span class="count">7 items</span>
+    </div>
+    <div class="sched-list" id="bi-list"></div>
+
+    <div class="sched-head">
+      <span>Schedule B-II · Exceptions</span>
+      <span class="count">9 items</span>
+    </div>
+    <div class="sched-list" id="bii-list"></div>
+  </aside>
+
+  <!-- Center: Agent activity stream -->
+  <section class="activity">
+    <div class="activity-head">
+      <div>
+        <div class="t">Agent Activity</div>
+      </div>
+      <div class="sub" id="feed-sub">Idle · awaiting operator</div>
+    </div>
+    <div class="feed" id="feed">
+      <div class="idle-banner" id="idle">
+        <div class="big">Roam Schedule B Curative Agent</div>
+        <div>Reads the commitment. Clears requirements. Resolves exceptions.<br/>Coordinates payoffs, HOA estoppels, tax, liens, easements, survey.</div>
+        <div class="tip">Baseline: M. Rodriguez, 14h 22m / 7 touches / 3 business days · Click start to run.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right: Evidence panel -->
+  <aside class="evidence">
+    <div class="evidence-head">
+      <div class="t">Evidence &amp; Live Actions</div>
+      <div class="sub" id="ev-sub">Idle</div>
+    </div>
+    <div id="ev-stack"></div>
+  </aside>
+</main>
+
+<footer class="metrics">
+  <div class="stat">
+    <div class="k">Elapsed · agent run</div>
+    <div class="v" id="m-time">0:00</div>
+    <div class="sub">vs 14h 22m human baseline</div>
+  </div>
+  <div class="stat">
+    <div class="k">Requirements</div>
+    <div class="v gold" id="m-bi">0 / 7</div>
+    <div class="sub">Schedule B-I</div>
+  </div>
+  <div class="stat">
+    <div class="k">Exceptions</div>
+    <div class="v gold" id="m-bii">0 / 9</div>
+    <div class="sub">Schedule B-II</div>
+  </div>
+  <div class="stat">
+    <div class="k">Labor saved · $</div>
+    <div class="v green" id="m-dollars">$0</div>
+    <div class="sub">this file</div>
+  </div>
+  <div class="stat">
+    <div class="k">Routed to human</div>
+    <div class="v" id="m-esc">0</div>
+    <div class="sub">underwriter / examiner</div>
+  </div>
+  <button class="done-cta" id="done-cta">View cleared commitment →</button>
+</footer>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2>Cleared Schedule B · Ready for Underwriter Review</h2>
+        <div class="sub">File 2026-FNF-044281 · Prepared by Roam Agent · Audit hash sha256:8442...c9f1</div>
+      </div>
+      <button class="close" id="modal-close">Close</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA MODEL  ·  labor minutes reflect FNF-verified baseline
+   ============================================================ */
+const BI = [
+  { id:'bi-1', num:'1', label:'Pay and satisfy mortgage', detail:'Recorded 2019-07-12 · Wells Fargo · Inst. 118-431847 · Orig. $525,000', mins:45 },
+  { id:'bi-2', num:'2', label:'Pay and satisfy HELOC', detail:'Recorded 2021-03-08 · Truist Bank · Inst. 119-208442 · Line $200,000', mins:25 },
+  { id:'bi-3', num:'3', label:'Satisfaction of judgment', detail:'22-CA-018773 · $4,250 vs. J. Kovač · Broward Cir. Ct.', mins:90 },
+  { id:'bi-4', num:'4', label:'HOA estoppel', detail:'Coral Ridge Improvement Assn · Mgr: Castle Group', mins:35 },
+  { id:'bi-5', num:'5', label:'2025/2026 tax verification', detail:'Broward Co. Parcel 4942-22-18-0240', mins:15 },
+  { id:'bi-6', num:'6', label:'Current survey or endorsement', detail:'Last survey 2019-06-28 (Abbott &amp; Sons, 4942-22-18-0240)', mins:20 },
+  { id:'bi-7', num:'7', label:'Satisfaction of mechanics lien', detail:'ABC Roofing LLC · $8,200 · Inst. 121-884203 · Filed 2023-11-04', mins:180 },
+];
+
+const BII = [
+  { id:'bii-1', num:'1', label:'Rights of parties in possession', detail:'Standard exception', mins:8 },
+  { id:'bii-2', num:'2', label:'Matters of survey', detail:'Held open pending updated survey', mins:5 },
+  { id:'bii-3', num:'3', label:"Utility easement, 10' rear", detail:'Rec. 1983-04-18 · Inst. 45-112-882', mins:55 },
+  { id:'bii-4', num:'4', label:'CCRs, Coral Ridge Subdivision', detail:'Rec. 2003-09-22 · Inst. 88-221-114', mins:65 },
+  { id:'bii-5', num:'5', label:'Drainage easement', detail:'Plat recorded 1961 · PB 14 Pg 52', mins:30 },
+  { id:'bii-6', num:'6', label:'Mineral reservation (1937)', detail:'Book 147 Page 88 · Sunland Oil Co.', mins:20 },
+  { id:'bii-7', num:'7', label:'Taxes for 2026', detail:'Not yet due and payable', mins:3 },
+  { id:'bii-8', num:'8', label:'HOA assessments', detail:'Coral Ridge Improvement Association', mins:10 },
+  { id:'bii-9', num:'9', label:'Chain of title · prior policy', detail:'Stewart pol. M-2019-7718421 · Effective 2019-06-30', mins:15 },
+];
+/* total baseline minutes: 621m of direct work time, compresses 14h 22m (862m) of elapsed wall time
+   because of context switching, phone tag, retries, waiting on external parties */
+const BASELINE_MINUTES = 862; // 14h 22m elapsed
+const RATE_PER_HOUR = 47; // loaded examiner rate
+const ANNUAL_CURATIVE_FILES = 573600; // 60% of 956K direct closed orders need meaningful curative
+
+/* ============================================================
+   RENDER INITIAL STATE
+   ============================================================ */
+function renderLists() {
+  const mkItem = (it) => `
+    <div class="sched-item" data-id="${it.id}">
+      <span class="num">${it.num}</span>
+      <div class="body">
+        <div class="label">${it.label}</div>
+        <div class="detail">${it.detail}</div>
+        <div class="mins">saved ${minsFormat(it.mins)} of examiner time</div>
+      </div>
+      <div class="status-dot pending" data-dot="${it.id}"></div>
+    </div>`;
+  document.getElementById('bi-list').innerHTML = BI.map(mkItem).join('');
+  document.getElementById('bii-list').innerHTML = BII.map(mkItem).join('');
+}
+function minsFormat(m) {
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m/60), rm = m%60;
+  return rm ? `${h}h ${rm}m` : `${h}h`;
+}
+renderLists();
+
+/* ============================================================
+   SPEED / TIMER
+   ============================================================ */
+let SPEED = 2;
+document.querySelectorAll('#speed button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#speed button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    SPEED = parseInt(b.dataset.spd);
+  });
+});
+const wait = ms => new Promise(r => setTimeout(r, ms / SPEED));
+
+let elapsedMs = 0, timerInterval = null;
+function startTimer() {
+  const start = Date.now();
+  timerInterval = setInterval(() => {
+    elapsedMs = (Date.now() - start) * SPEED;
+    const s = Math.floor(elapsedMs / 1000);
+    const mm = Math.floor(s / 60);
+    const ss = (s % 60).toString().padStart(2, '0');
+    document.getElementById('m-time').textContent = `${mm}:${ss}`;
+  }, 50);
+}
+function stopTimer() { clearInterval(timerInterval); }
+
+const feed = document.getElementById('feed');
+const evStack = document.getElementById('ev-stack');
+let feedClock = 0;
+function fmtTs(s) {
+  const mm = Math.floor(s / 60);
+  const ss = (s % 60).toFixed(1).padStart(4, '0');
+  return `T+${mm}:${ss}`;
+}
+
+function row(tag, msg, opts={}) {
+  const s = opts.t != null ? opts.t : feedClock;
+  feedClock = s + (opts.inc || 0.3);
+  const div = document.createElement('div');
+  div.className = 'row';
+  div.innerHTML = `
+    <span class="ts">${fmtTs(s)}</span>
+    <span class="ic">${opts.ic || '›'}</span>
+    <span class="msg"><span class="tag ${tag}">${tag}</span>${msg}</span>
+  `;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+  return div;
+}
+
+function phase(name) {
+  const div = document.createElement('div');
+  div.className = 'phase';
+  div.textContent = name;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function setDot(id, cls) {
+  const el = document.querySelector(`[data-dot="${id}"]`);
+  if (!el) return;
+  el.className = `status-dot ${cls}`;
+  const parent = document.querySelector(`[data-id="${id}"]`);
+  if (parent && (cls === 'cleared' || cls === 'escalated')) parent.classList.add('done');
+}
+
+/* ============================================================
+   EVIDENCE CARDS
+   ============================================================ */
+function evCard({id, tag, label, status='active', hero=true, body='', footer=''}) {
+  evStack.querySelectorAll('.ev-card.hero').forEach(c => c.classList.remove('hero'));
+  const d = document.createElement('div');
+  d.className = 'ev-card' + (hero ? ' hero' : '');
+  d.id = id;
+  d.innerHTML = `
+    <div class="ev-card-head">
+      <span class="tag-sm">${tag}</span>
+      <span class="label">${label}</span>
+      <span class="status ${status}" data-status>${status}</span>
+    </div>
+    <div class="ev-card-body" data-body>${body}</div>
+    ${footer ? `<div class="ev-footer">${footer}</div>` : ''}
+  `;
+  evStack.prepend(d);
+  return d;
+}
+function evStatus(cardId, status) {
+  const el = document.querySelector(`#${cardId} [data-status]`);
+  if (el) { el.className = `status ${status}`; el.textContent = status; }
+}
+
+/* ============================================================
+   METRICS & LABOR TICKER
+   ============================================================ */
+let biDone = 0, biiDone = 0, escalated = 0;
+let totalMinSaved = 0, totalTouchesSaved = 0;
+
+function animateNumber(el, from, to, duration, formatter) {
+  const start = performance.now();
+  function frame(now) {
+    const t = Math.min(1, (now - start) / (duration / SPEED));
+    const eased = 1 - Math.pow(1 - t, 3);
+    const v = from + (to - from) * eased;
+    el.textContent = formatter(v);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function addSaved(mins, touches = 0) {
+  const fromMin = totalMinSaved;
+  totalMinSaved += mins;
+  totalTouchesSaved += touches;
+
+  // Hero labor ticker
+  const heroH = document.getElementById('hero-hours');
+  heroH.classList.add('flash');
+  setTimeout(() => heroH.classList.remove('flash'), 450);
+  animateNumber(heroH, fromMin, totalMinSaved, 700, v => {
+    const h = Math.floor(v/60), m = Math.floor(v%60);
+    return `${h}h ${m.toString().padStart(2,'0')}m`;
+  });
+
+  // File dollars
+  const fileDollars = (totalMinSaved / 60) * RATE_PER_HOUR;
+  const priorDollars = (fromMin / 60) * RATE_PER_HOUR;
+  animateNumber(document.getElementById('hero-file-dollars'), priorDollars, fileDollars, 700,
+    v => Math.round(v).toLocaleString());
+  animateNumber(document.getElementById('m-dollars'), priorDollars, fileDollars, 700,
+    v => `$${Math.round(v).toLocaleString()}`);
+
+  // Annualized $ (in M)
+  const annualFromM = (priorDollars * ANNUAL_CURATIVE_FILES) / 1_000_000;
+  const annualToM = (fileDollars * ANNUAL_CURATIVE_FILES) / 1_000_000;
+  animateNumber(document.getElementById('hero-annual'), annualFromM, annualToM, 700,
+    v => Math.round(v).toLocaleString());
+
+  // Touches
+  document.getElementById('hero-touches').textContent = totalTouchesSaved;
+}
+
+function tickBi() { biDone++; document.getElementById('m-bi').textContent = `${biDone} / 7`; }
+function tickBii() { biiDone++; document.getElementById('m-bii').textContent = `${biiDone} / 9`; }
+function tickEsc() { escalated++; document.getElementById('m-esc').textContent = escalated.toString(); }
+
+function itemMins(id) {
+  return (BI.find(x=>x.id===id) || BII.find(x=>x.id===id) || {mins:0}).mins;
+}
+
+/* ============================================================
+   THE RUN
+   ============================================================ */
+async function runDemo() {
+  document.getElementById('idle').remove();
+  document.getElementById('run').disabled = true;
+  document.getElementById('live-pill').style.display = 'inline-block';
+  document.getElementById('feed-sub').textContent = 'running · 16 tasks queued';
+  document.getElementById('ev-sub').textContent = 'streaming live actions';
+  startTimer();
+
+  // ========== PHASE 1: INTAKE & PARSE ==========
+  phase('Phase 1 · Intake & parse');
+  row('parse', '<span class="hl">SoftPro file sync</span> — pulling commitment 2026-FNF-044281.pdf, title plant record CRCR-18-24-2026, seller packet, buyer packet', {t:0.3, ic:'↻'});
+  evCard({
+    id:'ev-intake', tag:'DOC AI', label:'Commitment parse',
+    body:`<div class="doc-excerpt">
+      <b>COMMITMENT FOR TITLE INSURANCE</b><br>
+      Issued by FIDELITY NATIONAL TITLE INSURANCE COMPANY<br>
+      File No. <span class="hl">2026-FNF-044281</span> · Eff. Apr 14, 2026 8:00 AM<br><br>
+      <b>SCHEDULE A</b><br>
+      1. Estate or Interest: <span class="hl">Fee Simple</span><br>
+      2. Title to the estate is vested in:<br>
+      &nbsp;&nbsp;JAMES R. KOVAČ and PATRICIA L. KOVAČ, H/W<br>
+      3. The land is described as:<br>
+      &nbsp;&nbsp;Lot 24, Block 18, CORAL RIDGE SUBDIVISION,<br>
+      &nbsp;&nbsp;according to the plat thereof recorded in<br>
+      &nbsp;&nbsp;Plat Book 14, Page 52, of the Public Records<br>
+      &nbsp;&nbsp;of Broward County, Florida.<br><br>
+      <span class="hl">[ schedules B-I and B-II extracted — 7 requirements, 9 exceptions ]</span>
+    </div>`,
+    footer: `<span class="k">Fields:</span> 47 · <span class="k">Confidence:</span> 99.4% mean / 84.1% min · <span class="k">UW:</span> FNTIC`
+  });
+  await wait(1400);
+  row('parse', 'Commitment parsed. <span class="hl">47 fields</span> extracted. Mean confidence 99.4%, min 84.1% on legal description (below 90% → flagged for examiner validation).', {inc:0.4, ic:'✓'});
+  row('parse', 'Cross-reference against <span class="hl">AIM+ title plant</span> record CRCR-18-24-2026 — 12 prior instruments indexed.', {ic:'↻'});
+  await wait(800);
+  row('parse', '<span class="hl">7 Schedule B-I</span> requirements · <span class="hl">9 Schedule B-II</span> exceptions classified against FL carrier matrix.', {inc:0.5, ic:'✓'});
+  evStatus('ev-intake','ok');
+  await wait(500);
+
+  // ========== PHASE 2: PLAN ==========
+  phase('Phase 2 · Plan & authorization check');
+  row('plan', 'Building curative graph. <span class="hl">16 nodes, 9 parallel branches.</span>', {ic:'◈'});
+  row('plan', 'Applied Jacksonville BU office rules v2.4.11. Approval thresholds: <span class="amt">$10K routine / $50K UW review / any FL §627 matter → UW.</span>', {ic:'◈'});
+  row('plan', 'Permission scope confirmed: agent may <span class="hl">read, draft, route, request</span>. No disbursement. No Schedule B modification without M. Rodriguez sign-off.', {ic:'✓'});
+  await wait(900);
+  row('plan', 'Kick off <span class="gold">9 parallel workflows.</span>', {ic:'▶', inc:0.6});
+  await wait(400);
+
+  // ========== PHASE 3: PARALLEL EXECUTION ==========
+  phase('Phase 3 · Parallel execution · 9 branches');
+
+  // Tax API
+  setDot('bi-5','running');
+  row('api', '<span class="hl">Broward Co. Tax Collector API</span> — GET /parcel/4942-22-18-0240', {t:5.1, ic:'↗'});
+  evCard({
+    id:'ev-tax', tag:'API', label:'Broward County Tax Collector',
+    body:`<pre class="api-panel">GET /v3/parcel/4942-22-18-0240
+Authorization: Bearer vnd_fnf_****
+X-Vendor: FNTIC-JAX-30155271
+
+<span style="color:#7bd69b">200 OK</span>  <span style="color:#6e7f9e">· 340ms</span>
+{
+  <span class="k">"parcel_id"</span>: <span class="s">"4942-22-18-0240"</span>,
+  <span class="k">"owner"</span>: <span class="s">"KOVAC, JAMES R &amp; PATRICIA L"</span>,
+  <span class="k">"assessed_value"</span>: <span class="n">847200</span>,
+  <span class="k">"millage"</span>: <span class="n">14.7341</span>,
+  <span class="k">"gross_tax_2025"</span>: <span class="n">12484.09</span>,
+  <span class="k">"installments"</span>: [
+    { <span class="k">"q"</span>: <span class="s">"Q1-Q4 2025"</span>, <span class="k">"status"</span>: <span class="s">"PAID"</span> },
+    { <span class="k">"q"</span>: <span class="s">"Q1 2026"</span>, <span class="k">"status"</span>: <span class="s">"PAID"</span> }
+  ],
+  <span class="k">"delinquent"</span>: <span class="b">false</span>,
+  <span class="k">"liens"</span>: <span class="b">null</span>
+}</pre>`,
+    footer:`<span class="k">Signed:</span> broward.gov root CA · <span class="k">Rollback:</span> read-only, no action to reverse`
+  });
+  await wait(700);
+  row('api', 'Tax status: <span class="gold">current.</span> 2025 paid in full. <span class="hl">No certificates outstanding.</span>', {ic:'✓'});
+  row('complete', 'B-I #5 <span class="hl">tax verification</span> → cleared. <span class="saved">saved 15m</span>', {ic:'✓', inc:0.2});
+  setDot('bi-5','cleared'); tickBi(); addSaved(itemMins('bi-5'));
+  evStatus('ev-tax','ok');
+
+  // Mineral analysis
+  setDot('bii-6','running');
+  row('legal', 'B-II #6 mineral reservation (1937, Sunland Oil Co.) — applying <span class="hl">FL §712.04 MRTA.</span>', {ic:'§'});
+  await wait(700);
+  row('legal', 'Chain shows no preservation notice since 1937. <span class="hl">30-yr root → extinguished 1967.</span> Standard endorsement applies.', {ic:'✓'});
+  row('complete', 'B-II #6 <span class="hl">mineral reservation</span> → cleared. <span class="saved">saved 20m</span>', {ic:'✓', inc:0.3});
+  setDot('bii-6','cleared'); tickBii(); addSaved(itemMins('bii-6'));
+
+  // Wells Fargo Voice Call — with IVR DRIFT and RETRY
+  setDot('bi-1','running');
+  row('call', 'Dialing <span class="hl">Wells Fargo Home Lending Payoff</span> (800) 853-8516 · third-party vendor line', {ic:'☏', t: 7.2});
+  evCard({
+    id:'ev-wf', tag:'VOICE', label:'Wells Fargo · Payoff IVR',
+    body:`<div class="voice-rows" id="vr-wf"></div>`,
+    footer:`<span class="k">Loan #:</span> ****-****-4719 · <span class="k">Vendor ID:</span> 30155271 · <span class="k">Retry:</span> <span id="wf-retry">0</span>/3`
+  });
+  const wfLines = [
+    ['00:03','IVR','Welcome to Wells Fargo Home Mortgage. For third-party payoffs, please say or press 4.',''],
+    ['00:06','SYS','⚠ IVR schema drift detected: expected "press 3" → got "press 4". Script updated, confidence 0.91.','drift'],
+    ['00:07','AGENT','[DTMF] 4',''],
+    ['00:09','IVR','Please enter the ten-digit loan number.',''],
+    ['00:12','AGENT','[DTMF] 6·2·1·8·0·0·4·7·1·9',''],
+    ['00:15','IVR','Please enter the last four of the primary borrower\'s SSN.',''],
+    ['00:18','AGENT','[DTMF masked]',''],
+    ['00:20','IVR','Loan matched. James R Kovač and Patricia L Kovač. Press 2 for written payoff emailed to title.',''],
+    ['00:24','AGENT','[DTMF] 2',''],
+    ['00:26','IVR','Vendor ID, please.',''],
+    ['00:29','AGENT','[DTMF] 3·0·1·5·5·2·7·1',''],
+    ['00:32','IVR','Fidelity National Title, Jacksonville. Email title-curative at f-n-f dot com. Correct, press 1.',''],
+    ['00:36','AGENT','[DTMF] 1',''],
+    ['00:38','IVR','(hold music — 2 bars)','hold'],
+    ['00:44','IVR','Payoff will arrive within 4 business hours. Good-through: May 6, 2026.',''],
+    ['00:48','IVR','Estimated payoff: <b>$412,883.22</b>. Per diem: $87.44. Confirmation: 8-8-4-2-0-1-7-7-3-3.',''],
+    ['00:56','AGENT','Confirmation captured. Terminating call.',''],
+  ];
+  for (let i=0;i<wfLines.length;i++) {
+    const [t,s,x,kind] = wfLines[i];
+    document.getElementById('vr-wf').insertAdjacentHTML('beforeend',
+      `<div class="voice-row"><span class="t">${t}</span><span class="s ${s.toLowerCase()}">${s}</span><span class="x ${kind||''}">${x}</span></div>`);
+    await wait(230);
+  }
+  row('retry', 'Wells Fargo IVR prompt changed since last call (Apr 3). Agent detected drift mid-call, re-mapped menu tree, continued without human help.', {ic:'↻', inc:0.2});
+  row('call', 'Wells Fargo payoff captured — <span class="amt">$412,883.22 GT 05/06/2026, per diem $87.44.</span> Ref <a class="ref">8842017733</a>', {ic:'✓'});
+  row('emit', 'Written to <span class="hl">SoftPro ProForm → HUD 104</span>. Wire disbursement held for human approval.', {ic:'↓', inc:0.3});
+  setDot('bi-1','cleared'); tickBi(); addSaved(itemMins('bi-1'));
+  evStatus('ev-wf','ok');
+
+  // Truist HELOC email
+  setDot('bi-2','running');
+  row('email', 'B-I #2 HELOC — Truist secure payoff portal via <span class="hl">FNF vendor SSO</span>.', {ic:'↗'});
+  evCard({
+    id:'ev-truist', tag:'PORTAL', label:'Truist · Payoff request submitted',
+    body: `<div class="email">
+      <div class="email-meta">
+        <b>To:</b> payoffs@truist.com (secure portal rcpt)<br>
+        <b>From:</b> title-curative@fnf.com<br>
+        <b>Subject:</b> Payoff Request · Inst. 119-208442 · Kovač · 1247 Coral Ridge Dr<br>
+        <b>File:</b> FNF 2026-FNF-044281 · <b>Vendor ID:</b> 30155271
+      </div>
+      Truist Payoff Team —<br/><br/>
+      Please issue a written payoff statement for the HELOC recorded March 8, 2021 (Broward Instrument 119-208442), borrowers <b>James R. Kovač &amp; Patricia L. Kovač</b>, property <b>1247 Coral Ridge Drive, Fort Lauderdale, FL 33304</b>.<br/><br/>
+      • Target disbursement date: <b>May 2, 2026</b><br/>
+      • Good-through date: <b>May 8, 2026</b><br/>
+      • Per diem accrual included<br/>
+      • Wire instructions and line-freeze confirmation required<br/><br/>
+      Borrower authorization on file (signed 2026-04-11). Please return to <b>title-curative@fnf.com</b> within 4 business hours per ALTA Best Practice 3.<br/><br/>
+      — Fidelity National Title, Jacksonville
+    </div>`,
+    footer: `<span class="k">Sent:</span> 0.3s · <span class="k">DKIM+TLS:</span> pass · <span class="k">Ack expected:</span> ≤4h`
+  });
+  await wait(800);
+  row('email', 'Auto-ack received (ticket <a class="ref">TRU-POFF-2026-44821</a>). ETA <span class="hl">3.5 hours.</span>', {ic:'✓'});
+  row('complete', 'B-I #2 <span class="hl">HELOC payoff</span> → tracked. <span class="saved">saved 25m</span>', {ic:'✓'});
+  setDot('bi-2','cleared'); tickBi(); addSaved(itemMins('bi-2'));
+  evStatus('ev-truist','ok');
+
+  // CCRs
+  setDot('bii-4','running');
+  row('doc', 'B-II #4 — pulling <span class="hl">Coral Ridge CCRs (Inst. 88-221-114)</span> from AIM+ doc store', {ic:'📄'});
+  await wait(700);
+  row('legal', '47-page declaration reviewed. Cross-ref aerial imagery + Broward DRC permits. <span class="hl">No violations.</span>', {ic:'✓'});
+  row('complete', 'B-II #4 <span class="hl">CCRs</span> → stands, ALTA 9 available. <span class="saved">saved 1h 05m</span>', {ic:'✓'});
+  setDot('bii-4','cleared'); tickBii(); addSaved(itemMins('bii-4'));
+
+  // HOA Voice Call — with rep hold
+  setDot('bi-4','running');
+  setDot('bii-8','running');
+  row('call', 'Dialing <span class="hl">Castle Group Property Management</span> (954) 465-7770 — HOA estoppels dept.', {ic:'☏'});
+  evCard({
+    id:'ev-hoa', tag:'VOICE', label:'Castle Group · HOA Estoppels',
+    body:`<div class="voice-rows" id="vr-hoa"></div>`,
+    footer:`<span class="k">Assn:</span> Coral Ridge Impr. Assn · <span class="k">Mgr:</span> Castle Group (FL DBPR #CAM-44108)`
+  });
+  const hoaLines = [
+    ['00:02','IVR','Welcome to Castle Group. Press 1 for homeowners, 2 for estoppels and title requests.'],
+    ['00:05','AGENT','[DTMF] 2'],
+    ['00:07','IVR','Please hold for an estoppel specialist.'],
+    ['00:08','IVR','(hold music, queue position 3)'],
+    ['00:21','REP','Castle Group estoppels, this is Denise. Property address?'],
+    ['00:24','AGENT','1247 Coral Ridge Drive, Fort Lauderdale, 33304. Association is Coral Ridge Improvement.'],
+    ['00:29','REP','One moment — let me pull the account.'],
+    ['00:33','REP','Okay, I have it. Closing date?'],
+    ['00:35','AGENT','Target close is May 2, 2026.'],
+    ['00:37','REP','Good for 30 days. Who\'s the closer?'],
+    ['00:40','AGENT','Fidelity National Title, Jacksonville. File 2026-FNF-044281. Sending the formal request now.'],
+    ['00:45','AGENT','$275 estoppel fee acceptable, billed at closing?'],
+    ['00:48','REP','That works. You\'ll have the estoppel in your email within 24 to 48 hours.'],
+    ['00:52','AGENT','Confirming — $275 estoppel for 1247 Coral Ridge Drive, delivered to title-curative at F-N-F dot com by end of day Friday. Thank you, Denise.'],
+    ['00:59','REP','You\'re welcome.'],
+  ];
+  for (let i=0;i<hoaLines.length;i++) {
+    const [t,s,x] = hoaLines[i];
+    document.getElementById('vr-hoa').insertAdjacentHTML('beforeend',
+      `<div class="voice-row"><span class="t">${t}</span><span class="s ${s.toLowerCase()}">${s}</span><span class="x ${s==='IVR' && x.includes('hold')?'hold':''}">${x}</span></div>`);
+    await wait(210);
+  }
+  row('call', 'HOA estoppel confirmed. ETA 24-48h. <span class="hl">$275 fee logged to CD line 1202.</span>', {ic:'✓'});
+  row('complete', 'B-I #4 + B-II #8 <span class="hl">HOA coverage</span> → queued. <span class="saved">saved 45m</span>', {ic:'✓'});
+  setDot('bi-4','cleared'); tickBi(); addSaved(itemMins('bi-4'));
+  setDot('bii-8','cleared'); tickBii(); addSaved(itemMins('bii-8'));
+  evStatus('ev-hoa','ok');
+
+  // Easement — with OCR confidence failure + fallback
+  setDot('bii-3','running');
+  setDot('bii-5','running');
+  row('ofr', 'B-II #3 — retrieving <span class="hl">Inst. 45-112-882</span> from Broward OFR image server', {ic:'📜'});
+  await wait(500);
+  row('warn', 'OCR on 1983 image returned <span class="hl">72.4% confidence</span> on metes-and-bounds (below 90% gate). Scan quality: 200dpi, bleed-through from reverse.', {ic:'⚠', inc:0.2});
+  row('retry', 'Falling back to <span class="hl">grantor-grantee index + abstracted description</span> from AIM+ title plant (FNF-maintained, 99.1% confidence).', {ic:'↻'});
+  evCard({
+    id:'ev-ease', tag:'DOC AI', label:'Easement · OCR fallback',
+    body:`<div class="doc-excerpt">
+      <b>Source 1:</b> Broward OFR scan (1983 image) — OCR confidence <span class="hl">72.4%</span> · <i>rejected by &gt;90% gate</i><br><br>
+      <b>Source 2:</b> AIM+ abstract (FNF plant) — confidence <span class="hl">99.1%</span> · <i>accepted</i><br><br>
+      → Easement grant recorded April 18, 1983, Broward Co. Inst. <b>45-112-882</b>.<br>
+      → Grantor: Kovač predecessor. Grantee: Florida Power &amp; Light.<br>
+      → Burden: <span class="hl">10 feet along rear (north) boundary of Lot 24, Block 18, Coral Ridge Sub.</span>, utility service, perpetual, non-exclusive.<br>
+      → Overlaid against 2019 survey (Abbott &amp; Sons): residence setback 82 ft, pool 24 ft, cabana 28 ft. <span class="hl">No improvements encroach.</span><br>
+      → ALTA 17 endorsement available.
+    </div>`,
+    footer:`<span class="k">Sources:</span> 2 (1 rejected) · <span class="k">Fallback:</span> automatic · <span class="k">Drift flagged:</span> no`
+  });
+  await wait(900);
+  row('doc', '1961 plat drainage easement (west 5 ft) — overlay clear of improvements.', {ic:'✓'});
+  row('complete', 'B-II #3 + #5 <span class="hl">easements</span> → stand as recorded, ALTA 17 available. <span class="saved">saved 1h 25m</span>', {ic:'✓'});
+  setDot('bii-3','cleared'); tickBii(); addSaved(itemMins('bii-3'));
+  setDot('bii-5','cleared'); tickBii(); addSaved(itemMins('bii-5'));
+
+  // Prior policy
+  setDot('bii-9','running');
+  row('api', 'Pulling prior Stewart policy <span class="hl">M-2019-7718421</span> via StewartVU→FNF reciprocity', {ic:'↗'});
+  await wait(600);
+  row('ofr', 'Chain verified: WD 2019-06-30 (Inst. 117-992014) → no intervening conveyances. Policy in force through commitment date.', {ic:'✓'});
+  row('complete', 'B-II #9 <span class="hl">prior policy</span> → chain confirmed. <span class="saved">saved 15m</span>', {ic:'✓'});
+  setDot('bii-9','cleared'); tickBii(); addSaved(itemMins('bii-9'));
+
+  // Survey
+  setDot('bi-6','running');
+  setDot('bii-2','running');
+  row('api', 'Survey order via <span class="hl">National Survey Service API</span> → Abbott &amp; Sons (same firm, 2019 baseline)', {ic:'↗'});
+  evCard({
+    id:'ev-survey', tag:'API', label:'National Survey Service · Order',
+    body:`<pre class="api-panel">POST /v2/orders
+{
+  <span class="k">"order_type"</span>: <span class="s">"BOUNDARY_SURVEY_UPDATE"</span>,
+  <span class="k">"property"</span>: <span class="s">"1247 Coral Ridge Dr, FL 33304"</span>,
+  <span class="k">"priority"</span>: <span class="s">"RUSH"</span>,
+  <span class="k">"baseline"</span>: <span class="s">"ABBOTT-SONS-2019-06-28-4942221802"</span>,
+  <span class="k">"close_date"</span>: <span class="s">"2026-05-02"</span>
+}
+
+<span style="color:#7bd69b">201 CREATED</span>
+{
+  <span class="k">"order_id"</span>: <span class="s">"NSS-2026-0417-88402"</span>,
+  <span class="k">"eta"</span>: <span class="s">"2026-04-28"</span>,
+  <span class="k">"fee"</span>: <span class="n">685.00</span>,
+  <span class="k">"cd_line"</span>: <span class="s">"1306"</span>
+}</pre>`
+  });
+  await wait(700);
+  row('complete', 'B-I #6 + B-II #2 <span class="hl">survey</span> → ordered, ETA Apr 28. <span class="saved">saved 25m</span>', {ic:'✓'});
+  setDot('bi-6','cleared'); tickBi(); addSaved(itemMins('bi-6'));
+  setDot('bii-2','cleared'); tickBii(); addSaved(itemMins('bii-2'));
+
+  // B-II #1 & #7
+  setDot('bii-1','running');
+  setDot('bii-7','running');
+  row('legal', 'B-II #1 parties in possession — seller affidavit on file (2026-04-09). Standard exception retained.', {ic:'✓'});
+  row('legal', 'B-II #7 2026 taxes — not yet due. Standard exception retained.', {ic:'✓'});
+  row('complete', 'B-II #1 + #7 <span class="hl">standard exceptions</span>. <span class="saved">saved 11m</span>', {ic:'✓'});
+  setDot('bii-1','cleared'); tickBii(); addSaved(itemMins('bii-1'));
+  setDot('bii-7','cleared'); tickBii(); addSaved(itemMins('bii-7'));
+
+  // ========== PHASE 4: JUDGMENT CALLS ==========
+  phase('Phase 4 · Research &amp; judgment calls');
+
+  // Judgment
+  setDot('bi-3','running');
+  row('ofr', 'B-I #3 judgment — Broward Clerk OFR: case 22-CA-018773 retrieved. $4,250 + costs vs. J. Kovač.', {ic:'⚖'});
+  await wait(700);
+  row('ofr', 'Searched OFR + PACER + Broward docket for Satisfaction / Release / Discharge → <span class="hl">none.</span>', {ic:'⊘'});
+  row('escalate', '<span class="hl">Routing to M. Rodriguez</span> with research packet + 3 resolution paths.', {ic:'⚑'});
+  evCard({
+    id:'ev-judg', tag:'ESCALATE', label:'B-I #3 · Judgment · examiner review',
+    status:'warn', hero:false,
+    body:`<div class="escalation">
+      <div class="head">Escalation to M. Rodriguez · review SLA: 4h</div>
+      <b>Issue:</b> Final judgment 2022-08-14, $4,250 + costs vs. J. Kovač, no satisfaction recorded.<br><br>
+      <b>Agent investigation complete:</b>
+      <ul>
+        <li>OFR (Broward): no satisfaction (2022-08-14 → 2026-04-17)</li>
+        <li>Creditor: Bay Medical Associates LLC (active, FEI L22000047812)</li>
+        <li>Counsel: Hoffman &amp; Greene P.A. (FL Bar verified)</li>
+        <li>Docket last 2023-02-11 (interrogatories unexecuted)</li>
+      </ul>
+      <b>Paths prepared:</b>
+      <ul>
+        <li>(a) Call Hoffman &amp; Greene, payoff + satisfaction at close — <b>recommended</b></li>
+        <li>(b) Withhold $6,500 escrow, seller indemnity, clear post-close</li>
+        <li>(c) Hold close for satisfaction (+5-7 biz days)</li>
+      </ul>
+    </div>`,
+    footer: `<span class="k">Packet:</span> 14 pages · <span class="k">Queue:</span> SoftPro Exam JAX-23 · <span class="k">SLA:</span> 4h business · <span class="k">Agent-hours saved:</span> 1h 30m`
+  });
+  setDot('bi-3','escalated'); tickEsc(); addSaved(itemMins('bi-3'), 1);
+
+  // Mechanics lien + Underwriter Inbox
+  setDot('bi-7','running');
+  row('ofr', 'B-I #7 mechanics lien (ABC Roofing) — OFR: <span class="hl">no satisfaction found.</span>', {ic:'⊘'});
+  row('api', 'FL Dept of State → ABC Roofing LLC (L23000184427) <span class="hl">ADMINISTRATIVELY DISSOLVED 2024-09-27.</span>', {ic:'⚠'});
+  row('legal', '<span class="hl">FL §713.22(2):</span> lien extinguishes 1yr from recording absent suit. Recorded 2023-11-04 → statutorily expired Nov 2024.', {ic:'§'});
+  row('ofr', 'Broward Cir. Ct. 2023-11-04 → 2026-04-17: <span class="hl">no Complaint to Foreclose Lien</span> filed against property.', {ic:'✓'});
+  row('escalate', '<span class="hl">Routing to underwriter (L. Padilla)</span>. Draft §713.22 affidavit + ALTA 35 endorsement prepared.', {ic:'⚑'});
+
+  // Competitive callout
+  evCard({
+    id:'ev-vs', tag:'CONTEXT', label:'Where other tools would stop',
+    status:'ok', hero:false,
+    body:`<div class="vs-strip" style="margin:0;">
+      <div class="k">Head-to-head on this escalation</div>
+      <b>AgentNet Assist</b> would surface the lien and ask the examiner to research it — <i>minutes saved per file.</i><br>
+      <b>Stewart VU Explorer</b> would display the recorded instrument and let the examiner query it — <i>copilot, not action.</i><br>
+      <b>Qualia Clear</b> does not integrate with FL statutory lien workflows.<br>
+      <b>Roam</b> ran the statutory analysis, verified the entity, confirmed no suit, drafted the affidavit, prepared the endorsement — <i>file-hours saved.</i>
+    </div>`
+  });
+
+  // Underwriter inbox
+  evCard({
+    id:'ev-uw', tag:'HUMAN GATE', label:'L. Padilla · underwriter inbox',
+    status:'warn', hero:true,
+    body:`<div class="uw-inbox">
+      <div class="row">
+        <div class="avatar">LP</div>
+        <div>
+          <div class="name">L. Padilla, J.D.</div>
+          <div class="role">FNTIC Underwriter · SE Region · bar verified</div>
+        </div>
+        <div class="countdown" id="sla">SLA 4h 00m</div>
+      </div>
+      <div class="item">
+        <div style="font-weight:600;">File 2026-FNF-044281 · Mechanics lien § 713.22 call</div>
+        <div class="sub">ABC Roofing LLC · $8,200 · Inst. 121-884203 · recorded 2023-11-04.<br>
+        Agent concluded: statutory extinguishment (FL §713.22, no suit in 1-yr window). Entity admin-dissolved 2024-09-27. 8-page packet + draft affidavit + ALTA 35 endorsement attached.</div>
+        <div class="pill-row">
+          <span class="pill-item">§713.22 analysis</span>
+          <span class="pill-item">OFR clean</span>
+          <span class="pill-item">Docket clean</span>
+          <span class="pill-item">Entity dissolved</span>
+          <span class="pill-item">Affidavit draft</span>
+          <span class="pill-item">ALTA 35 drafted</span>
+        </div>
+        <div class="actions">
+          <button class="btn approve">Approve as drafted</button>
+          <button class="btn modify">Modify endorsement</button>
+          <button class="btn reject">Reject · send back</button>
+        </div>
+      </div>
+    </div>`,
+    footer: `<span class="k">Agent prepared:</span> everything <span class="k">UW decides:</span> endorsement &amp; authority <span class="k">Time budget:</span> &lt; 5 min to sign off`
+  });
+  setDot('bi-7','escalated'); tickEsc(); addSaved(itemMins('bi-7'), 1);
+
+  // ========== PHASE 5: FINALIZE ==========
+  phase('Phase 5 · Compile cleared commitment');
+  await wait(400);
+  row('parse', 'Regenerating Schedule B with cleared status. Writing to <span class="hl">SoftPro ProForm</span>. Change manifest: 7 requirements, 9 exceptions, 2 escalations.', {ic:'◈'});
+  row('emit', 'Audit trail written to <span class="hl">FNF SIEM</span> (32 events). Every action logs rollback path. File hash signed fnf-agent-44.', {ic:'↓'});
+  row('emit', 'Notified <span class="hl">M. Rodriguez</span> + <span class="hl">L. Padilla</span> (Teams + SoftPro queue). 2 items awaiting review · close target May 2 on track.', {ic:'◈'});
+  await wait(600);
+  // Final 5 touches eliminated (the 5 non-escalated touches M. Rodriguez would have made)
+  for (let i=0;i<5;i++) { addSaved(0, 1); await wait(80); }
+  row('complete', '<span class="gold">Curative run complete.</span> 14 items auto-resolved · 2 escalated with full context · M. Rodriguez spent 0 touches reaching this state.', {ic:'✓', inc:0.6});
+
+  stopTimer();
+  document.getElementById('live-pill').style.display = 'none';
+  document.getElementById('feed-sub').textContent = '✓ complete · 14 auto / 2 escalated';
+  document.getElementById('ev-sub').textContent = 'complete';
+  document.getElementById('done-cta').classList.add('ready');
+  document.querySelectorAll('.ev-card').forEach(c => { c.classList.remove('hero'); });
+  document.getElementById('run').textContent = 'Replay curative run';
+  document.getElementById('run').classList.add('reset');
+  document.getElementById('run').disabled = false;
+  document.getElementById('run').onclick = () => location.reload();
+}
+document.getElementById('run').addEventListener('click', runDemo);
+
+/* ============================================================
+   MODAL · CLEARED COMMITMENT
+   ============================================================ */
+const modalBody = () => {
+  const totalH = Math.floor(totalMinSaved/60);
+  const totalM = Math.floor(totalMinSaved%60);
+  const fileDollars = Math.round((totalMinSaved/60) * RATE_PER_HOUR);
+  const annualDollars = Math.round((fileDollars * ANNUAL_CURATIVE_FILES) / 1_000_000);
+  const roamShare = Math.round(annualDollars * 0.20);
+  const netFNF = annualDollars - roamShare;
+  return `
+  <div class="savings-hero">
+    <div>
+      <div class="k">Examiner labor saved</div>
+      <div class="v hero">${totalH}h ${totalM.toString().padStart(2,'0')}m</div>
+      <div class="sub">per file · vs 14h 22m baseline (M. Rodriguez, n=12 Q1 2026)</div>
+    </div>
+    <div>
+      <div class="k">File-level $</div>
+      <div class="v accent">$${fileDollars.toLocaleString()}</div>
+      <div class="sub">direct labor · $47/hr fully loaded examiner rate</div>
+    </div>
+    <div>
+      <div class="k">Touches eliminated</div>
+      <div class="v">5 of 7</div>
+      <div class="sub">only judgment + mech lien need human judgment</div>
+    </div>
+    <div>
+      <div class="k">Annualized at FNF scale</div>
+      <div class="v accent hero">$${annualDollars}M</div>
+      <div class="sub">573K curative-bearing files/yr at this rate · matches Y1 deck target $340M (+400 bps)</div>
+    </div>
+  </div>
+
+  <div class="alta-title">Schedule B-I · Requirements · Cleared</div>
+  <div class="alta-sub">File 2026-FNF-044281 · Effective April 17, 2026 · Agent-prepared, examiner-reviewed</div>
+  <table class="alta">
+    <thead><tr><th></th><th>Requirement</th><th>Agent Action</th><th>Status</th><th>Saved</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Payoff Wells Fargo mortgage (Inst. 118-431847)</td><td>Voice payoff captured. $412,883.22 GT 05/06/2026. Per diem $87.44. Ref 8842017733. IVR drift detected &amp; adapted live. Hold pending human-approved wire.</td><td class="status"><span class="ok">CLEARED</span></td><td class="mins">45m</td></tr>
+      <tr><td class="num">2</td><td>Payoff Truist HELOC (Inst. 119-208442)</td><td>Secure portal request sent. Ack TRU-POFF-2026-44821. ETA ≤4h. Disbursement hold active.</td><td class="status"><span class="ok">CLEARED</span></td><td class="mins">25m</td></tr>
+      <tr><td class="num">3</td><td>Satisfaction of judgment (22-CA-018773)</td><td>No recorded satisfaction. Creditor &amp; counsel verified active. 3 resolution paths prepared. Routed to M. Rodriguez, SLA 4h.</td><td class="status"><span class="warn">EXAMINER</span><div class="note">Recommended: direct payoff at close via Hoffman &amp; Greene</div></td><td class="mins">1h 30m</td></tr>
+      <tr><td class="num">4</td><td>HOA estoppel (Coral Ridge Improvement Assn)</td><td>Voice call to Castle Group. $275 fee confirmed, CD 1202. Estoppel delivery ≤48h.</td><td class="status"><span class="ok">CLEARED</span></td><td class="mins">35m</td></tr>
+      <tr><td class="num">5</td><td>Tax verification (Parcel 4942-22-18-0240)</td><td>Broward Tax Collector API: 2025 paid in full, 2026 Q1 paid. No certificates.</td><td class="status"><span class="ok">CLEARED</span></td><td class="mins">15m</td></tr>
+      <tr><td class="num">6</td><td>Updated boundary survey</td><td>NSS-2026-0417-88402 ordered. Abbott &amp; Sons (2019 baseline). ETA 2026-04-28. $685 / CD 1306.</td><td class="status"><span class="ok">CLEARED</span></td><td class="mins">20m</td></tr>
+      <tr><td class="num">7</td><td>Satisfaction of mechanics lien (ABC Roofing)</td><td>Statutorily extinguished under FL §713.22 (no suit, 1-yr window). Entity admin dissolved. Draft affidavit + ALTA 35 endorsement prepared. UW L. Padilla review queued.</td><td class="status"><span class="warn">UNDERWRITER</span><div class="note">Recommended: §713.22 affidavit + ALTA 35, no disbursement</div></td><td class="mins">3h 00m</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alta-title">Schedule B-II · Exceptions · Final</div>
+  <div class="alta-sub">9 exceptions reviewed · 2 standard · 7 cleared for endorsement</div>
+  <table class="alta">
+    <thead><tr><th></th><th>Exception</th><th>Agent Disposition</th><th>Status</th><th>Saved</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Rights of parties in possession</td><td>Seller affidavit on file (2026-04-09). Standard exception retained.</td><td class="status"><span class="ok">STANDARD</span></td><td class="mins">8m</td></tr>
+      <tr><td class="num">2</td><td>Matters of survey</td><td>Resolved upon receipt of NSS-2026-0417-88402 (ETA 04-28). Tracker open.</td><td class="status"><span class="ok">TRACKED</span></td><td class="mins">5m</td></tr>
+      <tr><td class="num">3</td><td>Utility easement, rear 10' (Inst. 45-112-882)</td><td>OCR confidence 72.4% on scan → fell back to AIM+ abstract (99.1%). Overlaid against 2019 survey: no improvement encroaches. ALTA 17 available.</td><td class="status"><span class="ok">ENDORSED</span></td><td class="mins">55m</td></tr>
+      <tr><td class="num">4</td><td>CCRs, Coral Ridge Sub. (Inst. 88-221-114)</td><td>47-page declaration reviewed. No violations against current improvements (aerial + permit cross-ref). ALTA 9 available.</td><td class="status"><span class="ok">ENDORSED</span></td><td class="mins">1h 05m</td></tr>
+      <tr><td class="num">5</td><td>Drainage easement (1961 plat)</td><td>Easement along west 5'. No improvements encroach. ALTA 17 available.</td><td class="status"><span class="ok">ENDORSED</span></td><td class="mins">30m</td></tr>
+      <tr><td class="num">6</td><td>Mineral reservation (1937)</td><td>Extinguished by FL §712.04 MRTA (no preservation notice in 30-yr root). Standard mineral endorsement.</td><td class="status"><span class="ok">ENDORSED</span></td><td class="mins">20m</td></tr>
+      <tr><td class="num">7</td><td>Taxes for 2026</td><td>Standard, not yet due.</td><td class="status"><span class="ok">STANDARD</span></td><td class="mins">3m</td></tr>
+      <tr><td class="num">8</td><td>HOA assessments (Coral Ridge Impr. Assn)</td><td>Estoppel ordered via Castle Group, ≤48h delivery. Insert on receipt.</td><td class="status"><span class="ok">TRACKED</span></td><td class="mins">10m</td></tr>
+      <tr><td class="num">9</td><td>Chain of title / prior policy</td><td>Stewart M-2019-7718421 confirmed. Chain unbroken from WD 2019-06-30. Standard.</td><td class="status"><span class="ok">STANDARD</span></td><td class="mins">15m</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alta-title">Audit trail</div>
+  <div class="alta-sub">32 events · signed agent key fnf-agent-44 · streamed to FNF SIEM · every action has a reversal path</div>
+  <div style="max-height:200px; overflow-y:auto; background:white; border:1px solid var(--rule); padding:12px;">
+    <div class="audit-row"><span class="ts">T+00.3</span><span class="t">READ</span><span>SoftPro pull commitment 2026-FNF-044281.pdf · rollback: n/a</span></div>
+    <div class="audit-row"><span class="ts">T+01.1</span><span class="t">PARSE</span><span>47 fields, ALTA 2021, confidence 84.1%-99.9%</span></div>
+    <div class="audit-row"><span class="ts">T+04.4</span><span class="t">PLAN</span><span>16-node graph, office thresholds applied</span></div>
+    <div class="audit-row"><span class="ts">T+05.1</span><span class="t">API</span><span>Broward Tax Collector · 200 OK · read-only</span></div>
+    <div class="audit-row"><span class="ts">T+07.2</span><span class="t">VOICE</span><span>Wells Fargo payoff line · connected</span></div>
+    <div class="audit-row"><span class="ts">T+08.0</span><span class="t">RETRY</span><span>WF IVR schema drift detected · menu re-mapped · confidence 0.91</span></div>
+    <div class="audit-row"><span class="ts">T+08.3</span><span class="t">EMAIL</span><span>Truist portal · sent · rollback: retract via portal API</span></div>
+    <div class="audit-row"><span class="ts">T+09.1</span><span class="t">DOC</span><span>CCRs Inst. 88-221-114 retrieved from AIM+</span></div>
+    <div class="audit-row"><span class="ts">T+11.3</span><span class="t">VOICE</span><span>Castle Group HOA · estoppel confirmed · $275 CD-1202 · rollback: cancel request</span></div>
+    <div class="audit-row"><span class="ts">T+13.2</span><span class="t">VOICE</span><span>Wells Fargo payoff statement · $412,883.22 captured</span></div>
+    <div class="audit-row"><span class="ts">T+14.6</span><span class="t">WARN</span><span>OCR confidence 72.4% on Inst. 45-112-882 · rejected · fallback triggered</span></div>
+    <div class="audit-row"><span class="ts">T+15.0</span><span class="t">DOC</span><span>AIM+ abstract substituted · confidence 99.1%</span></div>
+    <div class="audit-row"><span class="ts">T+16.8</span><span class="t">API</span><span>National Survey · order NSS-2026-0417-88402 · 201 · rollback: cancel order within 24h</span></div>
+    <div class="audit-row"><span class="ts">T+19.4</span><span class="t">OFR</span><span>Judgment 22-CA-018773 · no satisfaction · queued M. Rodriguez</span></div>
+    <div class="audit-row"><span class="ts">T+20.1</span><span class="t">API</span><span>FL DoS · ABC Roofing LLC admin dissolved 2024-09-27</span></div>
+    <div class="audit-row"><span class="ts">T+21.3</span><span class="t">LEGAL</span><span>FL §713.22 analysis · 1-yr window expired</span></div>
+    <div class="audit-row"><span class="ts">T+22.0</span><span class="t">ESCALATE</span><span>Mechanics lien packet → L. Padilla · 8pp + draft affidavit + ALTA 35</span></div>
+    <div class="audit-row"><span class="ts">T+22.4</span><span class="t">ESCALATE</span><span>Judgment packet → M. Rodriguez · 14pp + 3 paths</span></div>
+    <div class="audit-row"><span class="ts">T+23.1</span><span class="t">EMIT</span><span>SoftPro ProForm · Schedule B regenerated · change manifest signed</span></div>
+    <div class="audit-row"><span class="ts">T+23.4</span><span class="t">EMIT</span><span>SIEM stream · 32 events · agent sig verified</span></div>
+    <div class="audit-row"><span class="ts">T+23.5</span><span class="t">DONE</span><span>Examiner + UW notified · Teams + SoftPro queue</span></div>
+  </div>
+
+  <div class="fntic-sig">
+    <div class="hdr">FIDELITY NATIONAL TITLE INSURANCE COMPANY · Underwriter block</div>
+    Subject to acceptance of the signatures below, this commitment is ready for issuance under FNTIC authority.<br>
+    The company has approved the matters set forth in Schedule B-II and the conditions of Schedule B-I, except as noted above and subject to review by the named underwriter.<br><br>
+    <div class="sig-line">M. Rodriguez</div>
+    <div class="sig-meta">Title Examiner · Fidelity National Title · Jacksonville · FL Lic. FNTIC-TX-JAX-44 · reviewed ________</div>
+    <div class="sig-line">L. Padilla, J.D.</div>
+    <div class="sig-meta">Underwriter · FNTIC · SE Region · FL Bar 0088421 · approved ________</div>
+  </div>
+
+  <div class="legal-fine">Demo dataset based on a representative FL commitment. Entities and instruments are illustrative. Production pilots run inside FNF's Azure tenant with Entra ID SSO, RBAC-scoped agent permissions, SIEM audit streaming, and underwriter gates per ALTA Best Practices. No autonomous fund movement. No Schedule B modifications without examiner sign-off. Underwriting authority remains with FNTIC. Labor savings math: baseline 14h 22m ± 2.1h (n=12 Jacksonville curative files, Q1 2026), $47/hr fully-loaded examiner rate per FNF FY25 model, 573K curative-bearing files/year derived from 956K direct closed orders × 60% curative rate.</div>
+`;
+};
+
+document.getElementById('done-cta').addEventListener('click', () => {
+  document.getElementById('modal-body').innerHTML = modalBody();
+  document.getElementById('modal-bg').classList.add('open');
+});
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal-bg').classList.remove('open');
+});
+document.getElementById('modal-bg').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-bg') e.target.classList.remove('open');
+});
+</script>
+</body>
+</html>
