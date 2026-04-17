@@ -369,8 +369,8 @@
   main {
     display: grid;
     grid-template-columns: 360px 1fr 520px;
-    height: calc(100vh - 450px);
-    min-height: 640px;
+    height: calc(100vh - 370px);
+    min-height: 700px;
     overflow: hidden;
   }
 
@@ -1169,97 +1169,118 @@
   .escalation ul { margin: 6px 0 0 14px; padding: 0; }
   .escalation li { margin: 2px 0; }
 
-  /* Trust & verification legend strip */
-  .trust-strip {
+  /* Narrator strip — one clear line: what step, what's happening, impact */
+  .narr-strip {
     background: #FFFFFF;
     border-bottom: 1px solid var(--rule);
-    padding: 14px 24px 16px;
+    padding: 14px 28px;
     display: grid;
-    grid-template-columns: 260px 1fr 1fr 1fr;
-    gap: 20px;
-    align-items: stretch;
+    grid-template-columns: 160px 1fr auto;
+    gap: 24px;
+    align-items: center;
     box-shadow: var(--shadow-sm);
+    position: relative;
   }
-  .trust-strip .header-block {
+  .narr-strip::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--fnf-red);
+  }
+  .narr-strip .step-col {
     display: flex; flex-direction: column; gap: 4px;
-    padding-right: 16px;
-    border-right: 1px solid var(--rule);
   }
-  .trust-strip .eyebrow {
+  .narr-strip .step-eyebrow {
     font-size: 9.5px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--fnf-red);
     font-weight: 700;
   }
-  .trust-strip h3 {
+  .narr-strip .step-name {
     font-family: "Fraunces", Georgia, serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--ink);
-    margin: 0;
     letter-spacing: -0.01em;
-    line-height: 1.25;
+    line-height: 1.15;
   }
-  .trust-strip .header-desc {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.4;
-    margin-top: 2px;
+  .narr-strip .progress-ticks {
+    display: flex; gap: 3px; margin-top: 2px;
   }
-  .trust-cell {
-    display: grid;
-    grid-template-columns: 14px 1fr auto;
-    grid-template-rows: auto auto auto;
-    gap: 4px 10px;
-    align-items: start;
+  .narr-strip .progress-ticks .t {
+    height: 3px; width: 22px;
+    background: var(--rule);
+    border-radius: 2px;
   }
-  .trust-cell .tdot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    margin-top: 4px;
-    grid-row: 1;
-    grid-column: 1;
-    border: 2px solid transparent;
-  }
-  .trust-cell.green .tdot { background: var(--green); box-shadow: 0 0 0 3px #E8F5EE; }
-  .trust-cell.amber .tdot { background: var(--amber); box-shadow: 0 0 0 3px #FDF0E2; }
-  .trust-cell.red .tdot { background: var(--fnf-red); box-shadow: 0 0 0 3px #FBE3E0; }
-  .trust-cell .tlabel {
-    grid-row: 1;
-    grid-column: 2;
-    font-size: 12px;
-    font-weight: 600;
+  .narr-strip .progress-ticks .t.done { background: var(--fnf-red); }
+  .narr-strip .progress-ticks .t.active { background: var(--fnf-red); animation: tPulse 1.2s ease-in-out infinite; }
+  @keyframes tPulse { 0%,100% { opacity:1; } 50% { opacity: 0.4; } }
+
+  .narr-strip .narr-body {
+    font-size: 13px;
+    line-height: 1.5;
     color: var(--ink);
-    letter-spacing: -0.005em;
   }
-  .trust-cell .tcount {
-    grid-row: 1;
-    grid-column: 3;
+  .narr-strip .narr-body b { color: var(--navy); font-weight: 600; }
+  .narr-strip .narr-chips {
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .narr-strip .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+  }
+  .narr-strip .chip .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    display: inline-block;
+  }
+  .narr-strip .chip.auto { background: #E8F5EE; color: var(--green); }
+  .narr-strip .chip.auto .dot { background: var(--green); }
+  .narr-strip .chip.uw { background: #FDF0E2; color: var(--amber); }
+  .narr-strip .chip.uw .dot { background: var(--amber); }
+  .narr-strip .chip.human { background: #FBE3E0; color: var(--fnf-red); }
+  .narr-strip .chip.human .dot { background: var(--fnf-red); }
+  .narr-strip .chip.safe { background: #F0F4F9; color: var(--navy); font-weight: 500; }
+  .narr-strip .chip.safe::before { content: "✓"; color: var(--green); margin-right: 2px; font-weight: 700; }
+
+  .narr-strip .safe-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    padding-left: 20px;
+    border-left: 1px solid var(--rule);
+    min-width: 200px;
+  }
+  .narr-strip .safe-pill .safe-lbl {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .narr-strip .safe-pill .safe-v {
     font-family: "Fraunces", Georgia, serif;
     font-size: 22px;
+    color: var(--green);
     font-weight: 600;
-    color: var(--ink);
-    line-height: 1;
     font-variant-numeric: tabular-nums;
+    line-height: 1;
   }
-  .trust-cell.green .tcount { color: var(--green); }
-  .trust-cell.amber .tcount { color: var(--amber); }
-  .trust-cell.red .tcount { color: var(--fnf-red); }
-  .trust-cell .tdesc {
-    grid-row: 2;
-    grid-column: 2 / span 2;
-    font-size: 11.5px;
-    color: var(--muted);
-    line-height: 1.45;
-  }
-  .trust-cell .tdesc b { color: var(--ink-2); font-weight: 600; }
-  .trust-cell .tsafe {
-    grid-row: 3;
-    grid-column: 2 / span 2;
+  .narr-strip .safe-pill .safe-sub {
     font-size: 10.5px;
-    color: var(--muted-2);
-    font-style: italic;
+    color: var(--muted);
     margin-top: 2px;
   }
 
@@ -1995,45 +2016,33 @@
   </div>
 </section>
 
-<section class="trust-strip">
-  <div class="header-block">
-    <div class="eyebrow">How this agent keeps title ops in control</div>
-    <h3 id="phase-headline">Ready to start</h3>
-    <div class="header-desc" id="phase-what">Click <b>Start curative run</b> to watch the agent clear every Schedule B item — with a verification trail on every action and a human gate on every judgment call.</div>
+<section class="narr-strip">
+  <div class="step-col">
+    <div class="step-eyebrow" id="step-eyebrow">Ready</div>
+    <div class="step-name" id="phase-headline">Click Start →</div>
+    <div class="progress-ticks" id="progress-ticks">
+      <div class="t" data-step="1"></div>
+      <div class="t" data-step="2"></div>
+      <div class="t" data-step="3"></div>
+      <div class="t" data-step="4"></div>
+      <div class="t" data-step="5"></div>
+    </div>
   </div>
-  <div class="trust-cell green">
-    <div class="tdot"></div>
-    <div class="tlabel">Auto-verified</div>
-    <div class="tcount" id="t-auto">0</div>
-    <div class="tdesc"><b>Cross-sourced data only.</b> Every cleared item is verified against a signed source (county records, FNF title plant, carrier API). No single-source decisions.</div>
-    <div class="tsafe">Rollback path logged per action. Zero disbursement authority.</div>
+  <div>
+    <div class="narr-body" id="phase-what">The agent will clear every Schedule B item with a verification trail on every action and a human gate on every judgment call. <b>Press Start →</b></div>
+    <div class="narr-chips">
+      <span class="chip auto"><span class="dot"></span><span id="t-auto">0</span> auto-verified</span>
+      <span class="chip uw"><span class="dot"></span><span id="t-uw">0</span> underwriter reviews</span>
+      <span class="chip human"><span class="dot"></span><span id="t-human">0</span> human decides</span>
+      <span class="chip safe" id="chip-xcheck"><span id="m-xcheck">0</span> cross-checks passed</span>
+      <span class="chip safe">ALTA 3·4·5 held</span>
+      <span class="chip safe">FNTIC carrier</span>
+    </div>
   </div>
-  <div class="trust-cell amber">
-    <div class="tdot"></div>
-    <div class="tlabel">Underwriter reviews</div>
-    <div class="tcount" id="t-uw">0</div>
-    <div class="tdesc"><b>Agent drafts, UW signs.</b> Endorsements, policy language, and anything affecting insurability route to a named FNTIC underwriter with the full packet attached.</div>
-    <div class="tsafe">Agent cannot modify Schedule B without sign-off.</div>
-  </div>
-  <div class="trust-cell red">
-    <div class="tdot"></div>
-    <div class="tlabel">Human decides</div>
-    <div class="tcount" id="t-human">0</div>
-    <div class="tdesc"><b>Judgment calls stay with your examiner.</b> Agent does the research, drafts the options, and hands off the evidence — the call is M. Rodriguez's.</div>
-    <div class="tsafe">Agent never exercises underwriting authority.</div>
-  </div>
-  <div class="trust-footer">
-    <div class="item"><span class="k">Cross-checks passed</span><span class="v green" id="m-xcheck">0</span></div>
-    <span class="divider-dot">·</span>
-    <div class="item"><span class="k">Errors</span><span class="v green">0</span></div>
-    <span class="divider-dot">·</span>
-    <div class="item"><span class="k">Reversals</span><span class="v green">0</span></div>
-    <span class="divider-dot">·</span>
-    <div class="item"><span class="k">Audit events to SIEM</span><span class="v" id="m-audit">0</span></div>
-    <span class="divider-dot">·</span>
-    <div class="item"><span class="k">ALTA best practices held</span><span class="v">3 · 4 · 5</span></div>
-    <span class="divider-dot">·</span>
-    <div class="item"><span class="k">Carrier</span><span class="v">FNTIC</span></div>
+  <div class="safe-pill">
+    <div class="safe-lbl">Errors · Reversals</div>
+    <div class="safe-v">0 · 0</div>
+    <div class="safe-sub"><span id="m-audit">0</span> audit events streamed to SIEM</div>
   </div>
 </section>
 <div class="v-toast-wrap" id="v-toasts"></div>
@@ -2417,12 +2426,20 @@ function bumpTrust(category) {
   setTimeout(() => el.classList.remove('flash'), 600);
 }
 
-/* Phase narration — updates the top trust-strip headline */
+/* Phase narration — updates the top narrator strip */
 function phaseUpdate(stepNum, name, whatHTML) {
+  const eb = document.getElementById('step-eyebrow');
   const ph = document.getElementById('phase-headline');
   const pw = document.getElementById('phase-what');
-  if (ph) ph.textContent = `Step ${stepNum} of 5 · ${name}`;
+  if (eb) eb.textContent = `Step ${stepNum} of 5`;
+  if (ph) ph.textContent = name;
   if (pw) pw.innerHTML = whatHTML;
+  document.querySelectorAll('#progress-ticks .t').forEach((tk, idx) => {
+    const i = idx + 1;
+    tk.classList.remove('active','done');
+    if (i < stepNum) tk.classList.add('done');
+    else if (i === stepNum) tk.classList.add('active');
+  });
 }
 
 /* UW inbox button — delegated click handler so it works even if cards are injected later */
