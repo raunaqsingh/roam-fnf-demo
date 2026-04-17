@@ -237,8 +237,20 @@
   .speed-ctrl button:last-child { border-right: none; }
   .speed-ctrl button.active {
     background: var(--navy);
-    color: var(--cream);
+    color: #FFFFFF;
   }
+  .pause-btn {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    min-width: 38px;
+  }
+  .pause-btn:hover { background: #F9FAFB; }
   .run-btn {
     background: var(--fnf-red);
     color: #FFFFFF;
@@ -1298,9 +1310,153 @@
     animation: countFlash 0.6s ease-out;
   }
   @keyframes countFlash {
-    0% { transform: scale(1.2); }
+    0% { transform: scale(1.25); color: var(--green); }
     100% { transform: scale(1); }
   }
+
+  /* Verification burst — fires on every verify() for unmissable confirmation */
+  .sched-item.burst {
+    animation: verifyBurst 2.4s ease-out;
+  }
+  @keyframes verifyBurst {
+    0%   { background: transparent; box-shadow: none; }
+    8%   { background: #D8F0E0; box-shadow: inset 4px 0 0 var(--green), 0 0 0 2px #D8F0E0; }
+    70%  { background: #ECF8F0; box-shadow: inset 4px 0 0 var(--green), 0 0 0 2px #ECF8F0; }
+    100% { background: transparent; box-shadow: none; }
+  }
+  .sched-item.burst.uw-burst {
+    animation: uwBurst 2.4s ease-out;
+  }
+  @keyframes uwBurst {
+    0%   { background: transparent; }
+    8%   { background: #FDECD6; box-shadow: inset 4px 0 0 var(--amber); }
+    100% { background: transparent; box-shadow: none; }
+  }
+  .sched-item.burst.human-burst {
+    animation: humanBurst 2.4s ease-out;
+  }
+  @keyframes humanBurst {
+    0%   { background: transparent; }
+    8%   { background: #FBE3E0; box-shadow: inset 4px 0 0 var(--fnf-red); }
+    100% { background: transparent; box-shadow: none; }
+  }
+
+  /* Verification toast — floats bottom-right on every cross-check */
+  .v-toast-wrap {
+    position: fixed;
+    bottom: 108px;
+    right: 24px;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 380px;
+    pointer-events: none;
+  }
+  .v-toast {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-lg);
+    padding: 12px 14px;
+    font-size: 12px;
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    align-items: start;
+    transform: translateX(420px);
+    transition: transform 0.35s cubic-bezier(.2,.8,.2,1), opacity 0.3s;
+    position: relative;
+    border-left: 4px solid var(--green);
+  }
+  .v-toast.uw { border-left-color: var(--amber); }
+  .v-toast.human { border-left-color: var(--fnf-red); }
+  .v-toast.in { transform: translateX(0); }
+  .v-toast.out { transform: translateX(420px); opacity: 0; }
+  .v-toast .check {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #FFFFFF;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+  }
+  .v-toast.uw .check { background: var(--amber); }
+  .v-toast.human .check { background: var(--fnf-red); }
+  .v-toast .title-line {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .v-toast .src {
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .v-toast .src b { color: var(--ink-2); font-weight: 600; }
+
+  /* Integrity footer inside trust strip */
+  .trust-footer {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-top: 12px;
+    margin-top: 2px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .trust-footer .item { display: flex; align-items: baseline; gap: 5px; }
+  .trust-footer .item .k {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    font-weight: 700;
+  }
+  .trust-footer .item .v {
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .trust-footer .item .v.green { color: var(--green); }
+  .trust-footer .divider-dot { color: var(--rule); }
+
+  /* Highlight callout — used for key moments (IVR drift, OCR fallback) */
+  .moment-banner {
+    background: linear-gradient(90deg, #FFF7E6 0%, #FFE8A8 100%);
+    border: 1px solid var(--amber);
+    border-radius: 3px;
+    padding: 10px 14px;
+    margin: 10px 14px;
+    font-size: 12px;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    align-items: center;
+    animation: momentIn 0.4s ease-out;
+  }
+  @keyframes momentIn {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .moment-banner .icon {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--amber);
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 24px;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .moment-banner .txt { color: var(--ink); line-height: 1.45; }
+  .moment-banner .txt b { color: var(--amber); }
 
   /* UW decision confirmation */
   .uw-decision {
@@ -1614,10 +1770,11 @@
   </div>
   <div class="cta-wrap">
     <div class="speed-ctrl" id="speed">
-      <button data-spd="1">1×</button>
-      <button data-spd="2" class="active">2×</button>
+      <button data-spd="1" class="active">1×</button>
+      <button data-spd="2">2×</button>
       <button data-spd="4">4×</button>
     </div>
+    <button class="pause-btn" id="pause" style="display:none;" title="Pause / resume">⏸</button>
     <button class="run-btn" id="run">Start curative run<span class="arrow">→</span></button>
   </div>
 </section>
@@ -1649,7 +1806,21 @@
     <div class="tdesc"><b>Judgment calls stay with your examiner.</b> Agent does the research, drafts the options, and hands off the evidence — the call is M. Rodriguez's.</div>
     <div class="tsafe">Agent never exercises underwriting authority.</div>
   </div>
+  <div class="trust-footer">
+    <div class="item"><span class="k">Cross-checks passed</span><span class="v green" id="m-xcheck">0</span></div>
+    <span class="divider-dot">·</span>
+    <div class="item"><span class="k">Errors</span><span class="v green">0</span></div>
+    <span class="divider-dot">·</span>
+    <div class="item"><span class="k">Reversals</span><span class="v green">0</span></div>
+    <span class="divider-dot">·</span>
+    <div class="item"><span class="k">Audit events to SIEM</span><span class="v" id="m-audit">0</span></div>
+    <span class="divider-dot">·</span>
+    <div class="item"><span class="k">ALTA best practices held</span><span class="v">3 · 4 · 5</span></div>
+    <span class="divider-dot">·</span>
+    <div class="item"><span class="k">Carrier</span><span class="v">FNTIC</span></div>
+  </div>
 </section>
+<div class="v-toast-wrap" id="v-toasts"></div>
 
 <section class="labor-hero">
   <div class="block">
@@ -1858,7 +2029,8 @@ renderLists();
 /* ============================================================
    SPEED / TIMER
    ============================================================ */
-let SPEED = 2;
+let SPEED = 1;
+let PAUSED = false;
 document.querySelectorAll('#speed button').forEach(b => {
   b.addEventListener('click', () => {
     document.querySelectorAll('#speed button').forEach(x => x.classList.remove('active'));
@@ -1866,7 +2038,17 @@ document.querySelectorAll('#speed button').forEach(b => {
     SPEED = parseInt(b.dataset.spd);
   });
 });
-const wait = ms => new Promise(r => setTimeout(r, ms / SPEED));
+document.getElementById('pause').addEventListener('click', () => {
+  PAUSED = !PAUSED;
+  document.getElementById('pause').textContent = PAUSED ? '▶' : '⏸';
+  document.getElementById('pause').title = PAUSED ? 'Resume' : 'Pause';
+});
+const wait = ms => new Promise(async r => {
+  await new Promise(rr => setTimeout(rr, ms / SPEED));
+  // If paused, hold until resumed
+  while (PAUSED) await new Promise(rr => setTimeout(rr, 120));
+  r();
+});
 
 let elapsedMs = 0, timerInterval = null;
 function startTimer() {
@@ -1913,6 +2095,15 @@ function phase(name) {
   feed.scrollTop = feed.scrollHeight;
 }
 
+/* Highlighted "integrity moment" — slows the stream down and calls attention to self-correction */
+function momentBanner(html) {
+  const div = document.createElement('div');
+  div.className = 'moment-banner';
+  div.innerHTML = `<div class="icon">!</div><div class="txt"><b>Integrity moment.</b> ${html}</div>`;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+}
+
 function setDot(id, cls) {
   const el = document.querySelector(`[data-dot="${id}"]`);
   if (!el) return;
@@ -1924,14 +2115,70 @@ function setDot(id, cls) {
 /* Verification classification — shown on each schedule item + rolls up to trust legend.
    category: 'auto' (cross-verified, fully automated) | 'uw' (agent prepared, UW reviews)
               | 'human' (judgment call, human decides) */
+let xcheckCount = 0, auditCount = 0;
 function verify(id, category, sourceText) {
   const parent = document.querySelector(`[data-id="${id}"]`);
   if (!parent) return;
-  parent.classList.remove('auto-verified','uw-review','human-review');
+  parent.classList.remove('auto-verified','uw-review','human-review','burst','uw-burst','human-burst');
   parent.classList.add(category === 'auto' ? 'auto-verified' : (category === 'uw' ? 'uw-review' : 'human-review'));
+  // retrigger burst animation
+  void parent.offsetWidth;
+  parent.classList.add('burst');
+  if (category === 'uw') parent.classList.add('uw-burst');
+  if (category === 'human') parent.classList.add('human-burst');
+  setTimeout(() => parent.classList.remove('burst','uw-burst','human-burst'), 2500);
+
   const vt = parent.querySelector('.verify-text');
   if (vt) vt.textContent = sourceText;
   bumpTrust(category);
+
+  // running integrity counters
+  xcheckCount++;
+  auditCount += 2; // each verify yields ~2 SIEM events (action + cross-check)
+  const xc = document.getElementById('m-xcheck');
+  const ae = document.getElementById('m-audit');
+  if (xc) xc.textContent = xcheckCount;
+  if (ae) ae.textContent = auditCount;
+
+  // Floating verification toast (unmissable cross-check confirmation)
+  showVerifyToast(category, id, sourceText);
+
+  // scroll the item into view in the left panel so users see the verification
+  try { parent.scrollIntoView({ block:'center', behavior:'smooth' }); } catch(e) {}
+}
+
+function showVerifyToast(category, id, sourceText) {
+  const wrap = document.getElementById('v-toasts');
+  if (!wrap) return;
+  const meta = BI.find(x => x.id === id) || BII.find(x => x.id === id) || {label:id, num:'?'};
+  const sched = id.startsWith('bi-') ? 'B-I' : 'B-II';
+  const t = document.createElement('div');
+  t.className = `v-toast ${category === 'auto' ? '' : category}`;
+  const title = category === 'auto'
+    ? `Cross-check passed · ${sched} #${meta.num}`
+    : (category === 'uw' ? `Routed to underwriter · ${sched} #${meta.num}` : `Routed to examiner · ${sched} #${meta.num}`);
+  t.innerHTML = `
+    <div class="check">${category === 'auto' ? '✓' : (category === 'uw' ? '⚑' : '●')}</div>
+    <div>
+      <div class="title-line">${title}</div>
+      <div class="src"><b>${meta.label}</b><br/>${sourceText}</div>
+    </div>`;
+  wrap.appendChild(t);
+  // enter
+  requestAnimationFrame(() => t.classList.add('in'));
+  // limit stack to 3
+  const all = wrap.querySelectorAll('.v-toast');
+  if (all.length > 3) {
+    const first = all[0];
+    first.classList.add('out');
+    setTimeout(() => first.remove(), 400);
+  }
+  // auto-dismiss after 3.2s
+  setTimeout(() => {
+    t.classList.remove('in');
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 400);
+  }, 3200);
 }
 function bumpTrust(category) {
   const id = { auto:'t-auto', uw:'t-uw', human:'t-human' }[category];
@@ -1951,9 +2198,11 @@ function phaseUpdate(stepNum, name, whatHTML) {
   if (pw) pw.innerHTML = whatHTML;
 }
 
-/* UW inbox button — makes the underwriter gate interactive */
-window.uwAction = function(btn, action) {
-  const actions = btn.parentElement;
+/* UW inbox button — delegated click handler so it works even if cards are injected later */
+function uwAction(btn) {
+  const action = btn.dataset.action;
+  const actions = btn.closest('[data-uw-actions]');
+  if (!actions) return;
   const now = new Date();
   const hh = now.getHours().toString().padStart(2,'0');
   const mm = now.getMinutes().toString().padStart(2,'0');
@@ -1963,14 +2212,18 @@ window.uwAction = function(btn, action) {
       <span class="sig">L. Padilla, J.D.</span>
       <div style="font-size:10.5px; color:var(--muted); margin-top:4px;">ALTA 35 endorsement signed. §713.22 affidavit attached. Policy clear to issue after wire.</div>`;
   } else if (action === 'modify') {
-    body = `<strong>✎ Modification requested</strong> · ${hh}:${mm}
+    body = `<strong>✎ Revision requested</strong> · ${hh}:${mm}
       <div style="font-size:11px; color:var(--muted); margin-top:4px;">Agent will revise endorsement language and re-route for UW review. 1-hour SLA.</div>`;
   } else {
     body = `<strong>✗ Sent back for additional evidence</strong> · ${hh}:${mm}
       <div style="font-size:11px; color:var(--muted); margin-top:4px;">Agent notified. Will expand evidence packet (docket detail, counsel outreach). Re-route in 4h.</div>`;
   }
   actions.innerHTML = `<div class="uw-decision" style="flex:1;">${body}</div>`;
-};
+}
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-uw-actions] .btn');
+  if (btn) uwAction(btn);
+});
 
 /* ============================================================
    EVIDENCE CARDS
@@ -2066,6 +2319,7 @@ async function runDemo() {
   document.getElementById('idle').remove();
   document.getElementById('run').disabled = true;
   document.getElementById('live-pill').style.display = 'inline-block';
+  document.getElementById('pause').style.display = 'inline-block';
   document.getElementById('feed-sub').textContent = 'running · 16 tasks queued';
   document.getElementById('ev-sub').textContent = 'streaming live actions';
   startTimer();
@@ -2192,6 +2446,9 @@ X-Vendor: FNTIC-JAX-30155271
       `<div class="voice-row"><span class="t">${t}</span><span class="s ${s.toLowerCase()}">${s}</span><span class="x ${kind||''}">${x}</span></div>`);
     await wait(230);
   }
+  await wait(600);
+  momentBanner('Wells Fargo changed its IVR menu since the last call on April 3. A human would have hung up and redialed. The agent re-mapped the menu tree live at 0.91 confidence and continued — <b>no hold time, no human rescue</b>.');
+  await wait(1400);
   row('retry', 'Wells Fargo IVR prompt changed since last call (Apr 3). Agent detected drift mid-call, re-mapped menu tree, continued without human help.', {ic:'↻', inc:0.2});
   row('call', 'Wells Fargo payoff captured — <span class="amt">$412,883.22 GT 05/06/2026, per diem $87.44.</span> Ref <a class="ref">8842017733</a>', {ic:'✓'});
   row('emit', 'Written to <span class="hl">SoftPro ProForm → HUD 104</span>. Wire disbursement held for human approval.', {ic:'↓', inc:0.3});
@@ -2283,6 +2540,9 @@ X-Vendor: FNTIC-JAX-30155271
   setDot('bii-5','running');
   row('ofr', 'B-II #3 — retrieving <span class="hl">Inst. 45-112-882</span> from Broward OFR image server', {ic:'📜'});
   await wait(500);
+  await wait(500);
+  momentBanner('The 1983 easement scan came back at <b>72.4% OCR confidence</b> — below the 90% gate. <b>The agent did not guess.</b> It rejected its own first answer and pulled the FNF title plant abstract at 99.1% confidence. This is the cross-check that prevents errors.');
+  await wait(1600);
   row('warn', 'OCR on 1983 image returned <span class="hl">72.4% confidence</span> on metes-and-bounds (below 90% gate). Scan quality: 200dpi, bleed-through from reverse.', {ic:'⚠', inc:0.2});
   row('retry', 'Falling back to <span class="hl">grantor-grantee index + abstracted description</span> from AIM+ title plant (FNF-maintained, 99.1% confidence).', {ic:'↻'});
   evCard({
@@ -2438,10 +2698,10 @@ X-Vendor: FNTIC-JAX-30155271
           <span class="pill-item">Affidavit draft</span>
           <span class="pill-item">ALTA 35 drafted</span>
         </div>
-        <div class="actions">
-          <button class="btn approve" onclick="uwAction(this,'approve')">Approve as drafted</button>
-          <button class="btn modify" onclick="uwAction(this,'modify')">Modify endorsement</button>
-          <button class="btn reject" onclick="uwAction(this,'reject')">Reject · send back</button>
+        <div class="actions" data-uw-actions>
+          <button type="button" class="btn approve" data-action="approve">Approve as drafted</button>
+          <button type="button" class="btn modify" data-action="modify">Request revision</button>
+          <button type="button" class="btn reject" data-action="reject">Send back for evidence</button>
         </div>
       </div>
     </div>`,
@@ -2465,6 +2725,7 @@ X-Vendor: FNTIC-JAX-30155271
 
   stopTimer();
   document.getElementById('live-pill').style.display = 'none';
+  document.getElementById('pause').style.display = 'none';
   document.getElementById('feed-sub').textContent = '✓ complete · 14 auto / 2 escalated';
   document.getElementById('ev-sub').textContent = 'complete';
   document.getElementById('done-cta').classList.add('ready');
