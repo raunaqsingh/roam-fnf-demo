@@ -357,8 +357,8 @@
   main {
     display: grid;
     grid-template-columns: 360px 1fr 520px;
-    height: calc(100vh - 240px);
-    min-height: 680px;
+    height: calc(100vh - 450px);
+    min-height: 640px;
     overflow: hidden;
   }
 
@@ -1157,6 +1157,407 @@
   .escalation ul { margin: 6px 0 0 14px; padding: 0; }
   .escalation li { margin: 2px 0; }
 
+  /* Trust & verification legend strip */
+  .trust-strip {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 24px 16px;
+    display: grid;
+    grid-template-columns: 260px 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+    box-shadow: var(--shadow-sm);
+  }
+  .trust-strip .header-block {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-right: 16px;
+    border-right: 1px solid var(--rule);
+  }
+  .trust-strip .eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fnf-red);
+    font-weight: 700;
+  }
+  .trust-strip h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .trust-strip .header-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+  .trust-cell {
+    display: grid;
+    grid-template-columns: 14px 1fr auto;
+    grid-template-rows: auto auto auto;
+    gap: 4px 10px;
+    align-items: start;
+  }
+  .trust-cell .tdot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    margin-top: 4px;
+    grid-row: 1;
+    grid-column: 1;
+    border: 2px solid transparent;
+  }
+  .trust-cell.green .tdot { background: var(--green); box-shadow: 0 0 0 3px #E8F5EE; }
+  .trust-cell.amber .tdot { background: var(--amber); box-shadow: 0 0 0 3px #FDF0E2; }
+  .trust-cell.red .tdot { background: var(--fnf-red); box-shadow: 0 0 0 3px #FBE3E0; }
+  .trust-cell .tlabel {
+    grid-row: 1;
+    grid-column: 2;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .trust-cell .tcount {
+    grid-row: 1;
+    grid-column: 3;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .trust-cell.green .tcount { color: var(--green); }
+  .trust-cell.amber .tcount { color: var(--amber); }
+  .trust-cell.red .tcount { color: var(--fnf-red); }
+  .trust-cell .tdesc {
+    grid-row: 2;
+    grid-column: 2 / span 2;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .trust-cell .tdesc b { color: var(--ink-2); font-weight: 600; }
+  .trust-cell .tsafe {
+    grid-row: 3;
+    grid-column: 2 / span 2;
+    font-size: 10.5px;
+    color: var(--muted-2);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* Verified badges on schedule items */
+  .sched-item .verify-text {
+    display: none;
+    font-size: 10.5px;
+    margin-top: 5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+  }
+  .sched-item.done.auto-verified .verify-text,
+  .sched-item.done.uw-review .verify-text,
+  .sched-item.done.human-review .verify-text {
+    display: block;
+  }
+  .sched-item.done.auto-verified .verify-text {
+    color: var(--green);
+  }
+  .sched-item.done.auto-verified .verify-text::before {
+    content: "✓ VERIFIED · ";
+    font-weight: 700;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+  }
+  .sched-item.done.uw-review .verify-text {
+    color: var(--amber);
+  }
+  .sched-item.done.uw-review .verify-text::before {
+    content: "⚑ UW REVIEW · ";
+    font-weight: 700;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+  }
+  .sched-item.done.human-review .verify-text {
+    color: var(--fnf-red);
+  }
+  .sched-item.done.human-review .verify-text::before {
+    content: "● HUMAN DECIDES · ";
+    font-weight: 700;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+  }
+
+  /* Trust count flash */
+  .trust-cell .tcount.flash {
+    animation: countFlash 0.6s ease-out;
+  }
+  @keyframes countFlash {
+    0% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  /* UW decision confirmation */
+  .uw-decision {
+    padding: 10px 14px;
+    background: linear-gradient(90deg, #E8F5EE 0%, #F5FAFA 100%);
+    border-left: 3px solid var(--green);
+    font-size: 11.5px;
+    color: var(--ink);
+    border-radius: 0 3px 3px 0;
+    font-weight: 500;
+  }
+  .uw-decision .sig {
+    display: block;
+    font-family: "Snell Roundhand", "Apple Chancery", cursive;
+    font-size: 20px;
+    color: var(--navy);
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Narration strip (step-by-step voiceover) */
+  .narrator-strip {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 24px;
+    display: grid;
+    grid-template-columns: 190px 1fr auto;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .narrator-strip::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--fnf-red);
+  }
+  .narrator-strip .step-badge {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .narrator-strip .step-num {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fnf-red);
+    font-weight: 700;
+  }
+  .narrator-strip .step-name {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .narrator-strip .step-progress {
+    display: flex; gap: 3px; margin-top: 6px;
+  }
+  .narrator-strip .step-progress .tick {
+    width: 22px; height: 3px;
+    background: var(--rule);
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .narrator-strip .step-progress .tick.done { background: var(--fnf-red); }
+  .narrator-strip .step-progress .tick.active {
+    background: var(--fnf-red);
+    animation: tickPulse 1.2s ease-in-out infinite;
+  }
+  @keyframes tickPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  .narrator-strip .narration-body {
+    display: flex; flex-direction: column; gap: 3px;
+    min-height: 44px;
+    justify-content: center;
+  }
+  .narrator-strip .what {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.45;
+    transition: opacity 0.3s;
+  }
+  .narrator-strip .what b { color: var(--navy); }
+  .narrator-strip .impact {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .narrator-strip .impact .fnf {
+    font-weight: 700;
+    color: var(--fnf-red);
+    letter-spacing: 0.04em;
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+  .narrator-strip .impact .savings {
+    display: inline-block;
+    background: #E8F5EE;
+    color: var(--green);
+    padding: 1px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 11px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-left: 4px;
+  }
+  .narrator-strip .voice-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font: inherit;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .narrator-strip .voice-toggle:hover { border-color: var(--fnf-red); color: var(--fnf-red); }
+  .narrator-strip .voice-toggle.on {
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    border-color: var(--fnf-red);
+  }
+  .narrator-strip .voice-toggle svg { width: 12px; height: 12px; }
+
+  /* Onboarding overlay */
+  .onboard-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,27,58,0.82);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  .onboard-bg.hide { opacity: 0; pointer-events: none; }
+  .onboard {
+    background: #FFFFFF;
+    max-width: 760px;
+    width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+    overflow: hidden;
+    position: relative;
+  }
+  .onboard::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--fnf-red) 0%, var(--fnf-red) 40%, var(--gold) 100%);
+  }
+  .onboard .hdr {
+    padding: 24px 30px 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .onboard .hdr svg { flex-shrink: 0; }
+  .onboard .hdr .title-group .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fnf-red);
+    font-weight: 700;
+  }
+  .onboard .hdr .title-group .title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .onboard .body {
+    padding: 6px 30px 20px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+  .onboard .body .lead {
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .onboard .body .lead b { color: var(--fnf-red); font-weight: 600; }
+  .onboard .watchlist {
+    background: #F7F9FC;
+    border-left: 3px solid var(--fnf-red);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 3px 3px 0;
+  }
+  .onboard .watchlist .k {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .onboard .watchlist ul { margin: 0; padding-left: 18px; }
+  .onboard .watchlist li { margin: 3px 0; font-size: 12.5px; line-height: 1.55; }
+  .onboard .watchlist li b { color: var(--navy); }
+  .onboard .actions {
+    padding: 18px 30px 24px;
+    background: #F5F5F7;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid var(--rule);
+  }
+  .onboard .btn-primary {
+    background: var(--fnf-red);
+    color: #FFFFFF;
+    border: none;
+    padding: 11px 22px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(218,41,28,0.3);
+    transition: all 0.15s;
+  }
+  .onboard .btn-primary:hover { background: var(--fnf-red-dark); transform: translateY(-1px); }
+  .onboard .btn-sec {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    padding: 10px 16px;
+    font: inherit;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .onboard .btn-sec:hover { color: var(--navy); border-color: var(--navy); }
+  .onboard .tip {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
   /* Scrollbar styling */
   .activity::-webkit-scrollbar, .commitment::-webkit-scrollbar,
   .evidence::-webkit-scrollbar, .modal-bg::-webkit-scrollbar { width: 10px; }
@@ -1221,11 +1622,40 @@
   </div>
 </section>
 
+<section class="trust-strip">
+  <div class="header-block">
+    <div class="eyebrow">How this agent keeps title ops in control</div>
+    <h3 id="phase-headline">Ready to start</h3>
+    <div class="header-desc" id="phase-what">Click <b>Start curative run</b> to watch the agent clear every Schedule B item — with a verification trail on every action and a human gate on every judgment call.</div>
+  </div>
+  <div class="trust-cell green">
+    <div class="tdot"></div>
+    <div class="tlabel">Auto-verified</div>
+    <div class="tcount" id="t-auto">0</div>
+    <div class="tdesc"><b>Cross-sourced data only.</b> Every cleared item is verified against a signed source (county records, FNF title plant, carrier API). No single-source decisions.</div>
+    <div class="tsafe">Rollback path logged per action. Zero disbursement authority.</div>
+  </div>
+  <div class="trust-cell amber">
+    <div class="tdot"></div>
+    <div class="tlabel">Underwriter reviews</div>
+    <div class="tcount" id="t-uw">0</div>
+    <div class="tdesc"><b>Agent drafts, UW signs.</b> Endorsements, policy language, and anything affecting insurability route to a named FNTIC underwriter with the full packet attached.</div>
+    <div class="tsafe">Agent cannot modify Schedule B without sign-off.</div>
+  </div>
+  <div class="trust-cell red">
+    <div class="tdot"></div>
+    <div class="tlabel">Human decides</div>
+    <div class="tcount" id="t-human">0</div>
+    <div class="tdesc"><b>Judgment calls stay with your examiner.</b> Agent does the research, drafts the options, and hands off the evidence — the call is M. Rodriguez's.</div>
+    <div class="tsafe">Agent never exercises underwriting authority.</div>
+  </div>
+</section>
+
 <section class="labor-hero">
   <div class="block">
-    <div class="lbl">Examiner labor saved · this file</div>
-    <div class="big primary"><span id="hero-hours">0h 00m</span></div>
-    <div class="sub">Baseline M. Rodriguez · 14h 22m across 3 business days · $47/hr fully loaded (FNF FY25 model)</div>
+    <div class="lbl">Examiner time saved · this file</div>
+    <div class="big primary"><span id="hero-hours">Not started</span></div>
+    <div class="sub">Baseline M. Rodriguez · 14 hours 22 min across 3 business days · $47/hr fully loaded (FNF FY25 model)</div>
   </div>
   <div class="sep-v"></div>
   <div class="block">
@@ -1410,6 +1840,7 @@ function renderLists() {
       <div class="body">
         <div class="label">${it.label}</div>
         <div class="detail">${it.detail}</div>
+        <div class="verify-text"></div>
         <div class="mins">saved ${minsFormat(it.mins)} of examiner time</div>
       </div>
       <div class="status-dot pending" data-dot="${it.id}"></div>
@@ -1490,6 +1921,57 @@ function setDot(id, cls) {
   if (parent && (cls === 'cleared' || cls === 'escalated')) parent.classList.add('done');
 }
 
+/* Verification classification — shown on each schedule item + rolls up to trust legend.
+   category: 'auto' (cross-verified, fully automated) | 'uw' (agent prepared, UW reviews)
+              | 'human' (judgment call, human decides) */
+function verify(id, category, sourceText) {
+  const parent = document.querySelector(`[data-id="${id}"]`);
+  if (!parent) return;
+  parent.classList.remove('auto-verified','uw-review','human-review');
+  parent.classList.add(category === 'auto' ? 'auto-verified' : (category === 'uw' ? 'uw-review' : 'human-review'));
+  const vt = parent.querySelector('.verify-text');
+  if (vt) vt.textContent = sourceText;
+  bumpTrust(category);
+}
+function bumpTrust(category) {
+  const id = { auto:'t-auto', uw:'t-uw', human:'t-human' }[category];
+  const el = document.getElementById(id);
+  if (!el) return;
+  const n = parseInt(el.textContent || '0') + 1;
+  el.textContent = n;
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 600);
+}
+
+/* Phase narration — updates the top trust-strip headline */
+function phaseUpdate(stepNum, name, whatHTML) {
+  const ph = document.getElementById('phase-headline');
+  const pw = document.getElementById('phase-what');
+  if (ph) ph.textContent = `Step ${stepNum} of 5 · ${name}`;
+  if (pw) pw.innerHTML = whatHTML;
+}
+
+/* UW inbox button — makes the underwriter gate interactive */
+window.uwAction = function(btn, action) {
+  const actions = btn.parentElement;
+  const now = new Date();
+  const hh = now.getHours().toString().padStart(2,'0');
+  const mm = now.getMinutes().toString().padStart(2,'0');
+  let body;
+  if (action === 'approve') {
+    body = `<strong>✓ Approved as drafted</strong> · ${hh}:${mm} · FNTIC SE Region
+      <span class="sig">L. Padilla, J.D.</span>
+      <div style="font-size:10.5px; color:var(--muted); margin-top:4px;">ALTA 35 endorsement signed. §713.22 affidavit attached. Policy clear to issue after wire.</div>`;
+  } else if (action === 'modify') {
+    body = `<strong>✎ Modification requested</strong> · ${hh}:${mm}
+      <div style="font-size:11px; color:var(--muted); margin-top:4px;">Agent will revise endorsement language and re-route for UW review. 1-hour SLA.</div>`;
+  } else {
+    body = `<strong>✗ Sent back for additional evidence</strong> · ${hh}:${mm}
+      <div style="font-size:11px; color:var(--muted); margin-top:4px;">Agent notified. Will expand evidence packet (docket detail, counsel outreach). Re-route in 4h.</div>`;
+  }
+  actions.innerHTML = `<div class="uw-decision" style="flex:1;">${body}</div>`;
+};
+
 /* ============================================================
    EVIDENCE CARDS
    ============================================================ */
@@ -1538,13 +2020,17 @@ function addSaved(mins, touches = 0) {
   totalMinSaved += mins;
   totalTouchesSaved += touches;
 
-  // Hero labor ticker
+  // Hero labor ticker — human-readable time format
   const heroH = document.getElementById('hero-hours');
   heroH.classList.add('flash');
   setTimeout(() => heroH.classList.remove('flash'), 450);
   animateNumber(heroH, fromMin, totalMinSaved, 700, v => {
-    const h = Math.floor(v/60), m = Math.floor(v%60);
-    return `${h}h ${m.toString().padStart(2,'0')}m`;
+    const total = Math.floor(v);
+    if (total === 0) return '0 minutes';
+    const h = Math.floor(total/60), m = total % 60;
+    if (h === 0) return `${m} minutes`;
+    if (m === 0) return `${h} ${h === 1 ? 'hour' : 'hours'}`;
+    return `${h}h ${m}m`;
   });
 
   // File dollars
@@ -1586,6 +2072,8 @@ async function runDemo() {
 
   // ========== PHASE 1: INTAKE & PARSE ==========
   phase('Phase 1 · Intake & parse');
+  phaseUpdate(1, 'Intake &amp; parse',
+    '<b>The agent just received a Florida title commitment from SoftPro.</b> It is extracting all 47 ALTA fields and classifying every Schedule B item. At Fidelity today, an examiner spends 20 minutes here — re-keying from the PDF into the file.');
   row('parse', '<span class="hl">SoftPro file sync</span> — pulling commitment 2026-FNF-044281.pdf, title plant record CRCR-18-24-2026, seller packet, buyer packet', {t:0.3, ic:'↻'});
   evCard({
     id:'ev-intake', tag:'DOC AI', label:'Commitment parse',
@@ -1616,6 +2104,8 @@ async function runDemo() {
 
   // ========== PHASE 2: PLAN ==========
   phase('Phase 2 · Plan & authorization check');
+  phaseUpdate(2, 'Plan &amp; authorize',
+    '<b>Before taking any action, the agent loads Jacksonville office rules.</b> It is authorized to read, draft, and route — but cannot disburse funds or modify Schedule B without a human signing off. "Automate preparation, humans own decisions."');
   row('plan', 'Building curative graph. <span class="hl">16 nodes, 9 parallel branches.</span>', {ic:'◈'});
   row('plan', 'Applied Jacksonville BU office rules v2.4.11. Approval thresholds: <span class="amt">$10K routine / $50K UW review / any FL §627 matter → UW.</span>', {ic:'◈'});
   row('plan', 'Permission scope confirmed: agent may <span class="hl">read, draft, route, request</span>. No disbursement. No Schedule B modification without M. Rodriguez sign-off.', {ic:'✓'});
@@ -1625,6 +2115,8 @@ async function runDemo() {
 
   // ========== PHASE 3: PARALLEL EXECUTION ==========
   phase('Phase 3 · Parallel execution · 9 branches');
+  phaseUpdate(3, 'Parallel execution · 9 branches',
+    '<b>Nine workflows run simultaneously.</b> Voice calls to Wells Fargo payoff and Castle Group HOA. APIs to Broward County tax. OCR on a messy 1983 easement scan. At Fidelity today this takes 3 business days of phone tag, context switching, and waiting on external parties. The agent compresses it into ~45 seconds.');
 
   // Tax API
   setDot('bi-5','running');
@@ -1655,6 +2147,7 @@ X-Vendor: FNTIC-JAX-30155271
   row('api', 'Tax status: <span class="gold">current.</span> 2025 paid in full. <span class="hl">No certificates outstanding.</span>', {ic:'✓'});
   row('complete', 'B-I #5 <span class="hl">tax verification</span> → cleared. <span class="saved">saved 15m</span>', {ic:'✓', inc:0.2});
   setDot('bi-5','cleared'); tickBi(); addSaved(itemMins('bi-5'));
+  verify('bi-5','auto','Broward Tax Collector API (gov-signed) + AIM+ plant cross-ref');
   evStatus('ev-tax','ok');
 
   // Mineral analysis
@@ -1664,6 +2157,7 @@ X-Vendor: FNTIC-JAX-30155271
   row('legal', 'Chain shows no preservation notice since 1937. <span class="hl">30-yr root → extinguished 1967.</span> Standard endorsement applies.', {ic:'✓'});
   row('complete', 'B-II #6 <span class="hl">mineral reservation</span> → cleared. <span class="saved">saved 20m</span>', {ic:'✓', inc:0.3});
   setDot('bii-6','cleared'); tickBii(); addSaved(itemMins('bii-6'));
+  verify('bii-6','auto','FL §712.04 MRTA statutory analysis + 30-yr title chain check');
 
   // Wells Fargo Voice Call — with IVR DRIFT and RETRY
   setDot('bi-1','running');
@@ -1702,6 +2196,7 @@ X-Vendor: FNTIC-JAX-30155271
   row('call', 'Wells Fargo payoff captured — <span class="amt">$412,883.22 GT 05/06/2026, per diem $87.44.</span> Ref <a class="ref">8842017733</a>', {ic:'✓'});
   row('emit', 'Written to <span class="hl">SoftPro ProForm → HUD 104</span>. Wire disbursement held for human approval.', {ic:'↓', inc:0.3});
   setDot('bi-1','cleared'); tickBi(); addSaved(itemMins('bi-1'));
+  verify('bi-1','auto','Wells Fargo voice payoff · ref 8842017733 · cross-ref Inst. 118-431847 · disbursement human-gated');
   evStatus('ev-wf','ok');
 
   // Truist HELOC email
@@ -1731,6 +2226,7 @@ X-Vendor: FNTIC-JAX-30155271
   row('email', 'Auto-ack received (ticket <a class="ref">TRU-POFF-2026-44821</a>). ETA <span class="hl">3.5 hours.</span>', {ic:'✓'});
   row('complete', 'B-I #2 <span class="hl">HELOC payoff</span> → tracked. <span class="saved">saved 25m</span>', {ic:'✓'});
   setDot('bi-2','cleared'); tickBi(); addSaved(itemMins('bi-2'));
+  verify('bi-2','auto','Truist secure portal · ack TRU-POFF-2026-44821 · borrower auth on file');
   evStatus('ev-truist','ok');
 
   // CCRs
@@ -1740,6 +2236,7 @@ X-Vendor: FNTIC-JAX-30155271
   row('legal', '47-page declaration reviewed. Cross-ref aerial imagery + Broward DRC permits. <span class="hl">No violations.</span>', {ic:'✓'});
   row('complete', 'B-II #4 <span class="hl">CCRs</span> → stands, ALTA 9 available. <span class="saved">saved 1h 05m</span>', {ic:'✓'});
   setDot('bii-4','cleared'); tickBii(); addSaved(itemMins('bii-4'));
+  verify('bii-4','auto','AIM+ doc retrieval + Broward DRC permit cross-ref + aerial imagery · 3 sources agreed');
 
   // HOA Voice Call — with rep hold
   setDot('bi-4','running');
@@ -1776,7 +2273,9 @@ X-Vendor: FNTIC-JAX-30155271
   row('call', 'HOA estoppel confirmed. ETA 24-48h. <span class="hl">$275 fee logged to CD line 1202.</span>', {ic:'✓'});
   row('complete', 'B-I #4 + B-II #8 <span class="hl">HOA coverage</span> → queued. <span class="saved">saved 45m</span>', {ic:'✓'});
   setDot('bi-4','cleared'); tickBi(); addSaved(itemMins('bi-4'));
+  verify('bi-4','auto','Castle Group voice confirmation · FL DBPR CAM-44108 · $275 fee seated to CD-1202');
   setDot('bii-8','cleared'); tickBii(); addSaved(itemMins('bii-8'));
+  verify('bii-8','auto','Castle Group estoppel (same as B-I #4) · delivery ≤48h tracked');
   evStatus('ev-hoa','ok');
 
   // Easement — with OCR confidence failure + fallback
@@ -1803,7 +2302,9 @@ X-Vendor: FNTIC-JAX-30155271
   row('doc', '1961 plat drainage easement (west 5 ft) — overlay clear of improvements.', {ic:'✓'});
   row('complete', 'B-II #3 + #5 <span class="hl">easements</span> → stand as recorded, ALTA 17 available. <span class="saved">saved 1h 25m</span>', {ic:'✓'});
   setDot('bii-3','cleared'); tickBii(); addSaved(itemMins('bii-3'));
+  verify('bii-3','auto','OCR rejected at 72%, fallback to AIM+ abstract (99.1%) + 2019 Abbott survey overlay');
   setDot('bii-5','cleared'); tickBii(); addSaved(itemMins('bii-5'));
+  verify('bii-5','auto','1961 plat geometry overlay · west 5 ft · no improvement encroachment');
 
   // Prior policy
   setDot('bii-9','running');
@@ -1812,6 +2313,7 @@ X-Vendor: FNTIC-JAX-30155271
   row('ofr', 'Chain verified: WD 2019-06-30 (Inst. 117-992014) → no intervening conveyances. Policy in force through commitment date.', {ic:'✓'});
   row('complete', 'B-II #9 <span class="hl">prior policy</span> → chain confirmed. <span class="saved">saved 15m</span>', {ic:'✓'});
   setDot('bii-9','cleared'); tickBii(); addSaved(itemMins('bii-9'));
+  verify('bii-9','auto','Stewart VU reciprocity + AIM+ chain verification · WD 2019-06-30 to commitment date');
 
   // Survey
   setDot('bi-6','running');
@@ -1839,7 +2341,9 @@ X-Vendor: FNTIC-JAX-30155271
   await wait(700);
   row('complete', 'B-I #6 + B-II #2 <span class="hl">survey</span> → ordered, ETA Apr 28. <span class="saved">saved 25m</span>', {ic:'✓'});
   setDot('bi-6','cleared'); tickBi(); addSaved(itemMins('bi-6'));
+  verify('bi-6','auto','National Survey Service order NSS-2026-0417-88402 · 201 confirmed · Abbott &amp; Sons assigned');
   setDot('bii-2','cleared'); tickBii(); addSaved(itemMins('bii-2'));
+  verify('bii-2','auto','Tied to survey order above · tracker held open until 04-28 delivery');
 
   // B-II #1 & #7
   setDot('bii-1','running');
@@ -1848,10 +2352,14 @@ X-Vendor: FNTIC-JAX-30155271
   row('legal', 'B-II #7 2026 taxes — not yet due. Standard exception retained.', {ic:'✓'});
   row('complete', 'B-II #1 + #7 <span class="hl">standard exceptions</span>. <span class="saved">saved 11m</span>', {ic:'✓'});
   setDot('bii-1','cleared'); tickBii(); addSaved(itemMins('bii-1'));
+  verify('bii-1','auto','Seller affidavit of possession on file (2026-04-09) · standard retained');
   setDot('bii-7','cleared'); tickBii(); addSaved(itemMins('bii-7'));
+  verify('bii-7','auto','Standard not-yet-due tax exception · FL cycle confirmed via Broward API');
 
   // ========== PHASE 4: JUDGMENT CALLS ==========
   phase('Phase 4 · Research &amp; judgment calls');
+  phaseUpdate(4, 'Judgment calls',
+    '<b>Two items require human judgment.</b> An unsatisfied $4,250 judgment and an expired mechanics lien under FL §713.22. The agent does the statutory research, drafts the affidavit, and hands off to your examiner and underwriter with full packets attached. They review in 5 minutes — not 3 hours.');
 
   // Judgment
   setDot('bi-3','running');
@@ -1882,6 +2390,7 @@ X-Vendor: FNTIC-JAX-30155271
     footer: `<span class="k">Packet:</span> 14 pages · <span class="k">Queue:</span> SoftPro Exam JAX-23 · <span class="k">SLA:</span> 4h business · <span class="k">Agent-hours saved:</span> 1h 30m`
   });
   setDot('bi-3','escalated'); tickEsc(); addSaved(itemMins('bi-3'), 1);
+  verify('bi-3','human','M. Rodriguez decides · 3 resolution paths prepared · 14-page packet · 4h SLA');
 
   // Mechanics lien + Underwriter Inbox
   setDot('bi-7','running');
@@ -1930,18 +2439,21 @@ X-Vendor: FNTIC-JAX-30155271
           <span class="pill-item">ALTA 35 drafted</span>
         </div>
         <div class="actions">
-          <button class="btn approve">Approve as drafted</button>
-          <button class="btn modify">Modify endorsement</button>
-          <button class="btn reject">Reject · send back</button>
+          <button class="btn approve" onclick="uwAction(this,'approve')">Approve as drafted</button>
+          <button class="btn modify" onclick="uwAction(this,'modify')">Modify endorsement</button>
+          <button class="btn reject" onclick="uwAction(this,'reject')">Reject · send back</button>
         </div>
       </div>
     </div>`,
     footer: `<span class="k">Agent prepared:</span> everything <span class="k">UW decides:</span> endorsement &amp; authority <span class="k">Time budget:</span> &lt; 5 min to sign off`
   });
   setDot('bi-7','escalated'); tickEsc(); addSaved(itemMins('bi-7'), 1);
+  verify('bi-7','uw','L. Padilla underwriter gate · §713.22 affidavit + ALTA 35 endorsement drafted · awaiting sign-off');
 
   // ========== PHASE 5: FINALIZE ==========
   phase('Phase 5 · Compile cleared commitment');
+  phaseUpdate(5, 'Compile &amp; notify',
+    '<b>The agent regenerates Schedule B in SoftPro</b>, writes 32 audit events to FNF SIEM, and notifies M. Rodriguez and L. Padilla. The close date stays on May 2 with a 5-day buffer. Across a year at Fidelity scale, this workflow eliminates ~190,000 examiner-hours.');
   await wait(400);
   row('parse', 'Regenerating Schedule B with cleared status. Writing to <span class="hl">SoftPro ProForm</span>. Change manifest: 7 requirements, 9 exceptions, 2 escalations.', {ic:'◈'});
   row('emit', 'Audit trail written to <span class="hl">FNF SIEM</span> (32 events). Every action logs rollback path. File hash signed fnf-agent-44.', {ic:'↓'});
@@ -1970,6 +2482,7 @@ document.getElementById('run').addEventListener('click', runDemo);
 const modalBody = () => {
   const totalH = Math.floor(totalMinSaved/60);
   const totalM = Math.floor(totalMinSaved%60);
+  const timeStr = totalH === 0 ? `${totalM} min` : (totalM === 0 ? `${totalH} hours` : `${totalH}h ${totalM}m`);
   const fileDollars = Math.round((totalMinSaved/60) * RATE_PER_HOUR);
   const annualDollars = Math.round((fileDollars * ANNUAL_CURATIVE_FILES) / 1_000_000);
   const roamShare = Math.round(annualDollars * 0.20);
@@ -1977,9 +2490,9 @@ const modalBody = () => {
   return `
   <div class="savings-hero">
     <div>
-      <div class="k">Examiner labor saved</div>
-      <div class="v hero">${totalH}h ${totalM.toString().padStart(2,'0')}m</div>
-      <div class="sub">per file · vs 14h 22m baseline (M. Rodriguez, n=12 Q1 2026)</div>
+      <div class="k">Examiner time saved</div>
+      <div class="v hero">${timeStr}</div>
+      <div class="sub">per file · vs 14 hours 22 min baseline (M. Rodriguez, n=12 Q1 2026)</div>
     </div>
     <div>
       <div class="k">File-level $</div>
